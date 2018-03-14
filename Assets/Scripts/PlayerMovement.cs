@@ -6,10 +6,10 @@ public class PlayerMovement : MonoBehaviour {
 
 	public enum Direction {Right = 0, Down = 1, Up = 2, Left = 3};
 	private static readonly Dictionary<Direction, Vector2> directionVectors = new Dictionary<Direction, Vector2> {
-		{Direction.Up, Vector2.up},
-		{Direction.Down, Vector2.down},
-		{Direction.Right, Vector2.right*2},
-		{Direction.Left, Vector2.left*2},
+		{Direction.Up, Vector2.up*2},
+		{Direction.Down, Vector2.down*2},
+		{Direction.Right, Vector2.right*3},
+		{Direction.Left, Vector2.left*3},
 	};
 	private static readonly Dictionary<KeyCode, Direction> keyDirections = new Dictionary<KeyCode, Direction> {
 		{KeyCode.W, Direction.Up},
@@ -19,13 +19,13 @@ public class PlayerMovement : MonoBehaviour {
 	};
 	private Direction currentDirection = Direction.Right;
 	private KeyCode currentKey = KeyCode.None;
-	private int movementSpeed = 2;
+	private int movementSpeed = 3;
 	private Animator animator;
-	private Rigidbody2D rigidbody2D;
+	private Rigidbody2D rb;
 
 	void Start() {
 		animator = GetComponent<Animator>();
-		rigidbody2D = GetComponent<Rigidbody2D>();
+		rb = GetComponent<Rigidbody2D>();
 	}
 	
 	// Update is called once per frame
@@ -53,7 +53,11 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public void MoveMe(Direction direction) {
-		rigidbody2D.MovePosition(rigidbody2D.position + movementSpeed * directionVectors[direction]);
+		float x = Mathf.Round(rb.position.x);
+		float y = Mathf.Round(rb.position.y);
+
+		rb.MovePosition(new Vector2(x, y) + movementSpeed * directionVectors[direction]);
+
 		// transform.localPosition += movementSpeed * directionVectors[direction];
 	}
 }

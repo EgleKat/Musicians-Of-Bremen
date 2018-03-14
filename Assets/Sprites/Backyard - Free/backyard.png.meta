@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 01842c69a0801d74382f6f4ed41ec4bf
-timeCreated: 1521037672
+timeCreated: 1521040306
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -1404,10 +1404,10 @@ TextureImporter:
         - {x: 24, y: -15}
         - {x: 24, y: 13}
       physicsShape:
-      - - {x: 24, y: 24}
-        - {x: -24, y: 24}
-        - {x: -24, y: -24}
-        - {x: 24, y: -24}
+      - - {x: 22, y: 19}
+        - {x: -22, y: 19}
+        - {x: -22, y: -24}
+        - {x: 22, y: -24}
       tessellationDetail: -1
     - serializedVersion: 2
       name: backyard_33
