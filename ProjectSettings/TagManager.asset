@@ -41,6 +41,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Buildings
+    uniqueID: 3538781799
+    locked: 0
+  - name: Exterior NPCs
+    uniqueID: 254242241
+    locked: 0
+  - name: Blackness
+    uniqueID: 142890023
+    locked: 0
+  - name: Building Interiors
+    uniqueID: 45325477
+    locked: 0
+  - name: Interior NPCs
+    uniqueID: 3856680125
+    locked: 0
   - name: Characters
     uniqueID: 377063329
     locked: 0
