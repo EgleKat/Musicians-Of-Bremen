@@ -98,10 +98,10 @@ TextureImporter:
       - {x: 71, y: 21}
       - {x: 44, y: 48}
     physicsShape:
-    - - {x: -72, y: 48}
+    - - {x: -72, y: -39}
       - {x: -72, y: -48}
       - {x: 69, y: -48}
-      - {x: 68.72221, y: 48}
+      - {x: 69, y: -39}
   spritePackingTag: 
   userData: 
   assetBundleName: 

@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114450302392125022}
   - component: {fileID: 61557647278716742}
   - component: {fileID: 50258223994024824}
+  - component: {fileID: 114824474609414344}
   m_Layer: 0
   m_Name: Animal
   m_TagString: Untagged
@@ -102,6 +103,17 @@ MonoBehaviour:
   spriteSheetName: 
   spriteOffset: 0
   spritesPerRow: 0
+--- !u!114 &114824474609414344
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1732055998097180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42180c55ff822e2469ed4730e21d07d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212332374426992378
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -144,5 +156,5 @@ SpriteRenderer:
   m_Size: {x: 48, y: 48}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0

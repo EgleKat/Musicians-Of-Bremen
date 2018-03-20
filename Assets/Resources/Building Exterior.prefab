@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 4880751852673540}
   - component: {fileID: 212794589031639842}
   - component: {fileID: 60148555275409098}
+  - component: {fileID: 114197537572942030}
   m_Layer: 0
   m_Name: Building Exterior
   m_TagString: Untagged
@@ -96,10 +97,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 96}
+    - - {x: 0, y: 9}
       - {x: 0, y: 0}
       - {x: 141, y: 0}
-      - {x: 140.72221, y: 96}
+      - {x: 141, y: 9}
 --- !u!61 &61843477631868094
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -125,6 +126,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 30, y: 7}
   m_EdgeRadius: 0
+--- !u!114 &114197537572942030
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1959595214303204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42180c55ff822e2469ed4730e21d07d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114595884847113732
 MonoBehaviour:
   m_ObjectHideFlags: 1
