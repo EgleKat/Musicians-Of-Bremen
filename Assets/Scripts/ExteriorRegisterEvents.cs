@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExteriorRegisterEvents : MonoBehaviour {
+public class ExteriorRegisterEvents : MonoBehaviour
+{
+    void Awake()
+    {
+        EventManager.AddListener(EventType.GoOutside, OnWentOutside);
+        EventManager.AddListener(EventType.GoInside, OnWentInside);
+    }
 
-    private EventManager eventManager;
-
-	void Awake () {
-        eventManager = GameObject.Find("Game Controller").GetComponent<EventManager>();
-        eventManager.WentOutside += OnWentOutside;
-        eventManager.WentInside += OnWentInside;
-	}
-
-    void OnWentOutside()
+    void OnWentOutside(object _)
     {
         gameObject.SetActive(true);
     }
-    void OnWentInside()
+    void OnWentInside(object _)
     {
         gameObject.SetActive(false);
     }

@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class InteriorRegisterEvents : MonoBehaviour {
-
-    private EventManager eventManager;
-
     void Awake()
     {
-        eventManager = GameObject.Find("Game Controller").GetComponent<EventManager>();
-        eventManager.WentOutside += OnWentOutside;
-        eventManager.WentInside += OnWentInside;
+        EventManager.AddListener(EventType.GoOutside, OnWentOutside);
+        EventManager.AddListener(EventType.GoInside, OnWentInside);
     }
 
-    void OnWentOutside()
+    void OnWentOutside(object _)
     {
         gameObject.SetActive(false);
     }
-    void OnWentInside()
+    void OnWentInside(object _)
     {
         gameObject.SetActive(true);
     }
