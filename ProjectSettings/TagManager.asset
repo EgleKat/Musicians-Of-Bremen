@@ -42,6 +42,9 @@ TagManager:
   - name: Ground
     uniqueID: 2130293181
     locked: 0
+  - name: Water
+    uniqueID: 8931041
+    locked: 0
   - name: Tiles
     uniqueID: 1984849539
     locked: 0
