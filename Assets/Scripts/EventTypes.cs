@@ -5,6 +5,9 @@ public enum EventType
     GoOutside,
     GoInside,
     CreateBuildings,
+    PressedInteractKey,
+    StartDialogueWith,
+    EndDialogueWith,
 }
 
 [System.Serializable]

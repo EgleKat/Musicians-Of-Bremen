@@ -28,15 +28,9 @@ public class AnimalAnimator : MonoBehaviour {
 	private Dictionary<Direction, SpriteAnimation> idleAnimations = new Dictionary<Direction, SpriteAnimation>();
 	private Direction currentDirection = Direction.Right;
 	private KeyCode currentKey = KeyCode.None;
-	private Animator animator;
-	private Rigidbody2D rb;
-	private SpriteRenderer spriteRenderer;
 	private Sprite[] allSprites;
 
 	void Start() {
-		animator = GetComponent<Animator>();
-		rb = GetComponent<Rigidbody2D>();
-		spriteRenderer = GetComponent<SpriteRenderer>();
 		allSprites = Resources.LoadAll<Sprite>(spriteSheetName);
 
 		movingAnimations[Direction.Down] = gameObject.AddComponent<SpriteAnimation>();

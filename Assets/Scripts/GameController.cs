@@ -5,6 +5,5 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 	void Start () {
         EventManager.TriggerEvent(EventType.CreateBuildings, null);
-        EventManager.TriggerEvent(EventType.GoOutside, null);
 	}
 }

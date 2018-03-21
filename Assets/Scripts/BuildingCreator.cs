@@ -12,7 +12,7 @@ public class BuildingCreator : MonoBehaviour {
 
     void Awake()
     {
-        EventManager.AddListener(EventType.CreateBuildings, OnCreateBuildings);
+        //EventManager.AddListener(EventType.CreateBuildings, OnCreateBuildings);
         LoadPrefabs();
         GetInteriorAndExterior();
     }
