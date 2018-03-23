@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WitchInteract : MonoBehaviour {
 
-    public string npcName;
     bool inTrigger = false;
 
     private void Awake()
@@ -27,13 +26,13 @@ public class WitchInteract : MonoBehaviour {
         {
             EventManager.AddListener(EventType.EndDialogueWith, OnEndDialogueWith);
             EventManager.RemoveListener(EventType.PressedInteractKey, OnPressedInteractKey);
-            EventManager.TriggerEvent(EventType.StartDialogueWith, npcName);
+            EventManager.TriggerEvent(EventType.StartDialogueWith, gameObject.name);
         }
     }
 
     void OnEndDialogueWith(object npcName)
     {
-        if ((string)npcName == this.npcName)
+        if ((string)npcName == gameObject.name)
         {
             EventManager.AddListener(EventType.PressedInteractKey, OnPressedInteractKey);
         }
