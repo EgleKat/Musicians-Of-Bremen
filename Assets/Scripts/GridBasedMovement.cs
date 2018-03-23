@@ -6,8 +6,9 @@ using UnityEngine;
 public class GridBasedMovement : MonoBehaviour
 {
     public int speed;
+    public string gameObjectToLead;
 
-    private int gridSize = 32;
+    private int gridSize = 48;
     private MoveCommand nextCommand = null;
 
     private Vector3 previousLocation;
@@ -61,6 +62,10 @@ public class GridBasedMovement : MonoBehaviour
         nextLocation = null;
         if (nextCommand != null)
         {
+            if (nextCommand.vec.HasValue)
+            {
+                TriggerFollowerMovement();
+            }
             switch (nextCommand.moveType)
             {
                 case MoveCommand.MoveType.Direction:
@@ -72,6 +77,12 @@ public class GridBasedMovement : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void TriggerFollowerMovement()
+    {
+        MoveCommand followerMoveCommand = new MoveCommand(gameObjectToLead, previousLocation, MoveCommand.MoveType.Location);
+        EventManager.TriggerEvent(EventType.Move, followerMoveCommand);
     }
 
     private void OnMoveCommand(object moveCommand)
