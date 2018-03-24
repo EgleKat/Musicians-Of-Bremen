@@ -149,6 +149,6 @@ public class GridBasedMovement : MonoBehaviour
 
         Vector3 axis = Vector3.Cross(Vector3.up, v3);
         Quaternion q = Quaternion.AngleAxis(deltaAngle, axis);
-        return q * v3;
+        return Vector3Int.RoundToInt((q * v3).normalized);
     }
 }
