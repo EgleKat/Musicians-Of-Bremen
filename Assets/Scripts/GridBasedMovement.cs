@@ -62,21 +62,43 @@ public class GridBasedMovement : MonoBehaviour
         nextLocation = null;
         if (nextCommand != null)
         {
+            
+
             if (nextCommand.vec.HasValue)
             {
+                switch (nextCommand.moveType)
+                {
+                    case MoveCommand.MoveType.Direction:
+                        nextLocation = previousLocation + gridSize * nextCommand.vec;
+                        break;
+                    case MoveCommand.MoveType.Location:
+                        nextLocation = nextCommand.vec;
+                        nextCommand = null;
+                        break;
+                }
                 TriggerFollowerMovement();
+                StartAnimation();
             }
-            switch (nextCommand.moveType)
+            else
             {
-                case MoveCommand.MoveType.Direction:
-                    nextLocation = previousLocation + gridSize * nextCommand.vec;
-                    break;
-                case MoveCommand.MoveType.Location:
-                    nextLocation = nextCommand.vec;
-                    nextCommand = null;
-                    break;
+                StopAnimation();
             }
         }
+        else
+        {
+            StopAnimation();
+        }
+    }
+
+    private void StopAnimation()
+    {
+        EventManager.TriggerEvent(EventType.StopMoveAnimation, new MoveCommand(gameObject.name, null, MoveCommand.MoveType.Direction));
+    }
+
+    private void StartAnimation()
+    {
+        Vector3 directionToMove = (nextLocation.Value - transform.localPosition).normalized;
+        EventManager.TriggerEvent(EventType.MoveAnimation, new MoveCommand(gameObject.name, directionToMove, MoveCommand.MoveType.Direction));
     }
 
     private void TriggerFollowerMovement()

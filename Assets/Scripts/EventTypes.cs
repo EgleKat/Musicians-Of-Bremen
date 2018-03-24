@@ -9,7 +9,8 @@ public enum EventType
     StartDialogueWith,
     EndDialogueWith,
     Move,
-    FinishedMoveInDirection,
+    MoveAnimation,
+    StopMoveAnimation,
 }
 
 [System.Serializable]
