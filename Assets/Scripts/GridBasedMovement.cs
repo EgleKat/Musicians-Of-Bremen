@@ -8,7 +8,7 @@ public class GridBasedMovement : MonoBehaviour
     public int speed;
     public string gameObjectToLead;
 
-    private int gridSize = 48;
+    private int gridSize = 32;
     private MoveCommand nextCommand = null;
 
     private Vector3 previousLocation;
@@ -97,7 +97,7 @@ public class GridBasedMovement : MonoBehaviour
 
     private void StartAnimation()
     {
-        Vector3 directionToMove = (nextLocation.Value - transform.localPosition).normalized;
+        Vector3 directionToMove = SnapTo((nextLocation.Value - transform.localPosition).normalized, 90);
         EventManager.TriggerEvent(EventType.MoveAnimation, new MoveCommand(gameObject.name, directionToMove, MoveCommand.MoveType.Direction));
     }
 
@@ -134,5 +134,21 @@ public class GridBasedMovement : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collider)
     {
         collidingWith = false;
+    }
+
+    private static Vector3 SnapTo(Vector3 v3, float snapAngle)
+    {
+        float angle = Vector3.Angle(v3, Vector3.up);
+        if (angle < snapAngle / 2.0f)          // Cannot do cross product 
+            return Vector3.up * v3.magnitude;  //   with angles 0 & 180
+        if (angle > 180.0f - snapAngle / 2.0f)
+            return Vector3.down * v3.magnitude;
+
+        float t = Mathf.Round(angle / snapAngle);
+        float deltaAngle = (t * snapAngle) - angle;
+
+        Vector3 axis = Vector3.Cross(Vector3.up, v3);
+        Quaternion q = Quaternion.AngleAxis(deltaAngle, axis);
+        return q * v3;
     }
 }

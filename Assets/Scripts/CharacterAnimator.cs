@@ -13,7 +13,9 @@ public class CharacterAnimator : MonoBehaviour
     public int framesPerDirection;
     public int idleFrameOffset;
 
-    private Animation animationComponent;
+    private Animator animator;
+    private AnimatorOverrideController animatorOverrideController;
+
     private SpriteRenderer spriteRendererComponent;
 
     private Dictionary<Vector3, int> directionClips = new Dictionary<Vector3, int>
@@ -38,10 +40,16 @@ public class CharacterAnimator : MonoBehaviour
     private void Awake()
     {
         allSprites = Resources.LoadAll<Sprite>(spriteSheetName);
-        animationComponent = gameObject.AddComponent<Animation>();
+
+        animator = gameObject.GetComponent<Animator>();
+        animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        animator.runtimeAnimatorController = animatorOverrideController;
+
         spriteRendererComponent = GetComponent<SpriteRenderer>();
+
         EventManager.AddListener(EventType.MoveAnimation, OnMoveAnimationCommand);
         EventManager.AddListener(EventType.StopMoveAnimation, OnStopMoveAnimationCommand);
+
         CreateAnimationClips();
     }
 
@@ -50,8 +58,13 @@ public class CharacterAnimator : MonoBehaviour
         MoveCommand command = (MoveCommand)moveCommand;
         if (command.gameObjectToMove == gameObject.name)
         {
-            currentDirection = command.vec.Value;
-            animationComponent.Play(directionClips[currentDirection].ToString());
+            if (currentDirection != command.vec.Value || !animator.enabled)
+            {
+                animator.enabled = true;
+                currentDirection = command.vec.Value;
+                animator.Play(directionClips[currentDirection].ToString());
+            }
+            
         }
     }
 
@@ -60,7 +73,7 @@ public class CharacterAnimator : MonoBehaviour
         MoveCommand command = (MoveCommand)moveCommand;
         if (command.gameObjectToMove == gameObject.name)
         {
-            animationComponent.Stop();
+            animator.enabled = false;
             spriteRendererComponent.sprite = directionIdleSprites[currentDirection];
         }
     }
@@ -71,10 +84,13 @@ public class CharacterAnimator : MonoBehaviour
         {
             AnimationClip directionClip = new AnimationClip
             {
-                wrapMode = WrapMode.PingPong,
-                legacy = true,
-                frameRate = framesPerDirection
+                frameRate = framesPerDirection,
             };
+
+            AnimationClipSettings animationClipSettings = AnimationUtility.GetAnimationClipSettings(directionClip);
+            animationClipSettings.loopTime = true;
+            AnimationUtility.SetAnimationClipSettings(directionClip, animationClipSettings);
+
             EditorCurveBinding spriteBinding = new EditorCurveBinding
             {
                 type = typeof(SpriteRenderer),
@@ -82,18 +98,30 @@ public class CharacterAnimator : MonoBehaviour
                 propertyName = "m_Sprite"
             };
 
-            ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[framesPerDirection];
-            for (int frame = 0; frame < framesPerDirection; frame++)
+            ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[framesPerDirection*2 - 2];
+            int frame = 0;
+            for (int spriteNum = 0; spriteNum < framesPerDirection; spriteNum++)
             {
                 spriteKeyFrames[frame] = new ObjectReferenceKeyframe
                 {
-                    time = frame,
-                    value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + frame]
+                    time = frame*0.25f,
+                    value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + spriteNum]
                 };
+                frame++;
+            }
+            for (int spriteNum = framesPerDirection - 2; spriteNum > 0; spriteNum--)
+            {
+                // Play in reverse
+                spriteKeyFrames[frame] = new ObjectReferenceKeyframe
+                {
+                    time = frame * 0.25f,
+                    value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + spriteNum]
+                };
+                frame++;
             }
             AnimationUtility.SetObjectReferenceCurve(directionClip, spriteBinding, spriteKeyFrames);
 
-            animationComponent.AddClip(directionClip, directionIndex.Value.ToString());
+            animatorOverrideController[directionIndex.Value.ToString()] = directionClip;
             directionIdleSprites[directionIndex.Key] = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + idleFrameOffset];
         }
     }
