@@ -42,7 +42,21 @@ public class StoryManager : MonoBehaviour
                         EventManager.TriggerEvent(EventType.RemoveFollower, collideName);
                         EventManager.TriggerEvent(EventType.HideObject, "Donkey Owner");
                         EventManager.TriggerEvent(EventType.StopMoving, "Ass");
-                        EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(930, 1000, 0), MoveCommand.MoveType.Location));
+                        //white screen
+                        EventManager.TriggerEvent(EventType.FadeIn, 0.1f);
+                        UnityAction<object> onEndFadeIn = null;
+                        onEndFadeIn = delegate (object __)
+                        {
+                            EventManager.RemoveListener(EventType.EndFadeIn, onEndFadeIn);
+                            EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(930, 1000, 0), MoveCommand.MoveType.Location));
+                            Action fadeOut = delegate ()
+                            {
+                                EventManager.TriggerEvent(EventType.FadeOut, 6f);
+                            };
+                            StartCoroutine(RunAfterTime(1.5f, fadeOut));
+
+                        };
+                        EventManager.AddListener(EventType.EndFadeIn, onEndFadeIn);
                     }
                 };
                 EventManager.AddListener(EventType.TriggerCollide, onTriggerCollide);
@@ -53,6 +67,12 @@ public class StoryManager : MonoBehaviour
     private Conversation GetConversation(string triggerName)
     {
         return donkOwnerConvo;
+    }
+
+    IEnumerator RunAfterTime(float time, Action action)
+    {
+        yield return new WaitForSeconds(time);
+        action();
     }
 }
 

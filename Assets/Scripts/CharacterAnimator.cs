@@ -68,13 +68,7 @@ public class CharacterAnimator : MonoBehaviour
                 }
                 animator.enabled = true;
                 currentDirection = command.vec.Value;
-                try
-                {
-                    animator.Play(directionClips[currentDirection].ToString());
-                } catch (KeyNotFoundException e)
-                {
-                    Debug.Log(currentDirection);
-                }
+                animator.Play(directionClips[currentDirection].ToString());
             }
             
         }

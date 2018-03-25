@@ -24,6 +24,10 @@ public enum EventType
     DisableMovement,
     EnableMovement,
     StopMoving,
+    FadeIn,
+    FadeOut,
+    EndFadeOut,
+    EndFadeIn,
 }
 
 [System.Serializable]

@@ -6,14 +6,6 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    private readonly static string[] dialogue =
-    {
-        "?",
-        "??",
-        "???",
-        "????",
-    };
-
     private Conversation currentConversation;
 
     private Text dialogueText;
