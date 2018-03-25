@@ -123,7 +123,7 @@ public class GridBasedMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (!collidingWith)
+        if (!collidingWith && !collider.isTrigger)
         {
             collidingWith = true;
             MoveCommand command = new MoveCommand(gameObject.name, previousLocation, MoveCommand.MoveType.Location);

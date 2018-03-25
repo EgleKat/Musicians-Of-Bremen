@@ -36,6 +36,7 @@ public class CharacterAnimator : MonoBehaviour
     private Sprite[] allSprites;
 
     private Vector3 currentDirection = Vector3.right;
+    public float frameRate;
 
     private void Awake()
     {
@@ -84,7 +85,7 @@ public class CharacterAnimator : MonoBehaviour
         {
             AnimationClip directionClip = new AnimationClip
             {
-                frameRate = framesPerDirection,
+                frameRate = frameRate,
             };
 
             AnimationClipSettings animationClipSettings = AnimationUtility.GetAnimationClipSettings(directionClip);

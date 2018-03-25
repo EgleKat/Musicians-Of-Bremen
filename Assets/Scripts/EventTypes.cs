@@ -11,6 +11,8 @@ public enum EventType
     Move,
     MoveAnimation,
     StopMoveAnimation,
+    TriggerCollide,
+    ExitTriggerCollide,
 }
 
 [System.Serializable]

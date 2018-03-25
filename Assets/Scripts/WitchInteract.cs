@@ -13,10 +13,12 @@ public class WitchInteract : MonoBehaviour {
     
     void OnTriggerEnter2D(Collider2D other)
     {
+        EventManager.TriggerEvent(EventType.TriggerCollide, gameObject.name);
         inTrigger = true;
     }
     void OnTriggerExit2D(Collider2D other)
     {
+        EventManager.TriggerEvent(EventType.ExitTriggerCollide, gameObject.name);
         inTrigger = false;
     }
 
