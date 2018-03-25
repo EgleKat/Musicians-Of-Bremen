@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class InteractKeyHint : MonoBehaviour {
 	void Awake () {
-        EventManager.AddListener(EventType.TriggerCollide, OnTriggerCollide);
-        EventManager.AddListener(EventType.ExitTriggerCollide, OnExitTriggerCollide);
+        EventManager.AddListener(EventType.ShowInteractHint, OnTriggerCollide);
+        EventManager.AddListener(EventType.HideInteractHint, OnExitTriggerCollide);
         EventManager.AddListener(EventType.PressedInteractKey, OnExitTriggerCollide);
         gameObject.SetActive(false);
     }

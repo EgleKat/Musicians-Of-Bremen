@@ -61,9 +61,20 @@ public class CharacterAnimator : MonoBehaviour
         {
             if (currentDirection != command.vec.Value || !animator.enabled)
             {
+                if (command.vec.Value == Vector3.zero)
+                {
+                    OnStopMoveAnimationCommand(command);
+                    return;
+                }
                 animator.enabled = true;
                 currentDirection = command.vec.Value;
-                animator.Play(directionClips[currentDirection].ToString());
+                try
+                {
+                    animator.Play(directionClips[currentDirection].ToString());
+                } catch (KeyNotFoundException e)
+                {
+                    Debug.Log(currentDirection);
+                }
             }
             
         }

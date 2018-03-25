@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogueManager : MonoBehaviour {
+public class DialogueManager : MonoBehaviour
+{
     private readonly static string[] dialogue =
     {
         "?",
@@ -12,6 +13,8 @@ public class DialogueManager : MonoBehaviour {
         "???",
         "????",
     };
+
+    private Conversation currentConversation;
 
     private Text dialogueText;
 
@@ -23,6 +26,19 @@ public class DialogueManager : MonoBehaviour {
         dialogueText = GetComponentInChildren<Text>();
 
         EventManager.AddListener(EventType.StartDialogueWith, OnStartDialogueWith);
+        EventManager.AddListener(EventType.DisplayDialogue, OnDisplayDialogue);
+
+    }
+
+    private void OnDisplayDialogue(object conversation)
+    {
+        currentConversation = (Conversation)conversation;
+        EventManager.TriggerEvent(EventType.DisableMovement, null);
+        gameObject.SetActive(true);
+        dialoguePosition = 0;
+        EventManager.AddListener(EventType.PressedInteractKey, AdvanceDialogue);
+        AdvanceDialogue(null);
+
     }
 
     private void Start()
@@ -45,17 +61,18 @@ public class DialogueManager : MonoBehaviour {
 
     private void AdvanceDialogue(object _)
     {
-        if (dialoguePosition < dialogue.Length)
+        if (dialoguePosition < currentConversation.dialogue.Length)
         {
-            dialogueText.text = inDialogueWith + ":\n" + dialogue[dialoguePosition];
+            dialogueText.text = currentConversation.dialogue[dialoguePosition].speaker + ":\n" + currentConversation.dialogue[dialoguePosition].text;
             dialoguePosition++;
         }
         else
         {
             gameObject.SetActive(false);
             EventManager.RemoveListener(EventType.PressedInteractKey, AdvanceDialogue);
-            EventManager.TriggerEvent(EventType.EndDialogueWith, inDialogueWith);
-            inDialogueWith = null;
+            EventManager.TriggerEvent(EventType.EnableMovement, null);
+            EventManager.TriggerEvent(EventType.EndDialogue, inDialogueWith);
+            currentConversation = null;
         }
     }
 }

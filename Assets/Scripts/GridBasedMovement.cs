@@ -21,7 +21,36 @@ public class GridBasedMovement : MonoBehaviour
     private void Awake()
     {
         EventManager.AddListener(EventType.Move, OnMoveCommand);
+        EventManager.AddListener(EventType.AddFollower, OnAddFollower);
+        EventManager.AddListener(EventType.RemoveFollower, OnRemoveFollower);
+        EventManager.AddListener(EventType.StopMoving, OnStopMoving);
+
         previousLocation = transform.localPosition;
+    }
+
+    private void OnStopMoving(object name)
+    {
+        string gameObjectName = (string)name;
+        if (gameObjectName == gameObject.name)
+        {
+            nextCommand = null;
+            nextLocation = null;
+            subpixelDelta = Vector3.zero;
+        }
+    }
+
+    private void OnRemoveFollower(object arg0)
+    {
+        gameObjectToLead = "";
+    }
+
+    private void OnAddFollower(object arg0)
+    {
+        String[] followerNames = (String[])arg0;
+        if (followerNames[0] == gameObject.name)
+        {
+            gameObjectToLead = followerNames[1];
+        }
     }
 
     private void Update()
@@ -62,7 +91,7 @@ public class GridBasedMovement : MonoBehaviour
         nextLocation = null;
         if (nextCommand != null)
         {
-            
+
 
             if (nextCommand.vec.HasValue)
             {
@@ -90,14 +119,14 @@ public class GridBasedMovement : MonoBehaviour
         }
     }
 
-    private void StopAnimation()
+    public void StopAnimation()
     {
         EventManager.TriggerEvent(EventType.StopMoveAnimation, new MoveCommand(gameObject.name, null, MoveCommand.MoveType.Direction));
     }
 
     private void StartAnimation()
     {
-        Vector3 directionToMove = SnapTo((nextLocation.Value - transform.localPosition).normalized, 90);
+        Vector3 directionToMove = SnapTo((nextLocation.Value - transform.localPosition), 90).normalized;
         EventManager.TriggerEvent(EventType.MoveAnimation, new MoveCommand(gameObject.name, directionToMove, MoveCommand.MoveType.Direction));
     }
 
