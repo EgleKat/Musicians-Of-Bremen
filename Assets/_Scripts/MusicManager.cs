@@ -8,7 +8,9 @@ public class MusicManager : MonoBehaviour
 {
     public AudioClip danger;
     public AudioClip background;
-    AudioSource audioSource;
+    public AudioClip hit;
+    AudioSource audioSourceBackground;
+    AudioSource audioSourceEffect;
 
     private void Awake()
     {
@@ -18,33 +20,38 @@ public class MusicManager : MonoBehaviour
     }
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        // audio.Play();
-        //yield return new WaitForSeconds(audio.clip.length);
+        audioSourceBackground = GetComponents<AudioSource>()[0];
+        audioSourceEffect = GetComponents<AudioSource>()[1];
 
-    }
-
-    private void OnPlaySound(object nameAudio)
-    {
-        
     }
 
     private void OnChangeMusic(object nameAudio)
     {
         String audioName = (String)nameAudio;
-        audioSource.Stop();
-       // yield return new WaitForSeconds(1);
+        audioSourceBackground.Stop();
+        // yield return new WaitForSeconds(1);
 
         if (audioName == "danger")
         {
-            audioSource.clip = danger;
+            audioSourceBackground.clip = danger;
         }
         else if (audioName == "background")
         {
-            audioSource.clip = background;
+            audioSourceBackground.clip = background;
         }
 
-        audioSource.Play();
+        if (nameAudio != "stop")
+            audioSourceBackground.Play();
     }
+    private void OnPlaySound(object nameAudio)
+    {
+        String audioName = (String)nameAudio;
 
+        if (audioName == "hit")
+        {
+            audioSourceEffect.clip = hit;
+        }
+
+        audioSourceEffect.Play();
+    }
 }

@@ -39,6 +39,7 @@ public class StoryManager : MonoBehaviour
                 {
                     if ((String)collideName == "Donkey Owner")
                     {
+                        EventManager.TriggerEvent(EventType.PlaySound, "hit");
                         EventManager.RemoveListener(EventType.TriggerCollide, onTriggerCollide);
                         EventManager.TriggerEvent(EventType.RemoveFollower, collideName);
                         EventManager.TriggerEvent(EventType.HideObject, "Donkey Owner");
@@ -54,11 +55,10 @@ public class StoryManager : MonoBehaviour
                             Action fadeOut = delegate ()
                             {
                                 EventManager.TriggerEvent(EventType.FadeOut, 6f);
-                                EventManager.TriggerEvent(EventType.ChangeMusic, "background");
 
                             };
                             StartCoroutine(RunAfterTime(1.5f, fadeOut));
-
+                            EventManager.TriggerEvent(EventType.ChangeMusic, "background");
                         };
                         EventManager.AddListener(EventType.EndFadeIn, onEndFadeIn);
 
