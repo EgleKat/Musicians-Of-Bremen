@@ -40,7 +40,7 @@ public class MusicManager : MonoBehaviour
             audioSourceBackground.clip = background;
         }
 
-        if (nameAudio != "stop")
+        if (audioName != "stop")
             audioSourceBackground.Play();
     }
     private void OnPlaySound(object nameAudio)
