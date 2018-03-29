@@ -52,4 +52,9 @@ public class MoveCommand
         this.vec = vec;
         this.moveType = moveType;
     }
+
+    public override string ToString()
+    {
+        return "{" + gameObjectToMove + "," + vec + "," + moveType + "}";
+    }
 }

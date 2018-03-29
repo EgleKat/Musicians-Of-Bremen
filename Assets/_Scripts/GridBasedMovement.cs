@@ -91,8 +91,6 @@ public class GridBasedMovement : MonoBehaviour
         nextLocation = null;
         if (nextCommand != null)
         {
-
-
             if (nextCommand.vec.HasValue)
             {
                 switch (nextCommand.moveType)
