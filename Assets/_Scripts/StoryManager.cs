@@ -63,23 +63,24 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.FadeOut, 6f);
                 await EventManager.WaitForEvent(EventType.EndFadeOut);
                 EventManager.TriggerEvent(EventType.ChangeMusic, "background");
-
-                EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
             }
             else
             {
                 //start dialog
-                Conversation converse = GetConversation(name);
+                Conversation converse = GetConversation(interactionName);
                 EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+                await EventManager.WaitForEvent(EventType.EndDialogue);
 
             }
         }
-        else if (name == "DonkeyHouse")
+        else if (interactionName == "DonkeyHouse")
         {
             //observe house
-            EventManager.TriggerEvent(EventType.DisplayDialogue, GetConversation(name));
+            EventManager.TriggerEvent(EventType.DisplayDialogue, GetConversation(interactionName));
+            await EventManager.WaitForEvent(EventType.EndDialogue);
         }
 
+        EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
 
     private Conversation GetConversation(string triggerName)
