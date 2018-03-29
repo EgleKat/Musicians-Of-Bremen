@@ -7,18 +7,26 @@ using UnityEngine.Events;
 
 public class StoryManager : MonoBehaviour
 {
-
+    //Donkey owner
     private Conversation donkOwnerConvo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "Hmm.. What is owner doing? "), new Monologue("Owner", "????"), new Monologue("Donkey", "Strange... He chopped some wood yesterday.. What is he doing with the axe?") });
     private Conversation donkOwnerConvoTwo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "My old home..."), new Monologue("Donkey", "I'll go back to it when I'm ready to die.") });
     private Conversation observeDonkeyHouseConvo = new Conversation("DonkeyHouse", new Monologue[] { new Monologue("Donkey", "My owner's home.. Wonder what he's doing now..") });
+
+    //Witch
     private Conversation talkToWitchFirstConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Who.. Who are you?"), new Monologue("Witch", "???"), new Monologue("Donkey", "You saved me.. Thank you!"), new Monologue("Donkey", "I don't understand what you're saying. I can't understand human."), new Monologue("Witch", "???"), new Monologue("Donkey", "I guess I'll head off.") });
     private Conversation talkToWitchConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "???") });
     private Conversation talkToWitchConvoWithDog = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "I can sense your future, little one"), new Monologue("Witch", "If you want your path to be easier, find the life's orange.") });
 
+    //Cat
+    private Conversation firstCatConvo = new Conversation("Cat", new Monologue[] { new Monologue("Cat", "Hello, Ass, what happened to you?"), new Monologue("Donkey", "My owner went crazy, tried to kill me! You should watch out,  your masters might do the same."), new Monologue("Donkey", "Come with me if you want to  have a chance of life."), new Monologue("Cat", "Pftt my owners would never  do such a thing."), new Monologue("Cat", "Unlike you, I am a superior being and they worship me."), new Monologue("Donkey", "Hmm, If only I could make you believe.") });
+    private Conversation catConvo = new Conversation("Cat", new Monologue[] { new Monologue("Cat", "Get lost.."), new Monologue("Donkey", "If only I could make you believe.") });
+    private Conversation catJoinConvo = new Conversation("Cat", new Monologue[] { });
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
     private bool haveDog = false;
+    private bool translatedCatsOwners = false;
+    private bool firstTimeCat = true;
 
 
     void Awake()
@@ -100,6 +108,15 @@ public class StoryManager : MonoBehaviour
 
             firstTimeWitch = false;
         }
+        else if (interactionName == "Cat")
+        {
+            //start dialog
+            Conversation converse = GetConversation(interactionName);
+            EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+            await EventManager.WaitForEvent(EventType.EndDialogue);
+
+            firstTimeCat = false;
+        }
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
@@ -123,6 +140,15 @@ public class StoryManager : MonoBehaviour
             else if (haveDog)
                 return talkToWitchConvoWithDog;
             else return talkToWitchConvo;
+        }
+        else if (triggerName == "Cat")
+        {
+
+            if (firstTimeCat)
+                return firstCatConvo;
+            else if (translatedCatsOwners)
+                return catJoinConvo;
+            else return catConvo;
         }
         else
         {
