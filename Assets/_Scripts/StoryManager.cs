@@ -8,7 +8,8 @@ using UnityEngine.Events;
 public class StoryManager : MonoBehaviour
 {
 
-    private Conversation donkOwnerConvo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "Chopping some wood again, I see."), new Monologue("Owner", "????") });
+    private Conversation donkOwnerConvo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "Hmm.. What is owner doing? "), new Monologue("Owner", "????"), new Monologue("Donkey", "Strange... He chopped some wood yesterday.. What is he doing with the axe?") });
+    private Conversation donkOwnerConvoTwo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "My old home..."), new Monologue("Donkey", "I'll go back to it when I'm ready to ready to die.") });
     private bool firstTimeOwnerHouse = true;
 
     void Awake()
@@ -24,7 +25,6 @@ public class StoryManager : MonoBehaviour
         {
             if (firstTimeOwnerHouse)
             {
-                firstTimeOwnerHouse = false;
                 //show owner
                 EventManager.TriggerEvent(EventType.ShowObject, "Donkey Owner");
                 //move owner down
@@ -33,6 +33,9 @@ public class StoryManager : MonoBehaviour
                 Conversation converse = GetConversation(name);
                 EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
                 await EventManager.WaitForEvent(EventType.EndDialogue);
+
+                firstTimeOwnerHouse = false;
+
                 EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Donkey Owner" });
                 EventManager.TriggerEvent(EventType.ChangeMusic, "danger");
                 string colliderName;
@@ -50,20 +53,32 @@ public class StoryManager : MonoBehaviour
                 await EventManager.WaitForEvent(EventType.EndFadeIn);
                 EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(1190, 710, 0), MoveCommand.MoveType.Location));
                 await Task.Delay(TimeSpan.FromSeconds(1.5));
+                //make beginner marker a collider
+                GameObject donkeyOuter = GameObject.Find("DonkeyHouseOuter");
+                donkeyOuter.GetComponent<BoxCollider2D>().isTrigger = false;
+
                 EventManager.TriggerEvent(EventType.FadeOut, 6f);
                 await EventManager.WaitForEvent(EventType.EndFadeOut);
                 EventManager.TriggerEvent(EventType.ChangeMusic, "background");
+
+
+            }
+            else
+            {
+                //start dialog
+                Conversation converse = GetConversation(name);
+                EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+
             }
         }
-        else
-        {
 
-        }
     }
 
     private Conversation GetConversation(string triggerName)
     {
-        return donkOwnerConvo;
+        if (firstTimeOwnerHouse)
+            return donkOwnerConvo;
+        else return donkOwnerConvoTwo;
     }
 
     IEnumerator RunAfterTime(float time, Action action)
