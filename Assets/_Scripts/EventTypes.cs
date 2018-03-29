@@ -11,8 +11,6 @@ public enum EventType
     Move,
     MoveAnimation,
     StopMoveAnimation,
-    TriggerCollide,
-    ExitTriggerCollide,
     ShowInteractHint,
     HideInteractHint,
     ShowObject,
@@ -30,6 +28,10 @@ public enum EventType
     EndFadeIn,
     ChangeMusic,
     PlaySound,
+    StartInteraction,
+    EndInteraction,
+    TriggerCollide,
+    EndTriggerCollide,
 }
 
 [System.Serializable]
@@ -37,7 +39,7 @@ public class UnityEventWithObject : UnityEvent<object> { }
 
 public class MoveCommand
 {
-    public enum MoveType {Direction, Location}
+    public enum MoveType { Direction, Location }
 
     public string gameObjectToMove;
     public Vector3? vec;

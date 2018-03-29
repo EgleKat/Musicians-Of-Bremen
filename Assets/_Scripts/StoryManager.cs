@@ -12,21 +12,21 @@ public class StoryManager : MonoBehaviour
 
     void Awake()
     {
-        EventManager.AddListener(EventType.TriggerCollide, OnTriggerCollide);
+        EventManager.AddListener(EventType.StartInteraction, OnStartInteraction);
     }
 
-    private async void OnTriggerCollide(object objName)
+    private async void OnStartInteraction(object objName)
     {
-        string name = (String)objName;
+        string interactionName = (String)objName;
 
-        if (name == "DonkeyHouseOuter")
+        if (interactionName == "DonkeyHouseOuter")
         {
             //show owner
             EventManager.TriggerEvent(EventType.ShowObject, "Donkey Owner");
             //move owner down
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Donkey Owner", new Vector3(-200, -100, 0), MoveCommand.MoveType.Location));
             //start dialog
-            Conversation converse = GetConversation(name);
+            Conversation converse = GetConversation(interactionName);
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
             await EventManager.WaitForEvent(EventType.EndDialogue);
             EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Donkey Owner" });
@@ -49,18 +49,14 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.FadeOut, 6f);
             await EventManager.WaitForEvent(EventType.EndFadeOut);
             EventManager.TriggerEvent(EventType.ChangeMusic, "background");
+
+            EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
         }
     }
 
     private Conversation GetConversation(string triggerName)
     {
         return donkOwnerConvo;
-    }
-
-    IEnumerator RunAfterTime(float time, Action action)
-    {
-        yield return new WaitForSeconds(time);
-        action();
     }
 }
 
