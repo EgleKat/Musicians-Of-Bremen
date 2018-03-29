@@ -10,6 +10,7 @@ public class StoryManager : MonoBehaviour
 
     private Conversation donkOwnerConvo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "Hmm.. What is owner doing? "), new Monologue("Owner", "????"), new Monologue("Donkey", "Strange... He chopped some wood yesterday.. What is he doing with the axe?") });
     private Conversation donkOwnerConvoTwo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "My old home..."), new Monologue("Donkey", "I'll go back to it when I'm ready to ready to die.") });
+    private Conversation observeDonkeyHouseConvo = new Conversation("DonkeyHouse", new Monologue[] { new Monologue("Donkey", "My owner's home.. Wonder what he's doing now..") });
     private bool firstTimeOwnerHouse = true;
 
     void Awake()
@@ -71,14 +72,31 @@ public class StoryManager : MonoBehaviour
 
             }
         }
+        else if (name == "DonkeyHouse")
+        {
+            //observe house
+            EventManager.TriggerEvent(EventType.DisplayDialogue, GetConversation(name));
+        }
 
     }
 
     private Conversation GetConversation(string triggerName)
     {
-        if (firstTimeOwnerHouse)
-            return donkOwnerConvo;
-        else return donkOwnerConvoTwo;
+        if (triggerName == "DonkeyHouseOuter")
+        {
+            if (firstTimeOwnerHouse)
+                return donkOwnerConvo;
+            else return donkOwnerConvoTwo;
+        }
+        else if (triggerName == "DonkeyHouse")
+        {
+            return observeDonkeyHouseConvo;
+        }
+        else
+        {
+            Debug.LogError("Can't find dialogue.");
+            return null;
+        }
     }
 
     IEnumerator RunAfterTime(float time, Action action)

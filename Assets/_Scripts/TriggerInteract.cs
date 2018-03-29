@@ -19,6 +19,7 @@ public class TriggerInteract : MonoBehaviour {
     void OnTriggerExit2D(Collider2D other)
     {
         EventManager.TriggerEvent(EventType.HideInteractHint, gameObject.name);
+        EventManager.TriggerEvent(EventType.TriggerCollide, gameObject.name);
         inTrigger = false;
     }
 
