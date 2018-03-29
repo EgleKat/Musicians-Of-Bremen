@@ -44,7 +44,7 @@ public class StoryManager : MonoBehaviour
             //white screen
             EventManager.TriggerEvent(EventType.FadeIn, 0.1f);
             await EventManager.WaitForEvent(EventType.EndFadeIn);
-            EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(930, 1000, 0), MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(1190, 710, 0), MoveCommand.MoveType.Location));
             await Task.Delay(TimeSpan.FromSeconds(1.5));
             EventManager.TriggerEvent(EventType.FadeOut, 6f);
             await EventManager.WaitForEvent(EventType.EndFadeOut);
