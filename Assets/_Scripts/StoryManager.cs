@@ -9,9 +9,17 @@ public class StoryManager : MonoBehaviour
 {
 
     private Conversation donkOwnerConvo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "Hmm.. What is owner doing? "), new Monologue("Owner", "????"), new Monologue("Donkey", "Strange... He chopped some wood yesterday.. What is he doing with the axe?") });
-    private Conversation donkOwnerConvoTwo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "My old home..."), new Monologue("Donkey", "I'll go back to it when I'm ready to ready to die.") });
+    private Conversation donkOwnerConvoTwo = new Conversation("DonkeyHouseOuter", new Monologue[] { new Monologue("Donkey", "My old home..."), new Monologue("Donkey", "I'll go back to it when I'm ready to die.") });
     private Conversation observeDonkeyHouseConvo = new Conversation("DonkeyHouse", new Monologue[] { new Monologue("Donkey", "My owner's home.. Wonder what he's doing now..") });
+    private Conversation talkToWitchFirstConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Who.. Who are you?"), new Monologue("Witch", "???"), new Monologue("Donkey", "You saved me.. Thank you!"), new Monologue("Donkey", "I don't understand what you're saying. I can't understand human."), new Monologue("Witch", "???"), new Monologue("Donkey", "I guess I'll head off") });
+    private Conversation talkToWitchConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "???") });
+    private Conversation talkToWitchConvoWithDog = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "I can sense your future, little one"), new Monologue("Witch", "If you want your path to be easier, find the life's orange.") });
+
+
     private bool firstTimeOwnerHouse = true;
+    private bool firstTimeWitch = true;
+    private bool haveDog = false;
+
 
     void Awake()
     {
@@ -61,8 +69,12 @@ public class StoryManager : MonoBehaviour
                 donkeyOuter.GetComponent<BoxCollider2D>().isTrigger = false;
 
                 EventManager.TriggerEvent(EventType.FadeOut, 6f);
+                await Task.Delay(TimeSpan.FromSeconds(2f));
+                EventManager.TriggerEvent(EventType.StartInteraction, "Witch");
                 await EventManager.WaitForEvent(EventType.EndFadeOut);
                 EventManager.TriggerEvent(EventType.ChangeMusic, "background");
+                await EventManager.WaitForEvent(EventType.EndDialogue);
+
             }
             else
             {
@@ -79,6 +91,15 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.DisplayDialogue, GetConversation(interactionName));
             await EventManager.WaitForEvent(EventType.EndDialogue);
         }
+        else if (interactionName == "Witch")
+        {
+            //start dialog
+            Conversation converse = GetConversation(interactionName);
+            EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+            await EventManager.WaitForEvent(EventType.EndDialogue);
+
+            firstTimeWitch = false;
+        }
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
@@ -94,6 +115,14 @@ public class StoryManager : MonoBehaviour
         else if (triggerName == "DonkeyHouse")
         {
             return observeDonkeyHouseConvo;
+        }
+        else if (triggerName == "Witch")
+        {
+            if (firstTimeWitch)
+                return talkToWitchFirstConvo;
+            else if (haveDog)
+                return talkToWitchConvoWithDog;
+            else return talkToWitchConvo;
         }
         else
         {
