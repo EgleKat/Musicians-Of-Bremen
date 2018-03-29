@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class FadeInOut : MonoBehaviour
 {
-
-
-    float timeToFade = 0;
     SpriteRenderer spriteRenderer;
 
     private void Awake()
@@ -20,7 +18,7 @@ public class FadeInOut : MonoBehaviour
 
     private void OnFadeOut(object time)
     {
-        timeToFade = (float)(time);
+        float timeToFade = (float)(time);
 
         gameObject.SetActive(true);
 
@@ -28,12 +26,12 @@ public class FadeInOut : MonoBehaviour
         color.a = 1;
         spriteRenderer.color = color;
 
-        Invoke("FadeOut", 0f);
+        FadeOut(timeToFade);
     }
 
     private void OnFadeIn(object time)
     {
-        timeToFade = (float)(time);
+        float timeToFade = (float)(time);
 
         gameObject.SetActive(true);
 
@@ -41,38 +39,32 @@ public class FadeInOut : MonoBehaviour
         color.a = 0;
         spriteRenderer.color = color;
 
-        Invoke("FadeIn", 0f);
+        FadeIn(timeToFade);
     }
 
-    private void FadeIn()
+    private async void FadeIn(float timeToFade)
     {
-        if (spriteRenderer.color.a < 1)
+        while (spriteRenderer.color.a < 1)
         {
             Color color = spriteRenderer.color;
             color.a += 0.01f / timeToFade;
             spriteRenderer.color = color;
-            Invoke("FadeIn", timeToFade / (100f * timeToFade));
+            await Task.Delay(TimeSpan.FromSeconds(0.01));
         }
-        else
-        {
-            EventManager.TriggerEvent(EventType.EndFadeIn, null);
-        }
+        EventManager.TriggerEvent(EventType.EndFadeIn, null);
     }
 
-    private void FadeOut()
+    private async void FadeOut(float timeToFade)
     {
-        if (spriteRenderer.color.a > 0)
+        while (spriteRenderer.color.a > 0)
         {
             Color color = spriteRenderer.color;
             color.a -= 0.01f / timeToFade;
             spriteRenderer.color = color;
-            Invoke("FadeOut", timeToFade / (100f * timeToFade));
+            await Task.Delay(TimeSpan.FromSeconds(0.01));
         }
-        else
-        {
-            EventManager.TriggerEvent(EventType.EndFadeOut, null);
-            gameObject.SetActive(false);
-        }
+        EventManager.TriggerEvent(EventType.EndFadeOut, null);
+        gameObject.SetActive(false);
     }
 }
 

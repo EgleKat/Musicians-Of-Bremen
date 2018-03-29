@@ -2,10 +2,12 @@
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class EventManager : MonoBehaviour
 {
     private Dictionary<EventType, UnityEventWithObject> eventDictionary;
+    private Dictionary<EventType, TaskCompletionSource<object>> eventCompleteAwaiters;
 
     private static EventManager eventManager;
 
@@ -36,6 +38,7 @@ public class EventManager : MonoBehaviour
         if (eventDictionary == null)
         {
             eventDictionary = new Dictionary<EventType, UnityEventWithObject>();
+            eventCompleteAwaiters = new Dictionary<EventType, TaskCompletionSource<object>>();
         }
     }
 
@@ -71,5 +74,23 @@ public class EventManager : MonoBehaviour
         {
             thisEvent.Invoke(parameter);
         }
+        TaskCompletionSource<object> taskCompletion;
+        if (Instance.eventCompleteAwaiters.TryGetValue(eventName, out taskCompletion))
+        {
+            Instance.eventCompleteAwaiters.Remove(eventName);
+            taskCompletion.SetResult(parameter);
+        }
+    }
+
+    public static async Task<object> WaitForEvent(EventType eventName)
+    {
+        TaskCompletionSource<object> taskCompletion;
+        if (!Instance.eventCompleteAwaiters.TryGetValue(eventName, out taskCompletion))
+        {
+            taskCompletion = new TaskCompletionSource<object>();
+            Instance.eventCompleteAwaiters[eventName] = taskCompletion;
+        }
+
+        return await taskCompletion.Task;
     }
 }

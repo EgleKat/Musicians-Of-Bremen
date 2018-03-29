@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,11 +12,10 @@ public class StoryManager : MonoBehaviour
 
     void Awake()
     {
-
         EventManager.AddListener(EventType.TriggerCollide, OnTriggerCollide);
     }
 
-    private void OnTriggerCollide(object objName)
+    private async void OnTriggerCollide(object objName)
     {
         string name = (String)objName;
 
@@ -28,47 +28,30 @@ public class StoryManager : MonoBehaviour
             //start dialog
             Conversation converse = GetConversation(name);
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
-            UnityAction<object> onEndDialogue = null;
-            onEndDialogue = delegate (object _)
+            await EventManager.WaitForEvent(EventType.EndDialogue);
+            EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Donkey Owner" });
+            EventManager.TriggerEvent(EventType.ChangeMusic, "danger");
+            string colliderName;
+            do
             {
-                EventManager.RemoveListener(EventType.EndDialogue, onEndDialogue);
-                EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Donkey Owner" });
-                EventManager.TriggerEvent(EventType.ChangeMusic, "danger");
-                UnityAction<object> onTriggerCollide = null;
-                onTriggerCollide = delegate (object collideName)
-                {
-                    if ((String)collideName == "Donkey Owner")
-                    {
-                        EventManager.TriggerEvent(EventType.PlaySound, "hit");
-                        EventManager.RemoveListener(EventType.TriggerCollide, onTriggerCollide);
-                        EventManager.TriggerEvent(EventType.RemoveFollower, collideName);
-                        EventManager.TriggerEvent(EventType.HideObject, "Donkey Owner");
-                        EventManager.TriggerEvent(EventType.StopMoving, "Ass");
-                        EventManager.TriggerEvent(EventType.ChangeMusic, "stop");
-                        //white screen
-                        EventManager.TriggerEvent(EventType.FadeIn, 0.1f);
-                        UnityAction<object> onEndFadeIn = null;
-                        onEndFadeIn = delegate (object __)
-                        {
-                            EventManager.RemoveListener(EventType.EndFadeIn, onEndFadeIn);
-                            EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(930, 1000, 0), MoveCommand.MoveType.Location));
-                            Action fadeOut = delegate ()
-                            {
-                                EventManager.TriggerEvent(EventType.FadeOut, 6f);
-
-                            };
-                            StartCoroutine(RunAfterTime(1.5f, fadeOut));
-                            EventManager.TriggerEvent(EventType.ChangeMusic, "background");
-                        };
-                        EventManager.AddListener(EventType.EndFadeIn, onEndFadeIn);
-
-                    }
-                };
-                EventManager.AddListener(EventType.TriggerCollide, onTriggerCollide);
-            };
-            EventManager.AddListener(EventType.EndDialogue, onEndDialogue);
+                colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
+            } while (colliderName != "Donkey Owner");
+            EventManager.TriggerEvent(EventType.PlaySound, "hit");
+            EventManager.TriggerEvent(EventType.RemoveFollower, "Donkey Owner");
+            EventManager.TriggerEvent(EventType.HideObject, "Donkey Owner");
+            EventManager.TriggerEvent(EventType.StopMoving, "Ass");
+            EventManager.TriggerEvent(EventType.ChangeMusic, "stop");
+            //white screen
+            EventManager.TriggerEvent(EventType.FadeIn, 0.1f);
+            await EventManager.WaitForEvent(EventType.EndFadeIn);
+            EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(930, 1000, 0), MoveCommand.MoveType.Location));
+            await Task.Delay(TimeSpan.FromSeconds(1.5));
+            EventManager.TriggerEvent(EventType.FadeOut, 6f);
+            await EventManager.WaitForEvent(EventType.EndFadeOut);
+            EventManager.TriggerEvent(EventType.ChangeMusic, "background");
         }
     }
+
     private Conversation GetConversation(string triggerName)
     {
         return donkOwnerConvo;
