@@ -39,6 +39,8 @@ public class StoryManager : MonoBehaviour
     private bool firstTimeCat = true;
     private bool firstTimeMaze = true;
 
+    private string endOfFollowerQueue = "Ass";
+
 
     void Awake()
     {
@@ -128,7 +130,8 @@ public class StoryManager : MonoBehaviour
 
             if (!firstTimeCat && translatedCatsOwners)
             {
-                EventManager.TriggerEvent(EventType.AddFollower, new String[] { "Ass", "Cat" });
+                EventManager.TriggerEvent(EventType.AddFollower, new String[] { endOfFollowerQueue, "Cat" });
+                endOfFollowerQueue = "Cat";
                 GameObject.Find("Cat").GetComponent<CircleCollider2D>().enabled = false;
             }
 
@@ -155,7 +158,8 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
             await EventManager.WaitForEvent(EventType.EndDialogue);
 
-            EventManager.TriggerEvent(EventType.AddFollower, new String[] { "Ass", "Dog" });
+            EventManager.TriggerEvent(EventType.AddFollower, new String[] { endOfFollowerQueue, "Dog" });
+            endOfFollowerQueue = "Dog";
             GameObject.Find("Dog").GetComponent<CircleCollider2D>().enabled = false;
             haveDog = true;
 
