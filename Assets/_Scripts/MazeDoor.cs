@@ -7,7 +7,6 @@ public class MazeDoor : MonoBehaviour
 {
     public string buttonName;
 
-    private bool isDoorOpen = false;
 
     private void Awake()
     {
@@ -20,13 +19,8 @@ public class MazeDoor : MonoBehaviour
 
         if (interactionName == buttonName)
         {
-            ToggleState();
+            gameObject.SetActive(false);
         }
     }
 
-    private void ToggleState()
-    {
-        isDoorOpen = !isDoorOpen;
-        gameObject.SetActive(isDoorOpen);
-    }
 }
