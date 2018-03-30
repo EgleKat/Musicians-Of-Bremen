@@ -6,11 +6,13 @@ using UnityEngine;
 public class MazeDoor : MonoBehaviour
 {
     public string buttonName;
+    public bool startClosed = true;
 
 
     private void Awake()
     {
         EventManager.AddListener(EventType.StartInteraction, OnStartInteraction);
+        gameObject.SetActive(startClosed);
     }
 
     private void OnStartInteraction(object name)
@@ -19,7 +21,8 @@ public class MazeDoor : MonoBehaviour
 
         if (interactionName == buttonName)
         {
-            gameObject.SetActive(false);
+            gameObject.SetActive(!startClosed);
+            EventManager.TriggerEvent(EventType.PlaySound, "ting");
         }
     }
 

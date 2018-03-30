@@ -15,12 +15,18 @@ public class ShowHideObject : MonoBehaviour {
 
     private void OnHideObject(object arg0)
     {
-        gameObject.SetActive(false);
+        if ((string)arg0 == gameObject.name)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnShowObject(object arg0)
     {
-        gameObject.SetActive(true);
+        if ((string)arg0 == gameObject.name)
+        {
+            gameObject.SetActive(true);
+        }
     }
 
    

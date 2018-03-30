@@ -22,12 +22,15 @@ public class StoryManager : MonoBehaviour
     private Conversation catConvo = new Conversation("Cat", new Monologue[] { new Monologue("Cat", "Get lost.."), new Monologue("Donkey", "If only I could make you believe.") });
     private Conversation catJoinConvo = new Conversation("Cat", new Monologue[] { new Monologue("Donkey", "Hey, I know you don't  think  your owners  want any harm to you, but  hear us out. "), new Monologue("Cat", "Fine, go on with it."), new Monologue("Dog", "Your owners... they said they don't want you anymore, you're too old for them."), new Monologue("Cat", "w...w...what? This is absurd!"), new Monologue("Dog", "It's true, I can understand human language."), new Monologue("Cat", "Oh no...  And all this time I thought they  adored me... Is there still space in your travel group Donkey?"), new Monologue("Donkey", "Of course, let's go.") });
 
+    //Dog
+    private Conversation dogMazeEnterConvo = new Conversation("MazeStart", new Monologue[] { new Monologue("???", "Heeelp!"), new Monologue("Donkey", "Who is it?"), new Monologue("???", "It's me - Dog! My owner locked me in here and left me to die. Please, help me get out of here."), new Monologue("Donkey", "Why is it so dark in here?"), new Monologue("Dog", "All of the plants are obstructing the light. It's a real maze in here!") });
+
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
     private bool haveDog = false;
     private bool translatedCatsOwners = false;
     private bool firstTimeCat = true;
-
+    private bool firstTimeMaze = true;
 
     void Awake()
     {
@@ -123,6 +126,21 @@ public class StoryManager : MonoBehaviour
 
             firstTimeCat = false;
         }
+        else if (interactionName == "MazeStart")
+        {
+            EventManager.TriggerEvent(EventType.ShowObject, "Darkness");
+            if (firstTimeMaze)
+            {
+                Conversation converse = GetConversation(interactionName);
+                EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+                await EventManager.WaitForEvent(EventType.EndDialogue);
+                firstTimeMaze = false;
+            }
+        }
+        else if (interactionName == "MazeEnd" || interactionName == "MazeEndEarly")
+        {
+            EventManager.TriggerEvent(EventType.HideObject, "Darkness");
+        }
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
@@ -155,6 +173,10 @@ public class StoryManager : MonoBehaviour
             else if (translatedCatsOwners)
                 return catJoinConvo;
             else return catConvo;
+        }
+        else if (triggerName == "MazeStart" && firstTimeMaze)
+        {
+            return dogMazeEnterConvo;
         }
         else
         {

@@ -6,11 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class MusicManager : MonoBehaviour
 {
+    AudioSource audioSourceBackground;
+    AudioSource audioSourceEffect;
     public AudioClip danger;
     public AudioClip background;
     public AudioClip hit;
-    AudioSource audioSourceBackground;
-    AudioSource audioSourceEffect;
+    public AudioClip ting;
+
+
 
     private void Awake()
     {
@@ -50,6 +53,10 @@ public class MusicManager : MonoBehaviour
         if (audioName == "hit")
         {
             audioSourceEffect.clip = hit;
+        }
+        else if (audioName == "ting")
+        {
+            audioSourceEffect.clip = ting;
         }
 
         audioSourceEffect.Play();
