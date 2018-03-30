@@ -22,8 +22,15 @@ public class StoryManager : MonoBehaviour
     private Conversation catConvo = new Conversation("Cat", new Monologue[] { new Monologue("Cat", "Get lost.."), new Monologue("Donkey", "If only I could make you believe.") });
     private Conversation catJoinConvo = new Conversation("Cat", new Monologue[] { new Monologue("Donkey", "Hey, I know you don't  think  your owners  want any harm to you, but  hear us out. "), new Monologue("Cat", "Fine, go on with it."), new Monologue("Dog", "Your owners... they said they don't want you anymore, you're too old for them."), new Monologue("Cat", "w...w...what? This is absurd!"), new Monologue("Dog", "It's true, I can understand human language."), new Monologue("Cat", "Oh no...  And all this time I thought they  adored me... Is there still space in your travel group Donkey?"), new Monologue("Donkey", "Of course, let's go.") });
 
+    //Cat house
+    private Conversation catWindowConvo = new Conversation("CatWindow", new Monologue[] { new Monologue("Donkey", "No light in the window.") });
+    private Conversation catWindowWithDogLightConvo = new Conversation("CatWindowLight", new Monologue[] { new Monologue("Donkey", "Cat's owners seem to be home."), new Monologue("???", "...The cat's old, he doesn't catch mice anymore."), new Monologue("???", "Let's get a new one, the old one is no use to us now.") });
+    private Conversation catWindowLightConvo = new Conversation("CatWindowLight", new Monologue[] { new Monologue("Donkey", "Cat's owners seem to be home."), new Monologue("???", "????") });
+    private Conversation catDoorConvo = new Conversation("CatDoor", new Monologue[] { new Monologue("Donkey", "Cat's house.") });
+
     //Dog
     private Conversation dogMazeEnterConvo = new Conversation("MazeStart", new Monologue[] { new Monologue("???", "Heeelp!"), new Monologue("Donkey", "Who is it?"), new Monologue("???", "It's me - Dog! My owner locked me in here and left me to die. Please, help me get out of here."), new Monologue("Donkey", "Why is it so dark in here?"), new Monologue("Dog", "All of the plants are obstructing the light. It's a real maze in here!") });
+    private Conversation firstDogConvo = new Conversation("Dog", new Monologue[] { new Monologue("Dog", "Oh thank you!"), new Monologue("Donkey", "Do you want to come with me?"), new Monologue("Dog", "That would be great! Over the years, I've managed to understand some human language. Too bad I can't speak it though..."), new Monologue("Donkey", "Look, I think the sun is right above, it's getting brighter!") });
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
@@ -31,6 +38,7 @@ public class StoryManager : MonoBehaviour
     private bool translatedCatsOwners = false;
     private bool firstTimeCat = true;
     private bool firstTimeMaze = true;
+
 
     void Awake()
     {
@@ -141,7 +149,33 @@ public class StoryManager : MonoBehaviour
         {
             EventManager.TriggerEvent(EventType.HideObject, "Darkness");
         }
+        else if (interactionName == "Dog")
+        {
+            Conversation converse = GetConversation(interactionName);
+            EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+            await EventManager.WaitForEvent(EventType.EndDialogue);
 
+            EventManager.TriggerEvent(EventType.AddFollower, new String[] { "Ass", "Dog" });
+            GameObject.Find("Dog").GetComponent<CircleCollider2D>().enabled = false;
+            haveDog = true;
+
+        }
+        else if (interactionName == "CatDoor" || interactionName == "CatWindow")
+        {
+            Conversation converse = GetConversation(interactionName);
+            EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+            await EventManager.WaitForEvent(EventType.EndDialogue);
+        }
+        else if (interactionName == "CatWindowLight")
+        {
+            if (haveDog)
+            {
+                translatedCatsOwners = true;
+            }
+            Conversation converse = GetConversation(interactionName);
+            EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+            await EventManager.WaitForEvent(EventType.EndDialogue);
+        }
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
 
@@ -178,6 +212,20 @@ public class StoryManager : MonoBehaviour
         {
             return dogMazeEnterConvo;
         }
+        else if (triggerName == "Dog")
+        {
+            return firstDogConvo;
+        }
+        else if (triggerName == "CatWindow") { return catWindowConvo; }
+        else if (triggerName == "CatWindowLight")
+        {
+            if (haveDog) return catWindowWithDogLightConvo;
+            else return catWindowLightConvo;
+        }
+        else if (triggerName == "CatDoor") { return catDoorConvo; }
+
+
+
         else
         {
             Debug.LogError("Can't find dialogue.");
