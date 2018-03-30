@@ -20,7 +20,7 @@ public class StoryManager : MonoBehaviour
     //Cat
     private Conversation firstCatConvo = new Conversation("Cat", new Monologue[] { new Monologue("Cat", "Hello, Ass, what happened to you?"), new Monologue("Donkey", "My owner went crazy, tried to kill me! You should watch out,  your masters might do the same."), new Monologue("Donkey", "Come with me if you want to  have a chance of life."), new Monologue("Cat", "Pftt my owners would never  do such a thing."), new Monologue("Cat", "Unlike you, I am a superior being and they worship me."), new Monologue("Donkey", "Hmm, If only I could make you believe.") });
     private Conversation catConvo = new Conversation("Cat", new Monologue[] { new Monologue("Cat", "Get lost.."), new Monologue("Donkey", "If only I could make you believe.") });
-    private Conversation catJoinConvo = new Conversation("Cat", new Monologue[] { });
+    private Conversation catJoinConvo = new Conversation("Cat", new Monologue[] { new Monologue("Donkey", "Hey, I know you don't  think  your owners  want any harm to you, but  hear us out. "), new Monologue("Cat", "Fine, go on with it."), new Monologue("Dog", "Your owners... they said they don't want you anymore, you're too old for them."), new Monologue("Cat", "w...w...what? This is absurd!"), new Monologue("Dog", "It's true, I can understand human language."), new Monologue("Cat", "Oh no...  And all this time I thought they  adored me... Is there still space in your travel group Donkey?"), new Monologue("Donkey", "Of course, let's go.") });
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
@@ -114,6 +114,12 @@ public class StoryManager : MonoBehaviour
             Conversation converse = GetConversation(interactionName);
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
             await EventManager.WaitForEvent(EventType.EndDialogue);
+
+            if (!firstTimeCat && translatedCatsOwners)
+            {
+                EventManager.TriggerEvent(EventType.AddFollower, new String[] { "Ass", "Cat" });
+                GameObject.Find("Cat").GetComponent<CircleCollider2D>().enabled = false;
+            }
 
             firstTimeCat = false;
         }
