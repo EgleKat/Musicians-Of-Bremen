@@ -41,6 +41,8 @@ public class StoryManager : MonoBehaviour
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
     private bool haveDog = false;
+    private bool haveCock = false;
+    private bool haveCat = false;
     private bool translatedCatsOwners = false;
     private bool firstTimeCat = true;
     private bool firstTimeMaze = true;
@@ -170,7 +172,7 @@ public class StoryManager : MonoBehaviour
             haveDog = true;
 
         }
-        else if (interactionName == "CatDoor" || interactionName == "CatWindow" || interactionName == "DogHouse" || interactionName == "Rooster")
+        else if (interactionName == "CatDoor" || interactionName == "CatWindow" || interactionName == "DogHouse")
         {
             Conversation converse = GetConversation(interactionName);
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
@@ -185,6 +187,23 @@ public class StoryManager : MonoBehaviour
             Conversation converse = GetConversation(interactionName);
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
             await EventManager.WaitForEvent(EventType.EndDialogue);
+        }
+        else if (interactionName == "Rooster")
+        {
+            Conversation converse = GetConversation(interactionName);
+            EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+            await EventManager.WaitForEvent(EventType.EndDialogue);
+
+            if (cockSaved)
+            {
+                haveCock = true;
+
+                EventManager.TriggerEvent(EventType.AddFollower, new String[] { endOfFollowerQueue, "Rooster" });
+                endOfFollowerQueue = "Rooster";
+                GameObject.Find("Rooster").GetComponent<CircleCollider2D>().enabled = false;
+            }
+
+
         }
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
