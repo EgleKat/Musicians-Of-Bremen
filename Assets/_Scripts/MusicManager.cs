@@ -12,7 +12,11 @@ public class MusicManager : MonoBehaviour
     public AudioClip background;
     public AudioClip hit;
     public AudioClip ting;
-
+    public AudioClip br_1;
+    public AudioClip br_2;
+    public AudioClip br_3;
+    public AudioClip correctSimon;
+    public AudioClip incorrectSimon;
 
 
     private void Awake()
@@ -57,6 +61,32 @@ public class MusicManager : MonoBehaviour
         else if (audioName == "ting")
         {
             audioSourceEffect.clip = ting;
+        }
+        else if (audioName == "BR_1")
+        {
+            audioSourceEffect.clip = br_1;
+
+        }
+        else if (audioName == "BR_2")
+        {
+            audioSourceEffect.clip = br_2;
+
+        }
+        else if (audioName == "BR_3")
+        {
+            audioSourceEffect.clip = br_3;
+
+        }
+        else if (audioName == "correctSimon")
+        {
+
+            audioSourceEffect.clip = correctSimon;
+
+        }
+        else if (audioName == "incorrectSimon")
+        {
+            audioSourceEffect.clip = incorrectSimon;
+
         }
 
         audioSourceEffect.Play();

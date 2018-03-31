@@ -27,7 +27,8 @@ public class SimonSaysButton : MonoBehaviour
         {
             spriteRenderer.color = alertColor;
             //play a sound
-            await Task.Delay(TimeSpan.FromSeconds(0.3));
+
+            await Task.Delay(TimeSpan.FromSeconds(0.2));
             spriteRenderer.color = originalColor;
             EventManager.TriggerEvent(EventType.EndAlertSimonSays, buttonName);
         }
@@ -52,6 +53,7 @@ public class SimonSaysButton : MonoBehaviour
     {
         if (triggerable)
         {
+            EventManager.TriggerEvent(EventType.PlaySound, gameObject.name);
             EventManager.TriggerEvent(EventType.StartAlertSimonSays, gameObject.name);
         }
     }
