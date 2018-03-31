@@ -32,6 +32,11 @@ public enum EventType
     EndInteraction,
     TriggerCollide,
     EndTriggerCollide,
+    StartSimonSaysRound,
+    StartSimonSaysRecall,
+    StartAlertSimonSays,
+    EndAlertSimonSays,
+    EndSimonSays,
 }
 
 [System.Serializable]

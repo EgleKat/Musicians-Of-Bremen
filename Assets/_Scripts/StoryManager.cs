@@ -180,6 +180,19 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
             await EventManager.WaitForEvent(EventType.EndDialogue);
         }
+        else if (interactionName == "SimonSaysStart")
+        {
+            EventManager.TriggerEvent(EventType.HideObject, interactionName);
+            SimonSaysManager simonSaysManager = new SimonSaysManager();
+            SimonSaysManager.ReturnType returnType;
+            do
+            {
+                returnType = await simonSaysManager.Start(3);
+            } while (returnType != SimonSaysManager.ReturnType.Success);
+
+            EventManager.TriggerEvent(EventType.StartInteraction, "SimonSaysEnd");
+            //TODO: set chicken freed to true
+        }
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
 
