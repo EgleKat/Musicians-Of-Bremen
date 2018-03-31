@@ -36,7 +36,9 @@ public class StoryManager : MonoBehaviour
 
     //Rooster
     private Conversation cockCageConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Rooster", "It's you!"), new Monologue("Donkey", "Why are you locked up?"), new Monologue("Rooster", "My owners wanted to eat me but I managed to fly away."), new Monologue("Rooster", "I couldn't fly any further and decided to rest here, but when I woke up, the door closed on me."), new Monologue("Rooster", " Can you find out the combination for the door?") });
-    private Conversation freedCockConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Donkey", "Well, that was a pickle"), new Monologue("Rooster", "Oh thank you! I thought I was gonna die here. Can I join you?"), new Monologue("Donkey", "Yes, of course!") });
+    private Conversation freedCockConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Donkey", "Well, that was a pickle"), new Monologue("Rooster", "Oh thank you! I thought I was gonna die here. Can I join you?"), new Monologue("Donkey", "Yes, of course!"), new Monologue("Rooster", "My speaking skills might come in handy. I can speak in the human language."), new Monologue("Rooster", "Although I don't really understand it, I've learnt to imitate it.") });
+    private Conversation cockCageWithDogConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Rooster", "It's you!"), new Monologue("Dog", "Oh, a hen!"), new Monologue("Rooster", "I'm a cock, not a hen! I'm just a bit chubby. "), new Monologue("Donkey", "Why are you locked up?"), new Monologue("Rooster", "My owners wanted to eat me but I managed to fly away."), new Monologue("Rooster", "I couldn't fly any further and decided to rest here, but when I woke up, the door closed on me."), new Monologue("Rooster", " Can you find out the combination for the door?") });
+
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
@@ -261,7 +263,10 @@ public class StoryManager : MonoBehaviour
         {
             if (cockSaved)
                 return freedCockConvo;
-            else return cockCageConvo;
+            else if (haveDog)
+                return cockCageWithDogConvo;
+            else
+                return cockCageConvo;
         }
 
 
