@@ -70,7 +70,7 @@ public class CharacterAnimator : MonoBehaviour
                 currentDirection = command.vec.Value;
                 animator.Play(directionClips[currentDirection].ToString());
             }
-            
+
         }
     }
 
@@ -104,13 +104,13 @@ public class CharacterAnimator : MonoBehaviour
                 propertyName = "m_Sprite"
             };
 
-            ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[framesPerDirection*2 - 2];
+            ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[framesPerDirection * 2 - 2];
             int frame = 0;
             for (int spriteNum = 0; spriteNum < framesPerDirection; spriteNum++)
             {
                 spriteKeyFrames[frame] = new ObjectReferenceKeyframe
                 {
-                    time = frame*0.25f,
+                    time = frame * 0.25f,
                     value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + spriteNum]
                 };
                 frame++;
