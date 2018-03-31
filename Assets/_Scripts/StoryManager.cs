@@ -31,6 +31,7 @@ public class StoryManager : MonoBehaviour
     //Dog
     private Conversation dogMazeEnterConvo = new Conversation("MazeStart", new Monologue[] { new Monologue("???", "Heeelp!"), new Monologue("Donkey", "Who is it?"), new Monologue("???", "It's me - Dog! My owner locked me in here and left me to die. Please, help me get out of here."), new Monologue("Donkey", "Why is it so dark in here?"), new Monologue("Dog", "All of the plants are obstructing the light. It's a real maze in here!") });
     private Conversation firstDogConvo = new Conversation("Dog", new Monologue[] { new Monologue("Dog", "Oh thank you!"), new Monologue("Donkey", "Do you want to come with me?"), new Monologue("Dog", "That would be great! Over the years, I've managed to understand some human language. Too bad I can't speak it though..."), new Monologue("Donkey", "Look, I think the sun is right above, it's getting brighter!") });
+    private Conversation dogHouseConvo = new Conversation("DogHouse", new Monologue[] { new Monologue("Donkey", "It's Dog's house. Strange, I don't see her anywhere...") });
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
@@ -40,7 +41,6 @@ public class StoryManager : MonoBehaviour
     private bool firstTimeMaze = true;
 
     private string endOfFollowerQueue = "Ass";
-
 
     void Awake()
     {
@@ -164,7 +164,7 @@ public class StoryManager : MonoBehaviour
             haveDog = true;
 
         }
-        else if (interactionName == "CatDoor" || interactionName == "CatWindow")
+        else if (interactionName == "CatDoor" || interactionName == "CatWindow" || interactionName == "DogHouse")
         {
             Conversation converse = GetConversation(interactionName);
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
@@ -227,7 +227,10 @@ public class StoryManager : MonoBehaviour
             else return catWindowLightConvo;
         }
         else if (triggerName == "CatDoor") { return catDoorConvo; }
-
+        else if (triggerName == "DogHouse")
+        {
+            return dogHouseConvo;
+        }
 
 
         else
