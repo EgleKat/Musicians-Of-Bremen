@@ -13,25 +13,20 @@ public class CharacterAnimator : MonoBehaviour
     public int framesPerDirection;
     public int idleFrameOffset;
 
+    public Vector3[] directionOrder = {
+        Vector3.down,
+        Vector3.left,
+        Vector3.right,
+        Vector3.up,
+    };
+
     private Animator animator;
     private AnimatorOverrideController animatorOverrideController;
 
     private SpriteRenderer spriteRendererComponent;
 
-    private Dictionary<Vector3, int> directionClips = new Dictionary<Vector3, int>
-    {
-        {Vector3.down, 0},
-        {Vector3.left, 1},
-        {Vector3.right, 2},
-        {Vector3.up, 3},
-    };
-    private Dictionary<Vector3, Sprite> directionIdleSprites = new Dictionary<Vector3, Sprite>
-    {
-        {Vector3.down, null},
-        {Vector3.left, null},
-        {Vector3.right, null},
-        {Vector3.up, null},
-    };
+    private Dictionary<Vector3, int> directionClips;
+    private Dictionary<Vector3, Sprite> directionIdleSprites;
 
     private Sprite[] allSprites;
 
@@ -40,6 +35,22 @@ public class CharacterAnimator : MonoBehaviour
 
     private void Awake()
     {
+        directionClips = new Dictionary<Vector3, int>
+        {
+            {directionOrder[0], 0},
+            {directionOrder[1], 1},
+            {directionOrder[2], 2},
+            {directionOrder[3], 3},
+        };
+
+        directionIdleSprites = new Dictionary<Vector3, Sprite>
+        {
+            {directionOrder[0], null},
+            {directionOrder[1], null},
+            {directionOrder[2], null},
+            {directionOrder[3], null},
+        };
+
         allSprites = Resources.LoadAll<Sprite>(spriteSheetName);
 
         animator = gameObject.GetComponent<Animator>();
@@ -110,7 +121,7 @@ public class CharacterAnimator : MonoBehaviour
             {
                 spriteKeyFrames[frame] = new ObjectReferenceKeyframe
                 {
-                    time = frame * 0.25f,
+                    time = (float)frame / frameRate,
                     value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + spriteNum]
                 };
                 frame++;
@@ -120,7 +131,7 @@ public class CharacterAnimator : MonoBehaviour
                 // Play in reverse
                 spriteKeyFrames[frame] = new ObjectReferenceKeyframe
                 {
-                    time = frame * 0.25f,
+                    time = (float)frame / frameRate,
                     value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + spriteNum]
                 };
                 frame++;
