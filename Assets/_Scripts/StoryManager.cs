@@ -32,13 +32,24 @@ public class StoryManager : MonoBehaviour
     private Conversation dogMazeEnterConvo = new Conversation("MazeStart", new Monologue[] { new Monologue("???", "Heeelp!"), new Monologue("Donkey", "Who is it?"), new Monologue("???", "It's me - Dog! My owner locked me in here and left me to die. Please, help me get out of here."), new Monologue("Donkey", "Why is it so dark in here?"), new Monologue("Dog", "All of the plants are obstructing the light. It's a real maze in here!") });
     private Conversation firstDogConvo = new Conversation("Dog", new Monologue[] { new Monologue("Dog", "Oh thank you!"), new Monologue("Donkey", "Do you want to come with me?"), new Monologue("Dog", "That would be great! Over the years, I've managed to understand some human language. Too bad I can't speak it though..."), new Monologue("Donkey", "Look, I think the sun is right above, it's getting brighter!") });
     private Conversation dogHouseConvo = new Conversation("DogHouse", new Monologue[] { new Monologue("Donkey", "It's Dog's house. Strange, I don't see her anywhere...") });
+    private Conversation dogHouseConvoWithDog = new Conversation("DogHouse", new Monologue[] { new Monologue("Donkey", "It is Dog's house... well, was...") });
+
+
+    //Rooster
+    private Conversation cockCageConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Rooster", "It's you!"), new Monologue("Donkey", "Why are you locked up?"), new Monologue("Rooster", "My owners wanted to eat me but I managed to fly away."), new Monologue("Rooster", "I couldn't fly any further and decided to rest here, but when I woke up, the door closed on me."), new Monologue("Rooster", " Can you find out the combination for the door?") });
+    private Conversation freedCockConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Donkey", "Well, that was a pickle"), new Monologue("Rooster", "Oh thank you! I thought I was gonna die here. Can I join you?"), new Monologue("Donkey", "Yes, of course!"), new Monologue("Rooster", "My speaking skills might come in handy. I can speak in the human language."), new Monologue("Rooster", "Although I don't really understand it, I've learnt to imitate it.") });
+    private Conversation cockCageWithDogConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Rooster", "It's you!"), new Monologue("Dog", "Oh, a hen!"), new Monologue("Rooster", "I'm a cock, not a hen! I'm just a bit chubby. "), new Monologue("Donkey", "Why are you locked up?"), new Monologue("Rooster", "My owners wanted to eat me but I managed to fly away."), new Monologue("Rooster", "I couldn't fly any further and decided to rest here, but when I woke up, the door closed on me."), new Monologue("Rooster", " Can you find out the combination for the door?") });
+
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
     private bool haveDog = false;
+    private bool haveCock = false;
+    private bool haveCat = false;
     private bool translatedCatsOwners = false;
     private bool firstTimeCat = true;
     private bool firstTimeMaze = true;
+    private bool cockSaved = false;
 
     private string endOfFollowerQueue = "Ass";
 
@@ -191,8 +202,30 @@ public class StoryManager : MonoBehaviour
             } while (returnType != SimonSaysManager.ReturnType.Success);
 
             EventManager.TriggerEvent(EventType.StartInteraction, "SimonSaysEnd");
-            //TODO: set chicken freed to true
+            cockSaved = true;
         }
+        else if (interactionName == "Rooster")
+        {
+            Conversation converse = GetConversation(interactionName);
+            EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+            await EventManager.WaitForEvent(EventType.EndDialogue);
+
+            if (cockSaved)
+            {
+                haveCock = true;
+
+                EventManager.TriggerEvent(EventType.AddFollower, new String[] { endOfFollowerQueue, "Rooster" });
+                endOfFollowerQueue = "Rooster";
+                GameObject.Find("Rooster").GetComponent<CircleCollider2D>().enabled = false;
+            }
+            else
+            {
+                EventManager.TriggerEvent(EventType.StartInteraction, "SimonSaysStart");
+            }
+
+
+        }
+
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
 
@@ -242,7 +275,18 @@ public class StoryManager : MonoBehaviour
         else if (triggerName == "CatDoor") { return catDoorConvo; }
         else if (triggerName == "DogHouse")
         {
-            return dogHouseConvo;
+            if (!haveDog)
+                return dogHouseConvo;
+            else return dogHouseConvoWithDog;
+        }
+        else if (triggerName == "Rooster")
+        {
+            if (cockSaved)
+                return freedCockConvo;
+            else if (haveDog)
+                return cockCageWithDogConvo;
+            else
+                return cockCageConvo;
         }
 
 
