@@ -33,12 +33,18 @@ public class StoryManager : MonoBehaviour
     private Conversation firstDogConvo = new Conversation("Dog", new Monologue[] { new Monologue("Dog", "Oh thank you!"), new Monologue("Donkey", "Do you want to come with me?"), new Monologue("Dog", "That would be great! Over the years, I've managed to understand some human language. Too bad I can't speak it though..."), new Monologue("Donkey", "Look, I think the sun is right above, it's getting brighter!") });
     private Conversation dogHouseConvo = new Conversation("DogHouse", new Monologue[] { new Monologue("Donkey", "It's Dog's house. Strange, I don't see her anywhere...") });
 
+
+    //Rooster
+    private Conversation cockCageConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Rooster", "It's you!"), new Monologue("Donkey", "Why are you locked up?"), new Monologue("Rooster", "My owners wanted to eat me but I managed to fly away."), new Monologue("Rooster", "I couldn't fly any further and decided to rest here, but when I woke up, the door closed on me."), new Monologue("Rooster", " Can you find out the combination for the door?") });
+    private Conversation freedCockConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Donkey", "Well, that was a pickle"), new Monologue("Rooster", "Oh thank you! I thought I was gonna die here. Can I join you?"), new Monologue("Donkey", "Yes, of course!") });
+
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
     private bool haveDog = false;
     private bool translatedCatsOwners = false;
     private bool firstTimeCat = true;
     private bool firstTimeMaze = true;
+    private bool cockSaved = false;
 
     private string endOfFollowerQueue = "Ass";
 
@@ -164,7 +170,7 @@ public class StoryManager : MonoBehaviour
             haveDog = true;
 
         }
-        else if (interactionName == "CatDoor" || interactionName == "CatWindow" || interactionName == "DogHouse")
+        else if (interactionName == "CatDoor" || interactionName == "CatWindow" || interactionName == "DogHouse" || interactionName == "Rooster")
         {
             Conversation converse = GetConversation(interactionName);
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
@@ -180,6 +186,7 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
             await EventManager.WaitForEvent(EventType.EndDialogue);
         }
+
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
 
@@ -230,6 +237,12 @@ public class StoryManager : MonoBehaviour
         else if (triggerName == "DogHouse")
         {
             return dogHouseConvo;
+        }
+        else if (triggerName == "Rooster")
+        {
+            if (cockSaved)
+                return freedCockConvo;
+            else return cockCageConvo;
         }
 
 
