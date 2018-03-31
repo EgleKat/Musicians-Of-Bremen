@@ -17,7 +17,8 @@ public class SimonSaysManager
             int[] buttonHistory = new int[round + 3];
             for (int i = 0; i < round + 3; i++)
             {
-                buttonHistory[i] = rng.Next(1, numberOfButtons);
+                buttonHistory[i] = rng.Next(1, numberOfButtons + 1);
+                await Task.Delay(TimeSpan.FromSeconds(1));
                 EventManager.TriggerEvent(EventType.StartAlertSimonSays, "BR_" + buttonHistory[i]);
                 await EventManager.WaitForEvent(EventType.EndAlertSimonSays);
             }
@@ -30,6 +31,11 @@ public class SimonSaysManager
                     EventManager.TriggerEvent(EventType.EndSimonSays, null);
                     return ReturnType.MistakeMade;
                 }
+            }
+            await Task.Delay(TimeSpan.FromSeconds(1));
+            for (int buttonNumber = 1; buttonNumber <= numberOfButtons; buttonNumber++)
+            {
+                EventManager.TriggerEvent(EventType.StartAlertSimonSays, "BR_" + buttonNumber);
             }
         }
 

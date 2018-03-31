@@ -50,6 +50,7 @@ public class StoryManager : MonoBehaviour
     private bool firstTimeCat = true;
     private bool firstTimeMaze = true;
     private bool cockSaved = false;
+    private bool simonSaysStarted = false;
 
     private string endOfFollowerQueue = "Ass";
 
@@ -193,16 +194,19 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "SimonSaysStart")
         {
-            EventManager.TriggerEvent(EventType.HideObject, interactionName);
-            SimonSaysManager simonSaysManager = new SimonSaysManager();
-            SimonSaysManager.ReturnType returnType;
-            do
+            if (!simonSaysStarted)
             {
-                returnType = await simonSaysManager.Start(3);
-            } while (returnType != SimonSaysManager.ReturnType.Success);
+                simonSaysStarted = true;
+                SimonSaysManager simonSaysManager = new SimonSaysManager();
+                SimonSaysManager.ReturnType returnType;
+                do
+                {
+                    returnType = await simonSaysManager.Start(4);
+                } while (returnType != SimonSaysManager.ReturnType.Success);
 
-            EventManager.TriggerEvent(EventType.StartInteraction, "SimonSaysEnd");
-            cockSaved = true;
+                EventManager.TriggerEvent(EventType.StartInteraction, "SimonSaysEnd");
+                cockSaved = true;
+            }
         }
         else if (interactionName == "Rooster")
         {
@@ -222,8 +226,6 @@ public class StoryManager : MonoBehaviour
             {
                 EventManager.TriggerEvent(EventType.StartInteraction, "SimonSaysStart");
             }
-
-
         }
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);

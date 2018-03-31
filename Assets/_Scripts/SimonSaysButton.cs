@@ -25,12 +25,10 @@ public class SimonSaysButton : MonoBehaviour
     {
         if ((string)buttonName == gameObject.name)
         {
-            await Task.Delay(TimeSpan.FromSeconds(0.3));
             spriteRenderer.color = alertColor;
             //play a sound
             await Task.Delay(TimeSpan.FromSeconds(0.3));
             spriteRenderer.color = originalColor;
-            await Task.Delay(TimeSpan.FromSeconds(0.3));
             EventManager.TriggerEvent(EventType.EndAlertSimonSays, buttonName);
         }
     }
