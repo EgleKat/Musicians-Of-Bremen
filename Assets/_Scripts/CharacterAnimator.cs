@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+// #if UNITY_EDITOR
+// using UnityEditor;
+// #endif
 using UnityEngine;
 
 public class CharacterAnimator : MonoBehaviour
 {
-
     public string spriteSheetName;
     public int spriteOffset;
     public int spritesPerRow;
@@ -94,52 +95,66 @@ public class CharacterAnimator : MonoBehaviour
             spriteRendererComponent.sprite = directionIdleSprites[currentDirection];
         }
     }
+    // #if UNITY_EDITOR
+    //     private void CreateAnimationClips()
+    //     {
+    //         foreach (KeyValuePair<Vector3, int> directionIndex in directionClips)
+    //         {
+    //             AnimationClip directionClip = new AnimationClip
+    //             {
+    //                 frameRate = frameRate,
+    //             };
 
+    //             AnimationClipSettings animationClipSettings = AnimationUtility.GetAnimationClipSettings(directionClip);
+    //             animationClipSettings.loopTime = true;
+    //             AnimationUtility.SetAnimationClipSettings(directionClip, animationClipSettings);
+
+    //             EditorCurveBinding spriteBinding = new EditorCurveBinding
+    //             {
+    //                 type = typeof(SpriteRenderer),
+    //                 path = "",
+    //                 propertyName = "m_Sprite"
+    //             };
+
+    //             ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[framesPerDirection * 2 - 2];
+    //             int frame = 0;
+    //             for (int spriteNum = 0; spriteNum < framesPerDirection; spriteNum++)
+    //             {
+    //                 spriteKeyFrames[frame] = new ObjectReferenceKeyframe
+    //                 {
+    //                     time = (float)frame / frameRate,
+    //                     value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + spriteNum]
+    //                 };
+    //                 frame++;
+    //             }
+    //             for (int spriteNum = framesPerDirection - 2; spriteNum > 0; spriteNum--)
+    //             {
+    //                 // Play in reverse
+    //                 spriteKeyFrames[frame] = new ObjectReferenceKeyframe
+    //                 {
+    //                     time = (float)frame / frameRate,
+    //                     value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + spriteNum]
+    //                 };
+    //                 frame++;
+    //             }
+    //             AnimationUtility.SetObjectReferenceCurve(directionClip, spriteBinding, spriteKeyFrames);
+
+    //             animatorOverrideController[directionIndex.Value.ToString()] = directionClip;
+    //             AssetDatabase.CreateAsset(directionClip, "Assets/Resources/" + spriteSheetName + "_" + directionIndex.Value + ".anim");
+    //             AssetDatabase.SaveAssets();
+    //             AssetDatabase.Refresh();
+    //             directionIdleSprites[directionIndex.Key] = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + idleFrameOffset];
+    //         }
+    //     }
+    // #else
     private void CreateAnimationClips()
     {
         foreach (KeyValuePair<Vector3, int> directionIndex in directionClips)
         {
-            AnimationClip directionClip = new AnimationClip
-            {
-                frameRate = frameRate,
-            };
-
-            AnimationClipSettings animationClipSettings = AnimationUtility.GetAnimationClipSettings(directionClip);
-            animationClipSettings.loopTime = true;
-            AnimationUtility.SetAnimationClipSettings(directionClip, animationClipSettings);
-
-            EditorCurveBinding spriteBinding = new EditorCurveBinding
-            {
-                type = typeof(SpriteRenderer),
-                path = "",
-                propertyName = "m_Sprite"
-            };
-
-            ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[framesPerDirection * 2 - 2];
-            int frame = 0;
-            for (int spriteNum = 0; spriteNum < framesPerDirection; spriteNum++)
-            {
-                spriteKeyFrames[frame] = new ObjectReferenceKeyframe
-                {
-                    time = (float)frame / frameRate,
-                    value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + spriteNum]
-                };
-                frame++;
-            }
-            for (int spriteNum = framesPerDirection - 2; spriteNum > 0; spriteNum--)
-            {
-                // Play in reverse
-                spriteKeyFrames[frame] = new ObjectReferenceKeyframe
-                {
-                    time = (float)frame / frameRate,
-                    value = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + spriteNum]
-                };
-                frame++;
-            }
-            AnimationUtility.SetObjectReferenceCurve(directionClip, spriteBinding, spriteKeyFrames);
-
+            AnimationClip directionClip = (AnimationClip)Resources.Load(spriteSheetName + "_" + directionIndex.Value);
             animatorOverrideController[directionIndex.Value.ToString()] = directionClip;
             directionIdleSprites[directionIndex.Key] = allSprites[spriteOffset + directionIndex.Value * spritesPerRow + idleFrameOffset];
         }
     }
+    // #endif
 }
