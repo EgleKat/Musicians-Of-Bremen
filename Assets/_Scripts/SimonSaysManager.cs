@@ -18,7 +18,7 @@ public class SimonSaysManager
             for (int i = 0; i < round + 3; i++)
             {
                 buttonHistory[i] = rng.Next(1, numberOfButtons + 1);
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Wait.ForSeconds(1f);
                 EventManager.TriggerEvent(EventType.PlaySound, "BR_" + buttonHistory[i]);
                 EventManager.TriggerEvent(EventType.StartAlertSimonSays, "BR_" + buttonHistory[i]);
                 await EventManager.WaitForEvent(EventType.EndAlertSimonSays);
@@ -30,11 +30,11 @@ public class SimonSaysManager
                 if (nextButtonRecall != "BR_" + buttonHistory[i])
                 {
                     EventManager.TriggerEvent(EventType.EndSimonSays, null);
-                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    await Wait.ForSeconds(1f);
                     EventManager.TriggerEvent(EventType.PlaySound, "incorrectSimon");
                     FlashAll();
 
-                    await Task.Delay(TimeSpan.FromSeconds(0.3));
+                    await Wait.ForSeconds(0.3f);
                     EventManager.TriggerEvent(EventType.PlaySound, "incorrectSimon");
                     FlashAll();
 
@@ -42,7 +42,7 @@ public class SimonSaysManager
                     return ReturnType.MistakeMade;
                 }
             }
-            await Task.Delay(TimeSpan.FromSeconds(1));
+            await Wait.ForSeconds(1f);
             EventManager.TriggerEvent(EventType.PlaySound, "correctSimon");
 
             FlashAll();

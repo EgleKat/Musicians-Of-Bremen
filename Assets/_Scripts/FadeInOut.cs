@@ -49,7 +49,7 @@ public class FadeInOut : MonoBehaviour
             Color color = spriteRenderer.color;
             color.a += 0.01f / timeToFade;
             spriteRenderer.color = color;
-            await Task.Delay(TimeSpan.FromSeconds(0.01));
+            await Wait.ForSeconds(0.01f);
         }
         EventManager.TriggerEvent(EventType.EndFadeIn, null);
     }
@@ -61,7 +61,7 @@ public class FadeInOut : MonoBehaviour
             Color color = spriteRenderer.color;
             color.a -= 0.01f / timeToFade;
             spriteRenderer.color = color;
-            await Task.Delay(TimeSpan.FromSeconds(0.01));
+            await Wait.ForSeconds(0.01f);
         }
         EventManager.TriggerEvent(EventType.EndFadeOut, null);
         gameObject.SetActive(false);

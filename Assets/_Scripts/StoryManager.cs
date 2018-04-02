@@ -97,7 +97,7 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.FadeIn, 0.1f);
                 await EventManager.WaitForEvent(EventType.EndFadeIn);
                 EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(1190, 710, 0), MoveCommand.MoveType.Location));
-                await Task.Delay(TimeSpan.FromSeconds(1.5));
+                await Wait.ForSeconds(1.5f);
 
                 //make beginner marker a collider (not a trigger)
                 // TODO: use events?
@@ -105,7 +105,7 @@ public class StoryManager : MonoBehaviour
                 donkeyOuter.GetComponent<BoxCollider2D>().isTrigger = false;
 
                 EventManager.TriggerEvent(EventType.FadeOut, 6f);
-                await Task.Delay(TimeSpan.FromSeconds(2f));
+                await Wait.ForSeconds(2f);
                 EventManager.TriggerEvent(EventType.StartInteraction, "Witch");
                 await EventManager.WaitForEvent(EventType.EndFadeOut);
                 EventManager.TriggerEvent(EventType.ChangeMusic, "background");

@@ -28,7 +28,7 @@ public class SimonSaysButton : MonoBehaviour
             spriteRenderer.color = alertColor;
             //play a sound
 
-            await Task.Delay(TimeSpan.FromSeconds(0.2));
+            await Wait.ForSeconds(0.2f);
             spriteRenderer.color = originalColor;
             EventManager.TriggerEvent(EventType.EndAlertSimonSays, buttonName);
         }
