@@ -13,33 +13,34 @@ public class FadeInOut : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         EventManager.AddListener(EventType.FadeIn, OnFadeIn);
         EventManager.AddListener(EventType.FadeOut, OnFadeOut);
-
     }
 
-    private void OnFadeOut(object time)
+    private void OnFadeOut(object fadeCommand)
     {
-        float timeToFade = (float)(time);
+        FadeCommand command = (FadeCommand)(fadeCommand);
+
+        if (command.gameObjectToFade != gameObject.name)
+        {
+            return;
+        }
 
         gameObject.SetActive(true);
 
-        Color color = spriteRenderer.color;
-        color.a = 1;
-        spriteRenderer.color = color;
-
-        FadeOut(timeToFade);
+        FadeOut(command.timeToFade);
     }
 
-    private void OnFadeIn(object time)
+    private void OnFadeIn(object fadeCommand)
     {
-        float timeToFade = (float)(time);
+        FadeCommand command = (FadeCommand)(fadeCommand);
+
+        if (command.gameObjectToFade != gameObject.name)
+        {
+            return;
+        }
 
         gameObject.SetActive(true);
 
-        Color color = spriteRenderer.color;
-        color.a = 0;
-        spriteRenderer.color = color;
-
-        FadeIn(timeToFade);
+        FadeIn(command.timeToFade);
     }
 
     private async void FadeIn(float timeToFade)

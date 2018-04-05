@@ -100,7 +100,7 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.StopMoving, "Ass");
                 EventManager.TriggerEvent(EventType.ChangeMusic, "stop");
                 //white screen
-                EventManager.TriggerEvent(EventType.FadeIn, 0.1f);
+                EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("White", 0.1f));
                 await EventManager.WaitForEvent(EventType.EndFadeIn);
                 EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(1190, 710, 0), MoveCommand.MoveType.Location));
                 await Wait.ForSeconds(1.5f);
@@ -110,7 +110,7 @@ public class StoryManager : MonoBehaviour
                 GameObject donkeyOuter = GameObject.Find("DonkeyHouseOuter");
                 donkeyOuter.GetComponent<BoxCollider2D>().isTrigger = false;
 
-                EventManager.TriggerEvent(EventType.FadeOut, 6f);
+                EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("White", 6f));
                 await Wait.ForSeconds(2f);
                 EventManager.TriggerEvent(EventType.StartInteraction, "Witch");
                 await EventManager.WaitForEvent(EventType.EndFadeOut);
@@ -160,7 +160,7 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "MazeStart")
         {
-            EventManager.TriggerEvent(EventType.ShowObject, "Darkness");
+            EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Darkness", 1f));
             if (firstTimeMaze)
             {
                 Conversation converse = GetConversation(interactionName);
@@ -171,7 +171,7 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "MazeEnd" || interactionName == "MazeEndEarly")
         {
-            EventManager.TriggerEvent(EventType.HideObject, "Darkness");
+            EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("Darkness", 1f));
         }
         else if (interactionName == "Dog")
         {
@@ -265,6 +265,15 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.DisplayDialogue, converse3);
                 await EventManager.WaitForEvent(EventType.EndDialogue);
             }
+
+            EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Black", 3f));
+            EventManager.TriggerEvent(EventType.DisableMovement, null);
+            await EventManager.WaitForEvent(EventType.EndFadeIn);
+            await Wait.ForSeconds(2f);
+            EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("Black", 3f));
+            await EventManager.WaitForEvent(EventType.EndFadeOut);
+            EventManager.TriggerEvent(EventType.EnableMovement, null);
+
         }
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);

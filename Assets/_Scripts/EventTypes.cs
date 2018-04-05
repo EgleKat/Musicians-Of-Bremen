@@ -64,3 +64,14 @@ public class MoveCommand
         return "{" + gameObjectToMove + "," + vec + "," + moveType + "}";
     }
 }
+public class FadeCommand
+{
+    public string gameObjectToFade;
+    public float timeToFade;
+
+    public FadeCommand(string gameObjectToFade, float timeToFade)
+    {
+        this.gameObjectToFade = gameObjectToFade;
+        this.timeToFade = timeToFade;
+    }
+}
