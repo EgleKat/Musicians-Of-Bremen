@@ -50,6 +50,11 @@ public class StoryManager : MonoBehaviour
     private Conversation robberHouseStartConvo2CatOnly = new Conversation("RobberHouseStart2CatOnly", new string[] { "Donkey", "Hmm, I have an idea, what if we take their house when they leave?" });
     private Conversation robberHouseStartConvo3DogCat = new Conversation("RobberHouseStart3Cat", new string[] { "Cat", "Wait, I can sneak in through the window and unlock it on the inside." });
 
+    //Robber Tree
+    private Conversation robberTreeWCat = new Conversation("RobberTree", new Monologue[] { new Monologue("Cat", "I can fit through here."), new Monologue("Donkey", "See what you can find.") });
+    private Conversation robberTree = new Conversation("RobberTree", new Monologue[] { new Monologue("Donkey", "What a small hole. It would need someone very small and flexible to fit through.") });
+
+
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
     public bool haveDog = false;
@@ -275,6 +280,22 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.EnableMovement, null);
 
         }
+        else if (interactionName == "RobberTree")
+        {
+
+            if (haveCat)
+
+                EventManager.TriggerEvent(EventType.DisplayDialogue, robberTreeWCat);
+            else
+                EventManager.TriggerEvent(EventType.DisplayDialogue, robberTree);
+
+            //TODO get heart
+
+
+            await EventManager.WaitForEvent(EventType.EndDialogue);
+
+
+        }
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
@@ -362,6 +383,10 @@ public class StoryManager : MonoBehaviour
         {
             return robberHouseStartConvo3DogCat;
         }
+        else if (triggerName == "RobberTree")
+        {
+            return robberTree;
+        }
 
 
         else
@@ -389,7 +414,7 @@ public class Conversation
         this.dialogue = new Monologue[dialogueString.Length / 2];
         for (int i = 0; i < dialogue.Length; i++)
         {
-            this.dialogue[i] = new Monologue(dialogueString[i*2], dialogueString[i*2 + 1]);
+            this.dialogue[i] = new Monologue(dialogueString[i * 2], dialogueString[i * 2 + 1]);
         }
     }
 
