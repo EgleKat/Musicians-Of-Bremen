@@ -37,6 +37,7 @@ public enum EventType
     StartAlertSimonSays,
     EndAlertSimonSays,
     EndSimonSays,
+    ChangeLeader,
 }
 
 [System.Serializable]

@@ -23,6 +23,7 @@ public class GridBasedMovement : MonoBehaviour
         EventManager.AddListener(EventType.Move, OnMoveCommand);
         EventManager.AddListener(EventType.AddFollower, OnAddFollower);
         EventManager.AddListener(EventType.RemoveFollower, OnRemoveFollower);
+        EventManager.AddListener(EventType.ChangeLeader, OnChangeLeader);
         EventManager.AddListener(EventType.StopMoving, OnStopMoving);
 
         previousLocation = transform.localPosition;
@@ -39,9 +40,25 @@ public class GridBasedMovement : MonoBehaviour
         }
     }
 
+    private void OnChangeLeader(object arg0)
+    {
+        String[] fromTo = (String[])arg0;
+        if (fromTo[0] == gameObject.name)
+        {
+            string gameObjectToLeadCopy = gameObjectToLead;
+            EventManager.TriggerEvent(EventType.RemoveFollower, new string[] { gameObjectToLead });
+            EventManager.TriggerEvent(EventType.AddFollower, new string[] { fromTo[1], gameObjectToLeadCopy });
+        }
+    }
+
     private void OnRemoveFollower(object arg0)
     {
-        gameObjectToLead = "";
+        string followerNames = (string)arg0;
+        if (followerNames == gameObjectToLead)
+        {
+            gameObjectToLead = "";
+            EventManager.TriggerEvent(EventType.ChangeLeader, new string[] { followerNames, gameObject.name });//from-to
+        }
     }
 
     private void OnAddFollower(object arg0)

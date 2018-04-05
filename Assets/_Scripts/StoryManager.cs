@@ -43,6 +43,12 @@ public class StoryManager : MonoBehaviour
     //Extra
     private Conversation dangerSignConvo = new Conversation("DangerSign", new Monologue[] { new Monologue("Sign", "   DANGER    AHEAD") });
 
+    //Robber house
+    private Conversation robberHouseStartConvo1 = new Conversation("RobberHouseStart1", new string[] { "Donkey", "Look, it's a house. There's a light in the window." });
+    private Conversation robberHouseStartConvo2Dog = new Conversation("RobberHouseStart2Dog", new string[] { "Donkey", "Hmm, dog can you try to  hear anything useful?", "Dog", "I'll try.", "???", "That was a nice load we got from that caravan, hahaha.", "Dog", "I think they are robbers.", "Donkey", "Hmm, I have an idea, what if we take their house when they leave?", "Dog", "WAIT! There's more!", "Robber", "I found out where our animals are kept, we can finally take them back from those  thieves. Oh I remember my sweet donkey, I used to love him with all my heart...", "Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole a donkey from them!", "Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them.", "Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help.", "Donkey", "Let's wait until they come out." });
+    private Conversation robberHouseStartConvo2CockOnly = new Conversation("RobberHouseStart2CockOnly", new string[] { "Rooster", "Looks a bit shabby.", "Donkey", "Hmm, I have an idea, what if we take their house when they leave?", "Rooster", "We have to make sure that they don't come back.", "Donkey", "I know! Get on my back. In the shadows we will look frightening!", "Rooster", "Good idea!" });
+    private Conversation robberHouseStartConvo2CatOnly = new Conversation("RobberHouseStart2CatOnly", new string[] { "Donkey", "Hmm, I have an idea, what if we take their house when they leave?" });
+    private Conversation robberHouseStartConvo3DogCat = new Conversation("RobberHouseStart3Cat", new string[] { "Cat", "Wait, I can sneak in through the window and unlock it on the inside." });
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
@@ -230,6 +236,36 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.StartInteraction, "SimonSaysStart");
             }
         }
+        else if (interactionName == "RobberHouseStart")
+        {
+            Conversation converse = GetConversation(interactionName + "1");
+            EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
+            await EventManager.WaitForEvent(EventType.EndDialogue);
+            if (haveDog)
+            {
+                Conversation converse2 = GetConversation(interactionName + "2Dog");
+                EventManager.TriggerEvent(EventType.DisplayDialogue, converse2);
+                await EventManager.WaitForEvent(EventType.EndDialogue);
+            }
+            if (haveCock && !haveCat && !haveDog)
+            {
+                Conversation converse2 = GetConversation(interactionName + "2CockOnly");
+                EventManager.TriggerEvent(EventType.DisplayDialogue, converse2);
+                await EventManager.WaitForEvent(EventType.EndDialogue);
+            }
+            if (!haveCock && haveCat && !haveDog)
+            {
+                Conversation converse2 = GetConversation(interactionName + "2CatOnly");
+                EventManager.TriggerEvent(EventType.DisplayDialogue, converse2);
+                await EventManager.WaitForEvent(EventType.EndDialogue);
+            }
+            if (haveDog && haveCat)
+            {
+                Conversation converse3 = GetConversation(interactionName + "3DogCat");
+                EventManager.TriggerEvent(EventType.DisplayDialogue, converse3);
+                await EventManager.WaitForEvent(EventType.EndDialogue);
+            }
+        }
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
@@ -297,6 +333,26 @@ public class StoryManager : MonoBehaviour
         {
             return dangerSignConvo;
         }
+        else if (triggerName == "RobberHouseStart1")
+        {
+            return robberHouseStartConvo1;
+        }
+        else if (triggerName == "RobberHouseStart2Dog")
+        {
+            return robberHouseStartConvo2Dog;
+        }
+        else if (triggerName == "RobberHouseStart2CockOnly")
+        {
+            return robberHouseStartConvo2CockOnly;
+        }
+        else if (triggerName == "RobberHouseStart2CatOnly")
+        {
+            return robberHouseStartConvo2CatOnly;
+        }
+        else if (triggerName == "RobberHouseStart3DogCat")
+        {
+            return robberHouseStartConvo3DogCat;
+        }
 
 
         else
@@ -316,6 +372,16 @@ public class Conversation
     {
         this.conversationTrigger = conversationTrigger;
         this.dialogue = dialogue;
+    }
+
+    public Conversation(string conversationTrigger, string[] dialogue)
+    {
+        this.conversationTrigger = conversationTrigger;
+        this.dialogue = new Monologue[dialogue.Length / 2];
+        for (int i = 0; i < dialogue.Length; i += 2)
+        {
+            this.dialogue[i / 2] = new Monologue(dialogue[i], dialogue[i + 1]);
+        }
     }
 
 }
