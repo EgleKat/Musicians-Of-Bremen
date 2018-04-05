@@ -52,9 +52,9 @@ public class StoryManager : MonoBehaviour
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
-    private bool haveDog = false;
-    private bool haveCock = false;
-    private bool haveCat = false;
+    public bool haveDog = false;
+    public bool haveCock = false;
+    public bool haveCat = false;
     private bool translatedCatsOwners = false;
     private bool firstTimeCat = true;
     private bool firstTimeMaze = true;
@@ -374,13 +374,13 @@ public class Conversation
         this.dialogue = dialogue;
     }
 
-    public Conversation(string conversationTrigger, string[] dialogue)
+    public Conversation(string conversationTrigger, string[] dialogueString)
     {
         this.conversationTrigger = conversationTrigger;
-        this.dialogue = new Monologue[dialogue.Length / 2];
-        for (int i = 0; i < dialogue.Length; i += 2)
+        this.dialogue = new Monologue[dialogueString.Length / 2];
+        for (int i = 0; i < dialogue.Length; i++)
         {
-            this.dialogue[i / 2] = new Monologue(dialogue[i], dialogue[i + 1]);
+            this.dialogue[i] = new Monologue(dialogueString[i*2], dialogueString[i*2 + 1]);
         }
     }
 

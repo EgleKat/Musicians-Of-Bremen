@@ -34,7 +34,7 @@ public class DialogueManager : MonoBehaviour
 
     private void AdvanceDialogue(object _)
     {
-        if (dialoguePosition < currentConversation.dialogue.Length)
+        if (currentConversation != null && dialoguePosition < currentConversation.dialogue.Length)
         {
             dialogueText.text = currentConversation.dialogue[dialoguePosition].speaker + ":\n" + currentConversation.dialogue[dialoguePosition].text;
             dialoguePosition++;
@@ -43,9 +43,9 @@ public class DialogueManager : MonoBehaviour
         {
             gameObject.SetActive(false);
             EventManager.RemoveListener(EventType.PressedInteractKey, AdvanceDialogue);
+            currentConversation = null;
             EventManager.TriggerEvent(EventType.EnableMovement, null);
             EventManager.TriggerEvent(EventType.EndDialogue, null);
-            currentConversation = null;
         }
     }
 }
