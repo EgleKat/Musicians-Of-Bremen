@@ -43,6 +43,7 @@ public enum EventType
     StartCountingHearts,
     RemoveHeartFromDisplay,
     AddHeart,
+    DisplayInfoMessage,
 }
 
 [System.Serializable]
