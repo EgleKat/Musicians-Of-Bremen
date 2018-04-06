@@ -180,7 +180,7 @@ public class StoryManager : MonoBehaviour
 
             firstTimeCat = false;
         }
-        else if (interactionName == "bushHeart")
+        else if (interactionName == "BushHeart")
         {
             EventManager.TriggerEvent(EventType.AddHeart, 1);
             EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Received a heart.");
@@ -326,21 +326,18 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Received a heart.");
 
                     EventManager.TriggerEvent(EventType.DisplayDialogue, donkeySaysUseful);
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
                     treeComplete = true;
 
                 }
                 else
                     EventManager.TriggerEvent(EventType.DisplayDialogue, robberTree);
 
-                //TODO get heart
-
             }
             else
             {
                 EventManager.TriggerEvent(EventType.DisplayDialogue, donkeyNothingToSeeHere);
-                await EventManager.WaitForEvent(EventType.EndDialogue);
             }
+            await EventManager.WaitForEvent(EventType.EndDialogue);
 
 
         }
