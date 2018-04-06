@@ -39,6 +39,11 @@ public enum EventType
     EndSimonSays,
     ChangeLeader,
     RemoveHeart,
+    ShowHearts,
+    StartCountingHearts,
+    RemoveHeartFromDisplay,
+    AddHeart,
+    DisplayInfoMessage,
 }
 
 [System.Serializable]

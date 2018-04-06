@@ -15,7 +15,7 @@ public class SimonSaysManager
         {
             EventManager.TriggerEvent(EventType.StartSimonSaysRound, null);
             int[] buttonHistory = new int[round + 3];
-            for (int i = 0; i < round + 3; i++)
+            for (int i = 0; i < round + 2; i++)
             {
                 buttonHistory[i] = rng.Next(1, numberOfButtons + 1);
                 await Wait.ForSeconds(1f);
@@ -24,7 +24,7 @@ public class SimonSaysManager
                 await EventManager.WaitForEvent(EventType.EndAlertSimonSays);
             }
             EventManager.TriggerEvent(EventType.StartSimonSaysRecall, null);
-            for (int i = 0; i < round + 3; i++)
+            for (int i = 0; i < round + 2; i++)
             {
                 string nextButtonRecall = (string)await EventManager.WaitForEvent(EventType.StartAlertSimonSays);
                 if (nextButtonRecall != "BR_" + buttonHistory[i])

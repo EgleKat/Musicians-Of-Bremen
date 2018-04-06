@@ -15,7 +15,7 @@ public class StoryManager : MonoBehaviour
     //Witch
     private Conversation talkToWitchFirstConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Who.. Who are you?"), new Monologue("Witch", "???"), new Monologue("Donkey", "You saved me.. Thank you!"), new Monologue("Donkey", "I don't understand what you're saying. I can't understand human."), new Monologue("Witch", "???"), new Monologue("Donkey", "I guess I'll head off. I need to work out what I want to do with my life, now that I'm homeless.") });
     private Conversation talkToWitchConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "???") });
-    private Conversation talkToWitchConvoWithDog = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "You're welcome. You have a strong spirit Donkey, don't waste it. I saved your life so you can save others."), new Monologue("Witch", "Every life you save will aid you in the future."), new Monologue("Witch", "Oh, and I hid something for you around your owners' house. Look in the bushes.") });
+    private Conversation talkToWitchConvoWithDog = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "You have a strong spirit Donkey, don't waste it. I saved your life so you can save others'."), new Monologue("Witch", "Every life you save will aid you in the future."), new Monologue("Witch", "Oh, and I hid something for you around your owners' house. Look in the bushes.") });
 
     //Cat
     private Conversation firstCatConvo = new Conversation("Cat", new Monologue[] { new Monologue("Cat", "Hello, Ass, what happened to you?"), new Monologue("Donkey", "My owner went crazy, tried to kill me! You should watch out,  your masters might do the same."), new Monologue("Donkey", "Come with me if you want to  have a chance of life."), new Monologue("Cat", "Pftt my owners would never  do such a thing."), new Monologue("Cat", "Unlike you, I am a superior being and they worship me."), new Monologue("Donkey", "Hmm, If only I could make you believe.") });
@@ -42,6 +42,8 @@ public class StoryManager : MonoBehaviour
 
     //Extra
     private Conversation dangerSignConvo = new Conversation("DangerSign", new Monologue[] { new Monologue("Sign", "   DANGER    AHEAD") });
+    private Conversation donkeySaysUseful = new Conversation("", new Monologue[] { new Monologue("Donkey", "This might prove useful later.") });
+    private Conversation donkeyNothingToSeeHere = new Conversation("", new String[] { "Donkey", "Nothing to see here." });
 
     //Robber house
     private Conversation robberHouseStartConvo1 = new Conversation("RobberHouseStart1", new string[] { "Donkey", "Look, it's a house. There's a light in the window." });
@@ -69,12 +71,17 @@ public class StoryManager : MonoBehaviour
     private bool simonSaysStarted = false;
 
     private string endOfFollowerQueue = "Ass";
+    private bool treeComplete = false;
 
     void Awake()
     {
         EventManager.AddListener(EventType.StartInteraction, OnStartInteraction);
-    }
 
+    }
+    private void Start()
+    {
+        EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Use WASD to move and E to interact.");
+    }
     private async void OnStartInteraction(object objName)
     {
         string interactionName = (String)objName;
@@ -125,6 +132,7 @@ public class StoryManager : MonoBehaviour
                 await EventManager.WaitForEvent(EventType.EndDialogue);
 
             }
+
             else
             {
                 //start dialog
@@ -142,12 +150,15 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "Witch")
         {
+
             //start dialog
             Conversation converse = GetConversation(interactionName);
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
             await EventManager.WaitForEvent(EventType.EndDialogue);
 
             firstTimeWitch = false;
+
+
         }
         else if (interactionName == "Cat")
         {
@@ -161,9 +172,21 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.AddFollower, new String[] { endOfFollowerQueue, "Cat" });
                 endOfFollowerQueue = "Cat";
                 GameObject.Find("Cat").GetComponent<CircleCollider2D>().enabled = false;
+                haveCat = true;
+                EventManager.TriggerEvent(EventType.AddHeart, 1);
+                EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Cat can climb into small spaces.");
+
             }
 
             firstTimeCat = false;
+        }
+        else if (interactionName == "BushHeart")
+        {
+            EventManager.TriggerEvent(EventType.AddHeart, 1);
+            EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Received a heart.");
+
+            EventManager.TriggerEvent(EventType.DisplayDialogue, donkeySaysUseful);
+            await EventManager.WaitForEvent(EventType.EndDialogue);
         }
         else if (interactionName == "MazeStart")
         {
@@ -190,6 +213,10 @@ public class StoryManager : MonoBehaviour
             endOfFollowerQueue = "Dog";
             GameObject.Find("Dog").GetComponent<CircleCollider2D>().enabled = false;
             haveDog = true;
+            EventManager.TriggerEvent(EventType.AddHeart, 1);
+            EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Dog can understand human language.");
+
+
 
         }
         else if (interactionName == "CatDoor" || interactionName == "CatWindow" || interactionName == "DogHouse" || interactionName == "DangerSign")
@@ -233,10 +260,13 @@ public class StoryManager : MonoBehaviour
             if (cockSaved)
             {
                 haveCock = true;
+                EventManager.TriggerEvent(EventType.AddHeart, 1);
 
                 EventManager.TriggerEvent(EventType.AddFollower, new String[] { endOfFollowerQueue, "Rooster" });
                 endOfFollowerQueue = "Rooster";
                 GameObject.Find("Rooster").GetComponent<CircleCollider2D>().enabled = false;
+                EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Rooster can speak human language.");
+
             }
             else
             {
@@ -360,16 +390,29 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "RobberTree")
         {
+            if (!treeComplete)
+            {
+                if (haveCat)
 
-            if (haveCat)
+                {
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, robberTreeWCat);
+                    EventManager.TriggerEvent(EventType.AddHeart, 1);
+                    await EventManager.WaitForEvent(EventType.EndDialogue);
 
-                EventManager.TriggerEvent(EventType.DisplayDialogue, robberTreeWCat);
+                    EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Received a heart.");
+
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, donkeySaysUseful);
+                    treeComplete = true;
+
+                }
+                else
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, robberTree);
+
+            }
             else
-                EventManager.TriggerEvent(EventType.DisplayDialogue, robberTree);
-
-            //TODO get heart
-
-
+            {
+                EventManager.TriggerEvent(EventType.DisplayDialogue, donkeyNothingToSeeHere);
+            }
             await EventManager.WaitForEvent(EventType.EndDialogue);
 
 
@@ -395,7 +438,9 @@ public class StoryManager : MonoBehaviour
             if (firstTimeWitch)
                 return talkToWitchFirstConvo;
             else if (haveDog)
+            {
                 return talkToWitchConvoWithDog;
+            }
             else return talkToWitchConvo;
         }
         else if (triggerName == "Cat")
