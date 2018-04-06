@@ -46,7 +46,7 @@ public class GridBasedMovement : MonoBehaviour
         if (fromTo[0] == gameObject.name)
         {
             string gameObjectToLeadCopy = gameObjectToLead;
-            EventManager.TriggerEvent(EventType.RemoveFollower, new string[] { gameObjectToLead });
+            EventManager.TriggerEvent(EventType.RemoveFollower, gameObjectToLead);
             EventManager.TriggerEvent(EventType.AddFollower, new string[] { fromTo[1], gameObjectToLeadCopy });
         }
     }

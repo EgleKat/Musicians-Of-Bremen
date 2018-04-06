@@ -142,12 +142,17 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "Witch")
         {
+            if (haveDog)
+            {
+                EventManager.TriggerEvent(EventType.AddHeart, 1);
+            }
             //start dialog
             Conversation converse = GetConversation(interactionName);
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
             await EventManager.WaitForEvent(EventType.EndDialogue);
 
             firstTimeWitch = false;
+
         }
         else if (interactionName == "Cat")
         {
@@ -161,6 +166,7 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.AddFollower, new String[] { endOfFollowerQueue, "Cat" });
                 endOfFollowerQueue = "Cat";
                 GameObject.Find("Cat").GetComponent<CircleCollider2D>().enabled = false;
+                EventManager.TriggerEvent(EventType.AddHeart, 1);
             }
 
             firstTimeCat = false;
@@ -190,6 +196,8 @@ public class StoryManager : MonoBehaviour
             endOfFollowerQueue = "Dog";
             GameObject.Find("Dog").GetComponent<CircleCollider2D>().enabled = false;
             haveDog = true;
+            EventManager.TriggerEvent(EventType.AddHeart, 1);
+
 
         }
         else if (interactionName == "CatDoor" || interactionName == "CatWindow" || interactionName == "DogHouse" || interactionName == "DangerSign")
@@ -233,6 +241,7 @@ public class StoryManager : MonoBehaviour
             if (cockSaved)
             {
                 haveCock = true;
+                EventManager.TriggerEvent(EventType.AddHeart, 1);
 
                 EventManager.TriggerEvent(EventType.AddFollower, new String[] { endOfFollowerQueue, "Rooster" });
                 endOfFollowerQueue = "Rooster";
@@ -287,7 +296,11 @@ public class StoryManager : MonoBehaviour
 
             if (haveCat)
 
+            {
                 EventManager.TriggerEvent(EventType.DisplayDialogue, robberTreeWCat);
+                EventManager.TriggerEvent(EventType.AddHeart, 1);
+
+            }
             else
                 EventManager.TriggerEvent(EventType.DisplayDialogue, robberTree);
 
@@ -319,7 +332,9 @@ public class StoryManager : MonoBehaviour
             if (firstTimeWitch)
                 return talkToWitchFirstConvo;
             else if (haveDog)
+            {
                 return talkToWitchConvoWithDog;
+            }
             else return talkToWitchConvo;
         }
         else if (triggerName == "Cat")

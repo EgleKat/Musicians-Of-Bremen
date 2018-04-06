@@ -6,10 +6,11 @@ using UnityEngine.Events;
 
 public class HeartManager : MonoBehaviour
 {
-    private int noOfHearts = 0;
+    private int noOfHearts = 1;
+    public int numberOfShownHearts;
+
     public GameObject[] hearts; //Heart 0 is the first heart from the right
     private GameObject[] shownHearts;
-    private int numberOfShownHearts;
     private void Awake()
     {
         EventManager.AddListener(EventType.ShowHearts, OnShowHearts);
@@ -22,12 +23,10 @@ public class HeartManager : MonoBehaviour
     private void OnAddHeart(object number)
     {
         noOfHearts += (int)number;
+        Debug.Log(noOfHearts);
     }
 
-    private void Start()
-    {
-        OnShowHearts(4);
-    }
+
     private void OnRemoveHeartFromDisplay(object _)
     {
         if (shownHearts.Length > 0)
