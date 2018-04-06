@@ -15,7 +15,7 @@ public class StoryManager : MonoBehaviour
     //Witch
     private Conversation talkToWitchFirstConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Who.. Who are you?"), new Monologue("Witch", "???"), new Monologue("Donkey", "You saved me.. Thank you!"), new Monologue("Donkey", "I don't understand what you're saying. I can't understand human."), new Monologue("Witch", "???"), new Monologue("Donkey", "I guess I'll head off. I need to work out what I want to do with my life, now that I'm homeless.") });
     private Conversation talkToWitchConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "???") });
-    private Conversation talkToWitchConvoWithDog = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "I can sense your future, little one"), new Monologue("Witch", "If you want your path to be easier, find the life's orange.") });
+    private Conversation talkToWitchConvoWithDog = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "You're welcome. You have a strong spirit Donkey, don't waste it. I saved your life so you can save others."), new Monologue("Witch", "Every life you save will aid you in the future."), new Monologue("Witch", "Oh, and I hid something for you around your owners' house. Look in the bushes.") });
 
     //Cat
     private Conversation firstCatConvo = new Conversation("Cat", new Monologue[] { new Monologue("Cat", "Hello, Ass, what happened to you?"), new Monologue("Donkey", "My owner went crazy, tried to kill me! You should watch out,  your masters might do the same."), new Monologue("Donkey", "Come with me if you want to  have a chance of life."), new Monologue("Cat", "Pftt my owners would never  do such a thing."), new Monologue("Cat", "Unlike you, I am a superior being and they worship me."), new Monologue("Donkey", "Hmm, If only I could make you believe.") });
@@ -54,6 +54,8 @@ public class StoryManager : MonoBehaviour
     private Conversation robberTreeWCat = new Conversation("RobberTree", new Monologue[] { new Monologue("Cat", "I can fit through here."), new Monologue("Donkey", "See what you can find.") });
     private Conversation robberTree = new Conversation("RobberTree", new Monologue[] { new Monologue("Donkey", "What a small hole. It would need someone very small and flexible to fit through.") });
 
+    //Robbers with all animals - chat
+    private Conversation RobberConversation = new Conversation("RobberConversation", new string[] { "Rooster", "Don't shoot! We're here to talk!", "Robbers", "A talking chicken, I'm intrigued, continue...", "Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together.", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?", "Rooster", "Yes!", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all." });
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
