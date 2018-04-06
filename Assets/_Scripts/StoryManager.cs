@@ -54,6 +54,8 @@ public class StoryManager : MonoBehaviour
     private Conversation robberTreeWCat = new Conversation("RobberTree", new Monologue[] { new Monologue("Cat", "I can fit through here."), new Monologue("Donkey", "See what you can find.") });
     private Conversation robberTree = new Conversation("RobberTree", new Monologue[] { new Monologue("Donkey", "What a small hole. It would need someone very small and flexible to fit through.") });
 
+    //Robbers with all animals - chat
+    private Conversation RobberConversation = new Conversation("RobberConversation", new string[] { "Rooster", "Don't shoot! We're here to talk!", "Robbers", "A talking chicken, I'm intrigued, continue...", "Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together.", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?", "Rooster", "Yes!", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all." });
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
