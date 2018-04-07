@@ -45,6 +45,7 @@ public enum EventType
     AddHeart,
     DisplayInfoMessage,
     EndMove,
+    StartShooting,
 }
 
 [System.Serializable]

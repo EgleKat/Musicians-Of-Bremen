@@ -18,6 +18,7 @@ public class MusicManager : MonoBehaviour
     public AudioClip correctSimon;
     public AudioClip incorrectSimon;
     public AudioClip unlock;
+    public AudioClip fight;
 
 
     private void Awake()
@@ -47,7 +48,11 @@ public class MusicManager : MonoBehaviour
         {
             audioSourceBackground.clip = background;
         }
+        else if (audioName == "fight")
+        {
+            audioSourceBackground.clip = fight;
 
+        }
         if (audioName != "stop")
             audioSourceBackground.Play();
     }

@@ -6,5 +6,6 @@ public class ExteriorDoorTrigger : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         EventManager.TriggerEvent(EventType.GoInside, null);
+
     }
 }

@@ -47,13 +47,12 @@ public class HeartManager : MonoBehaviour
     {
     }
 
-    private void OnShowHearts(object number)
+    private void OnShowHearts(object _)
     {
-        noOfHearts = (int)number;
         numberOfShownHearts = noOfHearts;
 
-        shownHearts = new GameObject[noOfHearts];
-        Array.Copy(hearts, 0, shownHearts, 0, noOfHearts);
+        shownHearts = new GameObject[numberOfShownHearts];
+        Array.Copy(hearts, 0, shownHearts, 0, numberOfShownHearts);
 
         for (int i = 0; i < shownHearts.Length; i++)
         {
