@@ -287,11 +287,10 @@ public class StoryManager : MonoBehaviour
                 robberHouseStarted = true;
                 List<Monologue> dialogue = new List<Monologue>();
                 List<Monologue> dialogue2 = new List<Monologue>();
-                dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
-
                 if (haveDog && haveCock && haveCat) //done
                 {
                     // listen at window
+                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
                     dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
                     dialogue.Add(new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"));
                     dialogue.Add(new Monologue("Dog", "I'll try."));
@@ -320,6 +319,7 @@ public class StoryManager : MonoBehaviour
                 else if (haveDog && haveCock && !haveCat)//done
                 {
                     // listen at window
+                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
                     dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
                     dialogue.Add(new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"));
                     dialogue.Add(new Monologue("Dog", "I'll try."));
@@ -373,6 +373,7 @@ public class StoryManager : MonoBehaviour
                 else if (haveDog && !haveCock && haveCat) //done
                 {
                     // listen at window
+                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
                     dialogue.Add(new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"));
                     dialogue.Add(new Monologue("Dog", "I'll try."));
                     dialogue.Add(new Monologue("???", "That was a nice load we got from that caravan, hahaha."));
@@ -415,6 +416,7 @@ public class StoryManager : MonoBehaviour
                 }
                 else if (!haveDog && haveCock && !haveCat)//done
                 {
+                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
                     dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
                     dialogue.Add(new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"));
                     dialogue.Add(new Monologue("Rooster", "We'll have to wait outside until they come out. I can try and convince them to leave the house."));
@@ -423,6 +425,7 @@ public class StoryManager : MonoBehaviour
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
 
+                    await Wait.ForSeconds(8f);
                     // unlock door
                     EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
                     EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
@@ -447,17 +450,17 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.RemoveFollower, "Rooster");
                     EventManager.TriggerEvent(EventType.DisableMovement, null);
                     Vector3 donkeyPosition = GameObject.Find("Ass").transform.position;
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rooster", donkeyPosition, MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rooster", donkeyPosition + new Vector3(16, 16, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(1f);
                     EventManager.TriggerEvent(EventType.AddCharacterToControl, "Rooster");
                     EventManager.TriggerEvent(EventType.EnableMovement, null);
 
                     dialogue2.Add(new Monologue("Donkey", "Boo!"));
                     dialogue2.Add(new Monologue("Rooster", "Boo!!!"));
-                    dialogue2.Add(new Monologue("Robber", "Ahh!"));
-                    dialogue2.Add(new Monologue("Robber", "Eek!"));
-                    dialogue2.Add(new Monologue("Robber", "Oh dear."));
-                    dialogue2.Add(new Monologue("Robber", "Arrrrrrrrrrrrrrrrrrrrrrrrrrrrgghhh!!!!!!?"));
+                    dialogue2.Add(new Monologue("???", "Ahh!"));
+                    dialogue2.Add(new Monologue("???", "Eek!"));
+                    dialogue2.Add(new Monologue("???", "EEEE!!"));
+                    dialogue2.Add(new Monologue("???", "AAAAHHHH!!!!!!"));
 
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
@@ -502,19 +505,20 @@ public class StoryManager : MonoBehaviour
                     await EventManager.WaitForEvent(EventType.EndFadeOut);
                     EventManager.TriggerEvent(EventType.EnableMovement, null);
 
-                    EventManager.TriggerEvent(EventType.ShowObject, "Rob");
-                    EventManager.TriggerEvent(EventType.ShowObject, "Bab");
-                    EventManager.TriggerEvent(EventType.ShowObject, "Bob");
-                    EventManager.TriggerEvent(EventType.ShowObject, "Rab");
-
                     GameObject.Find("Rob").transform.localPosition = new Vector3(5054, -23, 0);
                     GameObject.Find("Bab").transform.localPosition = new Vector3(5054, -23, 0);
                     GameObject.Find("Bob").transform.localPosition = new Vector3(5054, -23, 0);
                     GameObject.Find("Rab").transform.localPosition = new Vector3(5054, -23, 0);
 
+                    EventManager.TriggerEvent(EventType.ShowObject, "Rob");
+                    EventManager.TriggerEvent(EventType.ShowObject, "Bab");
+                    EventManager.TriggerEvent(EventType.ShowObject, "Bob");
+                    EventManager.TriggerEvent(EventType.ShowObject, "Rab");
+
                     dialogue.Clear();
-                    dialogue.Add(new Monologue("Robber", "HEY! You're not a real monster!"));
-                    dialogue.Add(new Monologue("Robber", "You'll have to fight us if you want this house!"));
+                    dialogue.Add(new Monologue("???", "!!!!!!"));
+                    dialogue.Add(new Monologue("???", "!!!!!!!!!!!!!!!"));
+                    dialogue.Add(new Monologue("Donkey", "I think they realised we aren't a real monster..."));
                     dialogue.Add(new Monologue("Rooster", "Bring it on!"));
 
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
@@ -528,6 +532,7 @@ public class StoryManager : MonoBehaviour
                 else if (haveDog && !haveCock && !haveCat)
                 {
                     // listen at window
+                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
                     dialogue.Add(new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"));
                     dialogue.Add(new Monologue("Dog", "I'll try."));
                     dialogue.Add(new Monologue("???", "That was a nice load we got from that caravan, hahaha."));
@@ -602,6 +607,7 @@ public class StoryManager : MonoBehaviour
                 }
                 else if (!haveDog && !haveCock && !haveCat)
                 {
+                    dialogue.Add(new Monologue("Donkey", "It's a house. There's a light in the window."));
                     dialogue.Add(new Monologue("Donkey", "I'll have to wait outside until they come out. Maybe they can give me somewhere to stay."));
                     // wait outside, robbers fight because they don't understand
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
