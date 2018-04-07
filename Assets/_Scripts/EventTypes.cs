@@ -44,6 +44,7 @@ public enum EventType
     RemoveHeartFromDisplay,
     AddHeart,
     DisplayInfoMessage,
+    EndMove,
 }
 
 [System.Serializable]
