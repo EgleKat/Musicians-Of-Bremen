@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine; 
 
 public class InputManager : MonoBehaviour
 {
 
-    public HashSet<string> gameObjectsToControl;
+    private HashSet<string> gameObjectsToControl = new HashSet<string> {"Ass"};
 
     private static readonly Dictionary<KeyCode, Vector3> movementKeys = new Dictionary<KeyCode, Vector3> {
         {KeyCode.W, Vector3.up},
