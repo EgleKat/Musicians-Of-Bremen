@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: bbe3f4c0b6efc6547a148f8214112601
+timeCreated: 1522957884
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - projectile: {fileID: 1294457077790280, guid: 1ccb2f903e357694b9b5bf5cc76ed186,
+      type: 2}
+  - deathSprite: {fileID: 21300000, guid: d4d06ac5e5adb6d4c9d987587e0295c7, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
