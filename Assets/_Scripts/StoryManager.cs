@@ -510,10 +510,10 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.ShowObject, "Bob");
                     EventManager.TriggerEvent(EventType.ShowObject, "Rab");
 
-                    GameObject.Find("Rob").transform.localPosition = new Vector3(5054, -23, 0);
-                    GameObject.Find("Bab").transform.localPosition = new Vector3(5054, -23, 0);
-                    GameObject.Find("Bob").transform.localPosition = new Vector3(5054, -23, 0);
-                    GameObject.Find("Rab").transform.localPosition = new Vector3(5054, -23, 0);
+                    GameObject.Find("Rob").transform.localPosition = new Vector3(5045, -50, 0);
+                    GameObject.Find("Bab").transform.localPosition = new Vector3(5050, -50, 0);
+                    GameObject.Find("Bob").transform.localPosition = new Vector3(5055, -50, 0);
+                    GameObject.Find("Rab").transform.localPosition = new Vector3(5060, -50, 0);
 
                     dialogue.Clear();
                     dialogue.Add(new Monologue("???", "!!!!!!"));
@@ -577,13 +577,13 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
 
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5040, -50, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5045, -50, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5050, -50, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5055, -50, 0), MoveCommand.MoveType.Location));
 
                     await Wait.ForSeconds(2f);
                     EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
@@ -642,13 +642,13 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
 
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5045, -50, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5050, -50, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5055, -50, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5060, -50, 0), MoveCommand.MoveType.Location));
 
                     await Wait.ForSeconds(2f);
                     EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
