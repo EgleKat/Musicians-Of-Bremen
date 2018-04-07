@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class RobberShoot : MonoBehaviour
 {
-    private bool shot = true;
+    private bool shot = false;
+
     public GameObject projectile;
 
     // Use this for initialization
@@ -27,6 +28,10 @@ public class RobberShoot : MonoBehaviour
     {
         Instantiate(projectile, gameObject.transform.position, gameObject.transform.rotation);
         yield return new WaitForSeconds(2f);
+        shot = true;
+    }
+    public void StartShooting()
+    {
         shot = true;
     }
 }

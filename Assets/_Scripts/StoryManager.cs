@@ -57,9 +57,6 @@ public class StoryManager : MonoBehaviour
     private Conversation robberTreeWCat = new Conversation("RobberTree", new Monologue[] { new Monologue("Cat", "I can fit through here."), new Monologue("Donkey", "See what you can find.") });
     private Conversation robberTree = new Conversation("RobberTree", new Monologue[] { new Monologue("Donkey", "What a small hole. It would need someone very small and flexible to fit through.") });
 
-    //Robbers with all animals - chat
-    private Conversation RobberConversation = new Conversation("RobberConversation", new string[] { "Rooster", "Don't shoot! We're here to talk!", "Robbers", "A talking chicken, I'm intrigued, continue...", "Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together.", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?", "Rooster", "Yes!", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all." });
-
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
     public bool haveDog = false;
@@ -75,6 +72,8 @@ public class StoryManager : MonoBehaviour
 
     private string endOfFollowerQueue = "Ass";
     private bool treeComplete = false;
+
+    public Vector3[] robberPositionsToMoveTo;
 
     void Awake()
     {
@@ -407,6 +406,13 @@ public class StoryManager : MonoBehaviour
                     {
                         colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
                     } while (colliderName != "RobberHouseInside");
+
+                    dialogue2.Add(new Monologue("Bab", "Get rekt madafakaa"));
+
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
+                    await EventManager.WaitForEvent(EventType.EndDialogue);
+
+                    EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
                 }
                 else if (!haveDog && haveCock && !haveCat)
                 {
@@ -506,6 +512,37 @@ public class StoryManager : MonoBehaviour
             await EventManager.WaitForEvent(EventType.EndDialogue);
 
 
+        }
+        else if (interactionName == "BossBattle")
+        {
+
+            //Display hearts
+            EventManager.TriggerEvent(EventType.ShowHearts, null);
+
+            EventManager.TriggerEvent(EventType.DisableMovement, null);
+
+            //Move owners to the side
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bob", robberPositionsToMoveTo[0], MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rob", robberPositionsToMoveTo[1], MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rab", robberPositionsToMoveTo[2], MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bab", robberPositionsToMoveTo[3], MoveCommand.MoveType.Location));
+
+
+            await EventManager.WaitForEvent(EventType.EndMove);
+            await EventManager.WaitForEvent(EventType.EndMove);
+            await EventManager.WaitForEvent(EventType.EndMove);
+            await EventManager.WaitForEvent(EventType.EndMove);
+
+
+
+            //Start Music
+            EventManager.TriggerEvent(EventType.ChangeMusic, "fight");
+
+
+            //Enable movement
+            EventManager.TriggerEvent(EventType.EnableMovement, null);
+
+            //Move animals to side
         }
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
