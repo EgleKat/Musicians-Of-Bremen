@@ -17,6 +17,7 @@ public class MusicManager : MonoBehaviour
     public AudioClip br_3;
     public AudioClip correctSimon;
     public AudioClip incorrectSimon;
+    public AudioClip unlock;
 
 
     private void Awake()
@@ -87,6 +88,10 @@ public class MusicManager : MonoBehaviour
         {
             audioSourceEffect.clip = incorrectSimon;
 
+        }
+        else if (audioName == "unlock")
+        {
+            audioSourceEffect.clip = unlock;
         }
 
         audioSourceEffect.Play();

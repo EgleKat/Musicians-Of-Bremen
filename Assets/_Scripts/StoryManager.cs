@@ -281,6 +281,7 @@ public class StoryManager : MonoBehaviour
             {
                 robberHouseStarted = true;
                 List<Monologue> dialogue = new List<Monologue>();
+                List<Monologue> dialogue2 = new List<Monologue>();
                 dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
 
                 if (haveDog && haveCock && haveCat)
@@ -303,6 +304,25 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseUnlockWithCat");
+
+                    string colliderName;
+                    do
+                    {
+                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
+                    } while (colliderName != "RobberHouseInside");
+
+                    dialogue2.Add(new Monologue("Rooster", "Don't shoot! We're here to talk!"));
+                    dialogue2.Add(new Monologue("Robber", "A talking chicken, I'm intrigued, continue..."));
+                    dialogue2.Add(new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together."));
+                    dialogue2.Add(new Monologue("Robber", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"));
+                    dialogue2.Add(new Monologue("Rooster", "Yes!"));
+                    dialogue2.Add(new Monologue("Robber", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all."));
+
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
+                    await EventManager.WaitForEvent(EventType.EndDialogue);
+
+                    EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Black", 6f));
+
                 }
                 else if (haveDog && haveCock && !haveCat)
                 {
@@ -342,6 +362,11 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseUnlockWithCat");
+                    string colliderName;
+                    do
+                    {
+                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
+                    } while (colliderName != "RobberHouseInside");
                 }
                 else if (!haveDog && haveCock && haveCat)
                 {
@@ -355,6 +380,11 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseUnlockWithCat");
+                    string colliderName;
+                    do
+                    {
+                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
+                    } while (colliderName != "RobberHouseInside");
                 }
                 else if (!haveDog && !haveCock && haveCat)
                 {
@@ -367,6 +397,11 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseUnlockWithCat");
+                    string colliderName;
+                    do
+                    {
+                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
+                    } while (colliderName != "RobberHouseInside");
                 }
                 else if (!haveDog && haveCock && !haveCat)
                 {
