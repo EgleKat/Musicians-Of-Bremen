@@ -71,6 +71,7 @@ public class StoryManager : MonoBehaviour
     private bool cockSaved = false;
     private bool simonSaysStarted = false;
     private bool robberHouseStarted = false;
+    private bool haveBushHeart = false;
 
     private string endOfFollowerQueue = "Ass";
     private bool treeComplete = false;
@@ -184,11 +185,15 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "BushHeart")
         {
-            EventManager.TriggerEvent(EventType.AddHeart, 1);
-            EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Received a heart.");
+            if (!haveBushHeart)
+            {
+                EventManager.TriggerEvent(EventType.AddHeart, 1);
+                EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Received a heart.");
 
-            EventManager.TriggerEvent(EventType.DisplayDialogue, donkeySaysUseful);
-            await EventManager.WaitForEvent(EventType.EndDialogue);
+                EventManager.TriggerEvent(EventType.DisplayDialogue, donkeySaysUseful);
+                await EventManager.WaitForEvent(EventType.EndDialogue);
+                haveBushHeart = true;
+            }
         }
         else if (interactionName == "MazeStart")
         {
