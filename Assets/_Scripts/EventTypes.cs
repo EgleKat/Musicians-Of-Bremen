@@ -46,6 +46,8 @@ public enum EventType
     DisplayInfoMessage,
     EndMove,
     StartShooting,
+    AddCharacterToControl,
+    RemoveCharacterToControl,
 }
 
 [System.Serializable]
