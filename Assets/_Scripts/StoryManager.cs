@@ -450,6 +450,24 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
+
+                    EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
+                    EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
+
+                    EventManager.TriggerEvent(EventType.PlaySound, "unlock");
+
+                    string colliderName;
+                    do
+                    {
+                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
+                    } while (colliderName != "RobberHouseInside");
+
+                    dialogue2.Add(new Monologue("Bab", "Get rekt madafakaa"));
+
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
+                    await EventManager.WaitForEvent(EventType.EndDialogue);
+
+                    EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
                 }
             }
         }
@@ -522,10 +540,10 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.DisableMovement, null);
 
             //Move owners to the side
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bob", robberPositionsToMoveTo[0], MoveCommand.MoveType.Location));
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rob", robberPositionsToMoveTo[1], MoveCommand.MoveType.Location));
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rab", robberPositionsToMoveTo[2], MoveCommand.MoveType.Location));
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bab", robberPositionsToMoveTo[3], MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rob", robberPositionsToMoveTo[0], MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bab", robberPositionsToMoveTo[1], MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bob", robberPositionsToMoveTo[2], MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rab", robberPositionsToMoveTo[3], MoveCommand.MoveType.Location));
 
 
             await EventManager.WaitForEvent(EventType.EndMove);
@@ -542,6 +560,8 @@ public class StoryManager : MonoBehaviour
             //Enable movement
             EventManager.TriggerEvent(EventType.EnableMovement, null);
 
+            //Start shooting
+            EventManager.TriggerEvent(EventType.StartShooting, null);
             //Move animals to side
         }
 

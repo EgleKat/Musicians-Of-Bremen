@@ -1,17 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RobberShoot : MonoBehaviour
 {
     private bool shot = false;
-
+    public float shotDelay;
     public GameObject projectile;
 
-    // Use this for initialization
-    void Start()
-    {
 
+
+    private void Awake()
+    {
+        EventManager.AddListener(EventType.StartShooting, StartShooting);
+    }
+
+    private void StartShooting(object _)
+    {
+        shot = true;
     }
 
     // Update is called once per frame
@@ -26,12 +33,8 @@ public class RobberShoot : MonoBehaviour
 
     IEnumerator Shoot()
     {
-        Instantiate(projectile, gameObject.transform.position, gameObject.transform.rotation);
-        yield return new WaitForSeconds(2f);
-        shot = true;
-    }
-    public void StartShooting()
-    {
+        Instantiate(projectile, gameObject.transform.position + new Vector3(0,16,0), gameObject.transform.rotation);
+        yield return new WaitForSeconds(shotDelay);
         shot = true;
     }
 }

@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class MoveBullet : MonoBehaviour
 {
-
-    // Use this for initialization
-    void Start()
-    {
-    }
+    public float speed = 1;
 
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.position = new Vector3(gameObject.transform.position.x - 1, gameObject.transform.position.y, gameObject.transform.position.z);
+        gameObject.transform.position = new Vector3((gameObject.transform.position.x - speed), gameObject.transform.position.y, gameObject.transform.position.z);
 
 
     }
