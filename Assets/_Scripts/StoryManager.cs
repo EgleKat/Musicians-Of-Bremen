@@ -316,20 +316,8 @@ public class StoryManager : MonoBehaviour
                         colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
                     } while (colliderName != "RobberHouseInside");
 
-                    dialogue2.Add(new Monologue("Rooster", "Don't shoot! We're here to talk!"));
-                    dialogue2.Add(new Monologue("Robber", "A talking chicken, I'm intrigued, continue..."));
-                    dialogue2.Add(new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together."));
-                    dialogue2.Add(new Monologue("Robber", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"));
-                    dialogue2.Add(new Monologue("Rooster", "Yes!"));
-                    dialogue2.Add(new Monologue("Robber", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all."));
-
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-
-                    EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Black", 6f));
-
                 }
-                else if (haveDog && haveCock && !haveCat)
+                else if (haveDog && haveCock && !haveCat)//done
                 {
                     // listen at window
                     dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
@@ -348,6 +336,39 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
+
+                    // unlock door
+                    EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
+                    EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
+
+                    EventManager.TriggerEvent(EventType.PlaySound, "unlock");
+
+                    // move robbers into position
+                    EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5150, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5110, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5070, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5030, -60, 0), MoveCommand.MoveType.Location));
+
+                    await Wait.ForSeconds(0.2f);
+
+                    dialogue2.Add(new Monologue("Rooster", "Don't shoot! We're here to talk!"));
+                    dialogue2.Add(new Monologue("Robber", "A talking chicken, I'm intrigued, continue..."));
+                    dialogue2.Add(new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together."));
+                    dialogue2.Add(new Monologue("Robber", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"));
+                    dialogue2.Add(new Monologue("Rooster", "Yes!"));
+                    dialogue2.Add(new Monologue("Robber", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all."));
+
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
+                    await EventManager.WaitForEvent(EventType.EndDialogue);
+
+                    EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Black", 6f));
                 }
                 else if (haveDog && !haveCock && haveCat) //done
                 {
@@ -384,38 +405,54 @@ public class StoryManager : MonoBehaviour
 
                     EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
                 }
-                else if (!haveDog && haveCock && haveCat) //done
+                else if (!haveDog && haveCock && haveCat)
+                {
+                    // not reachable
+                }
+                else if (!haveDog && !haveCock && haveCat)
+                {
+                    // not reachable
+                }
+                else if (!haveDog && haveCock && !haveCat)//done
                 {
                     dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
                     dialogue.Add(new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"));
-                    dialogue.Add(new Monologue("Rooster", "We have to make sure that they don't come back."));
-                    dialogue.Add(new Monologue("Donkey", "I know! Get on my back. In the shadows we will look frightening!"));
-                    dialogue.Add(new Monologue("Rooster", "Good idea!"));
-                    dialogue.Add(new Monologue("Cat", "Wait, I can sneak in through the window and unlock it on the inside."));
-                    // go inside, scare the robbers, they come back the next day and fight
+                    dialogue.Add(new Monologue("Rooster", "We'll have to wait outside until they come out. I can try and convince them to leave the house."));
+                    // wait outside, fight robbers to steal house
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
+                    EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
 
-                    EventManager.TriggerEvent(EventType.RemoveFollower, "Cat");
+                    // unlock door
+                    EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
+                    EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
+
+                    EventManager.TriggerEvent(EventType.PlaySound, "unlock");
+
+                    // move robbers into position
+                    EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5150, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5110, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5070, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5030, -60, 0), MoveCommand.MoveType.Location));
+
+                    await Wait.ForSeconds(1f);
+
                     EventManager.TriggerEvent(EventType.RemoveFollower, "Rooster");
                     EventManager.TriggerEvent(EventType.DisableMovement, null);
                     Vector3 donkeyPosition = GameObject.Find("Ass").transform.position;
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", donkeyPosition, MoveCommand.MoveType.Location));
                     EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rooster", donkeyPosition, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(1f);
-                    EventManager.TriggerEvent(EventType.AddCharacterToControl, "Cat");
                     EventManager.TriggerEvent(EventType.AddCharacterToControl, "Rooster");
                     EventManager.TriggerEvent(EventType.EnableMovement, null);
 
-
-                    string colliderName;
-                    do
-                    {
-                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
-                    } while (colliderName != "RobberHouseInside");
-
                     dialogue2.Add(new Monologue("Donkey", "Boo!"));
-                    dialogue2.Add(new Monologue("Cat", "Boo."));
                     dialogue2.Add(new Monologue("Rooster", "Boo!!!"));
                     dialogue2.Add(new Monologue("Robber", "Ahh!"));
                     dialogue2.Add(new Monologue("Robber", "Eek!"));
@@ -425,17 +462,26 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
 
-                    //robbers run away
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rob", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bab", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bob", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rab", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(0, 0, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(0, 0, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(0, 0, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(0, 0, 0), MoveCommand.MoveType.Location));
 
                     // move the robbers outside - hide them
-                    await Wait.ForSeconds(3f);
+                    await Wait.ForSeconds(5f);
+                    EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
+                    EventManager.TriggerEvent(EventType.HideObject, "BabOutside");
+                    EventManager.TriggerEvent(EventType.HideObject, "BobOutside");
+                    EventManager.TriggerEvent(EventType.HideObject, "RabOutside");
+
+
+
+                    string colliderName;
+                    do
+                    {
+                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
+                    } while (colliderName != "RobberHouseInside");
+
                     EventManager.TriggerEvent(EventType.HideObject, "Rob");
                     EventManager.TriggerEvent(EventType.HideObject, "Bab");
                     EventManager.TriggerEvent(EventType.HideObject, "Bob");
@@ -443,8 +489,7 @@ public class StoryManager : MonoBehaviour
 
                     dialogue.Clear();
                     dialogue.Add(new Monologue("Donkey", "Phew, we did it!"));
-                    dialogue.Add(new Monologue("Cat", "Time for a nap."));
-                    dialogue.Add(new Monologue("Rooster", "Good idea."));
+                    dialogue.Add(new Monologue("Rooster", "Time for a nap"));
 
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
@@ -462,6 +507,11 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.ShowObject, "Bob");
                     EventManager.TriggerEvent(EventType.ShowObject, "Rab");
 
+                    GameObject.Find("Rob").transform.localPosition = new Vector3(5054, -23, 0);
+                    GameObject.Find("Bab").transform.localPosition = new Vector3(5054, -23, 0);
+                    GameObject.Find("Bob").transform.localPosition = new Vector3(5054, -23, 0);
+                    GameObject.Find("Rab").transform.localPosition = new Vector3(5054, -23, 0);
+
                     dialogue.Clear();
                     dialogue.Add(new Monologue("Robber", "HEY! You're not a real monster!"));
                     dialogue.Add(new Monologue("Robber", "You'll have to fight us if you want this house!"));
@@ -470,46 +520,10 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
 
-                    EventManager.TriggerEvent(EventType.RemoveCharacterToControl, "Cat");
                     EventManager.TriggerEvent(EventType.RemoveCharacterToControl, "Rooster");
-                    EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Cat" });
-                    EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Cat", "Rooster" });
+                    EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Rooster" });
 
                     EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
-                }
-                else if (!haveDog && !haveCock && haveCat)
-                {
-                    dialogue.Add(new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"));
-                    dialogue.Add(new Monologue("Cat", "We have to make sure that they don't come back."));
-                    dialogue.Add(new Monologue("Donkey", "I know! Get on my back. In the shadows we will look frightening!"));
-                    dialogue.Add(new Monologue("Cat", "Good idea!"));
-                    dialogue.Add(new Monologue("Cat", "Wait, I can sneak in through the window and unlock it on the inside."));
-                    // go inside, scaring fails, fight robbers to steal house
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-                    EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseUnlockWithCat");
-                    string colliderName;
-                    do
-                    {
-                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
-                    } while (colliderName != "RobberHouseInside");
-
-                    dialogue2.Add(new Monologue("Bab", "Get rekt madafakaa"));
-
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-
-                    EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
-                }
-                else if (!haveDog && haveCock && !haveCat)
-                {
-                    dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"));
-                    dialogue.Add(new Monologue("Rooster", "We'll have to wait outside until they come out. I can try and convince them to leave the house."));
-                    // wait outside, fight robbers to steal house
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-                    EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
                 }
                 else if (haveDog && !haveCock && !haveCat)
                 {
@@ -529,6 +543,62 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
+
+                    // unlock door
+                    EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
+                    EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
+
+                    EventManager.TriggerEvent(EventType.PlaySound, "unlock");
+
+                    // move robbers into position
+                    EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5150, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5110, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5070, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5030, -60, 0), MoveCommand.MoveType.Location));
+
+                    await Wait.ForSeconds(0.2f);
+
+                    dialogue.Clear();
+                    dialogue.Add(new Monologue("Donkey", "Please, don't hurt us, we're your friends. You once looked after us!"));
+                    dialogue.Add(new Monologue("Robber", "What are these animals doing here?"));
+                    dialogue.Add(new Monologue("Robber", "Shoo! go away!"));
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
+                    await EventManager.WaitForEvent(EventType.EndDialogue);
+
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+
+                    await Wait.ForSeconds(2f);
+                    EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
+                    EventManager.TriggerEvent(EventType.HideObject, "BabOutside");
+                    EventManager.TriggerEvent(EventType.HideObject, "BobOutside");
+                    EventManager.TriggerEvent(EventType.HideObject, "RabOutside");
+
+                    string colliderName;
+                    do
+                    {
+                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
+                    } while (colliderName != "RobberHouseInside");
+
+                    dialogue2.Add(new Monologue("Robber", "Why are you coming in here? Scram!"));
+                    dialogue2.Add(new Monologue("Donkey", "They can't understand us, we'll have to fight them..."));
+
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
+                    await EventManager.WaitForEvent(EventType.EndDialogue);
+
+                    EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
                 }
                 else if (!haveDog && !haveCock && !haveCat)
                 {
@@ -538,10 +608,47 @@ public class StoryManager : MonoBehaviour
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
 
+                    // unlock door
                     EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
                     EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
 
                     EventManager.TriggerEvent(EventType.PlaySound, "unlock");
+
+                    // move robbers into position
+                    EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5150, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5110, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5070, -60, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5030, -60, 0), MoveCommand.MoveType.Location));
+
+                    await Wait.ForSeconds(0.2f);
+
+                    dialogue.Clear();
+                    dialogue.Add(new Monologue("Donkey", "Hello, I was wondering if you had any place that I could stay, my owner kicked me out."));
+                    dialogue.Add(new Monologue("???", "????????"));
+                    dialogue.Add(new Monologue("???", "????????????"));
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
+                    await EventManager.WaitForEvent(EventType.EndDialogue);
+
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    await Wait.ForSeconds(0.2f);
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+
+                    await Wait.ForSeconds(2f);
+                    EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
+                    EventManager.TriggerEvent(EventType.HideObject, "BabOutside");
+                    EventManager.TriggerEvent(EventType.HideObject, "BobOutside");
+                    EventManager.TriggerEvent(EventType.HideObject, "RabOutside");
 
                     string colliderName;
                     do
@@ -549,7 +656,8 @@ public class StoryManager : MonoBehaviour
                         colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
                     } while (colliderName != "RobberHouseInside");
 
-                    dialogue2.Add(new Monologue("Bab", "Get rekt madafakaa"));
+                    dialogue2.Add(new Monologue("???", "????!!!!?!"));
+                    dialogue2.Add(new Monologue("Donkey", "I don't think they understand me, I'll have to fight them..."));
 
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
@@ -571,11 +679,6 @@ public class StoryManager : MonoBehaviour
             await EventManager.WaitForEvent(EventType.EndMove);
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", new Vector3(5193, 53, 0), MoveCommand.MoveType.Location));
             await EventManager.WaitForEvent(EventType.EndMove);
-
-            EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
-            EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
-
-            EventManager.TriggerEvent(EventType.PlaySound, "unlock");
 
             EventManager.TriggerEvent(EventType.EnableMovement, null);
         }
@@ -667,7 +770,7 @@ public class StoryManager : MonoBehaviour
 
             await Wait.ForSeconds(3f);
             mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
-            mainCamera.transform.localPosition = new Vector3(0,0,-10);
+            mainCamera.transform.localPosition = new Vector3(0, 0, -10);
 
         }
 
