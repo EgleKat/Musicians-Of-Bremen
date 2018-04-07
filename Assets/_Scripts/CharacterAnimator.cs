@@ -31,7 +31,7 @@ public class CharacterAnimator : MonoBehaviour
 
     private Sprite[] allSprites;
 
-    private Vector3 currentDirection = Vector3.right;
+    private Vector3 currentDirection = Vector3.zero;
     public float frameRate;
 
     private void Awake()

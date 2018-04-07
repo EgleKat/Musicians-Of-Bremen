@@ -74,6 +74,7 @@ public class StoryManager : MonoBehaviour
     private bool treeComplete = false;
 
     public Vector3[] robberPositionsToMoveTo;
+    public Camera mainCamera;
 
     void Awake()
     {
@@ -631,13 +632,15 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bob", robberPositionsToMoveTo[2], MoveCommand.MoveType.Location));
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rab", robberPositionsToMoveTo[3], MoveCommand.MoveType.Location));
 
+            mainCamera.transform.SetParent(GameObject.Find("Bob").transform);
 
             await EventManager.WaitForEvent(EventType.EndMove);
             await EventManager.WaitForEvent(EventType.EndMove);
             await EventManager.WaitForEvent(EventType.EndMove);
             await EventManager.WaitForEvent(EventType.EndMove);
 
-
+            mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
+            mainCamera.transform.localPosition = new Vector3(0, 0, -10);
 
             //Start Music
             EventManager.TriggerEvent(EventType.ChangeMusic, "fight");
@@ -650,6 +653,24 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.StartShooting, null);
             //Move animals to side
         }
+        else if (interactionName == "MurderRock")
+        {
+            //EventManager.TriggerEvent(EventType.DisableMovement, null);
+
+            mainCamera.transform.SetParent(GameObject.Find("MurderRock").transform);
+
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5977, 464, 0), MoveCommand.MoveType.Location));
+            //await EventManager.WaitForEvent(EventType.EndMove);
+
+            await Wait.ForSeconds(1f);
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5976, 46, 0), MoveCommand.MoveType.Location));
+
+            await Wait.ForSeconds(3f);
+            mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
+            mainCamera.transform.localPosition = new Vector3(0,0,-10);
+
+        }
+
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
     }
