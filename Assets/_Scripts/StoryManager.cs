@@ -505,15 +505,15 @@ public class StoryManager : MonoBehaviour
                     await EventManager.WaitForEvent(EventType.EndFadeOut);
                     EventManager.TriggerEvent(EventType.EnableMovement, null);
 
-                    GameObject.Find("Rob").transform.localPosition = new Vector3(5054, -23, 0);
-                    GameObject.Find("Bab").transform.localPosition = new Vector3(5054, -23, 0);
-                    GameObject.Find("Bob").transform.localPosition = new Vector3(5054, -23, 0);
-                    GameObject.Find("Rab").transform.localPosition = new Vector3(5054, -23, 0);
-
                     EventManager.TriggerEvent(EventType.ShowObject, "Rob");
                     EventManager.TriggerEvent(EventType.ShowObject, "Bab");
                     EventManager.TriggerEvent(EventType.ShowObject, "Bob");
                     EventManager.TriggerEvent(EventType.ShowObject, "Rab");
+
+                    GameObject.Find("Rob").transform.localPosition = new Vector3(5054, -23, 0);
+                    GameObject.Find("Bab").transform.localPosition = new Vector3(5054, -23, 0);
+                    GameObject.Find("Bob").transform.localPosition = new Vector3(5054, -23, 0);
+                    GameObject.Find("Rab").transform.localPosition = new Vector3(5054, -23, 0);
 
                     dialogue.Clear();
                     dialogue.Add(new Monologue("???", "!!!!!!"));
