@@ -284,7 +284,7 @@ public class StoryManager : MonoBehaviour
                 List<Monologue> dialogue2 = new List<Monologue>();
                 dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
 
-                if (haveDog && haveCock && haveCat)
+                if (haveDog && haveCock && haveCat) //done
                 {
                     // listen at window
                     dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
@@ -367,6 +367,16 @@ public class StoryManager : MonoBehaviour
                     {
                         colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
                     } while (colliderName != "RobberHouseInside");
+
+                    dialogue2.Add(new Monologue("Dog", "Hey, it's us, your long lost animals!"));
+                    dialogue2.Add(new Monologue("Robber", "What the heck are those animals doing in here!?"));
+                    dialogue2.Add(new Monologue("Cat", "Don't you remember me? The person who stole me was going to kill me because I'm too old now!"));
+                    dialogue2.Add(new Monologue("Robber", "Get out! Scram!"));
+
+                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
+                    await EventManager.WaitForEvent(EventType.EndDialogue);
+
+                    EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
                 }
                 else if (!haveDog && haveCock && haveCat)
                 {
