@@ -154,6 +154,11 @@ public class GridBasedMovement : MonoBehaviour
 
     private void OnMoveCommand(object moveCommand)
     {
+        if (!this.enabled)
+        {
+            return;
+        }
+
         MoveCommand command = (MoveCommand)moveCommand;
 
         if (command.gameObjectToMove == gameObject.name)
