@@ -313,7 +313,7 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseUnlockWithCat");
-
+                    ToggleInteriorRobbers(true);
                     string colliderName;
                     do
                     {
@@ -394,6 +394,8 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
                     EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseUnlockWithCat");
+                    ToggleInteriorRobbers(true);
+
                     string colliderName;
                     do
                     {
@@ -510,10 +512,10 @@ public class StoryManager : MonoBehaviour
 
                     ToggleInteriorRobbers(true);
 
-                    GameObject.Find("Rob").transform.localPosition = new Vector3(5045, -50, 0);
-                    GameObject.Find("Bab").transform.localPosition = new Vector3(5050, -50, 0);
-                    GameObject.Find("Bob").transform.localPosition = new Vector3(5055, -50, 0);
-                    GameObject.Find("Rab").transform.localPosition = new Vector3(5060, -50, 0);
+                    GameObject.Find("Rob").transform.localPosition = robberNearFrontDoor;
+                    GameObject.Find("Bab").transform.localPosition = robberNearFrontDoor - new Vector3(40, 0, 0);
+                    GameObject.Find("Bob").transform.localPosition = robberNearFrontDoor - 2 * new Vector3(40, 0, 0);
+                    GameObject.Find("Rab").transform.localPosition = robberNearFrontDoor - 3 * new Vector3(40, 0, 0);
 
                     dialogue.Clear();
                     dialogue.Add(new Monologue("???", "!!!!!!"));
