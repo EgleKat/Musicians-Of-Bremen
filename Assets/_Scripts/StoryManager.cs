@@ -483,12 +483,10 @@ public class StoryManager : MonoBehaviour
                     do
                     {
                         colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
+                        ToggleInteriorRobbers(false);
                     } while (colliderName != "RobberHouseInside");
 
-                    EventManager.TriggerEvent(EventType.HideObject, "Rob");
-                    EventManager.TriggerEvent(EventType.HideObject, "Bab");
-                    EventManager.TriggerEvent(EventType.HideObject, "Bob");
-                    EventManager.TriggerEvent(EventType.HideObject, "Rab");
+                    ToggleInteriorRobbers(false);
 
                     dialogue.Clear();
                     dialogue.Add(new Monologue("Donkey", "Phew, we did it!"));
@@ -505,10 +503,7 @@ public class StoryManager : MonoBehaviour
                     await EventManager.WaitForEvent(EventType.EndFadeOut);
                     EventManager.TriggerEvent(EventType.EnableMovement, null);
 
-                    EventManager.TriggerEvent(EventType.ShowObject, "Rob");
-                    EventManager.TriggerEvent(EventType.ShowObject, "Bab");
-                    EventManager.TriggerEvent(EventType.ShowObject, "Bob");
-                    EventManager.TriggerEvent(EventType.ShowObject, "Rab");
+                    ToggleInteriorRobbers(true);
 
                     GameObject.Find("Rob").transform.localPosition = new Vector3(5045, -50, 0);
                     GameObject.Find("Bab").transform.localPosition = new Vector3(5050, -50, 0);
@@ -881,6 +876,27 @@ public class StoryManager : MonoBehaviour
             return null;
         }
     }
+    private void ToggleInteriorRobbers(bool toggle)
+    {
+        if (!toggle)
+        {
+            EventManager.TriggerEvent(EventType.HideObject, "Bob");
+            EventManager.TriggerEvent(EventType.HideObject, "Rob");
+            EventManager.TriggerEvent(EventType.HideObject, "Bab");
+            EventManager.TriggerEvent(EventType.HideObject, "Rab");
+        }
+        else
+        {
+            EventManager.TriggerEvent(EventType.ShowObject, "Bob");
+            EventManager.TriggerEvent(EventType.ShowObject, "Rob");
+            EventManager.TriggerEvent(EventType.ShowObject, "Rab");
+            EventManager.TriggerEvent(EventType.ShowObject, "Bab");
+
+
+        }
+
+    }
+
 }
 
 public class Conversation
@@ -917,3 +933,4 @@ public class Monologue
         this.text = text;
     }
 }
+
