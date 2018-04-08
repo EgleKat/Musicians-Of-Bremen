@@ -775,6 +775,12 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", animalPositionstoMove[2], MoveCommand.MoveType.Location));
 
             }
+
+            if (haveCat || haveDog || haveCock)
+            {
+                EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation(null, new Monologue[] { new Monologue("Donkey", "I have to do this alone.") }));
+            }
+
             //Enable movement
             EventManager.TriggerEvent(EventType.EnableMovement, null);
 
