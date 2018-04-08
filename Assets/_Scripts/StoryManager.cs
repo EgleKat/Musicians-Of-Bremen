@@ -73,6 +73,9 @@ public class StoryManager : MonoBehaviour
     private string endOfFollowerQueue = "Ass";
     private bool treeComplete = false;
 
+    private Vector3 robberFrontDoor = new Vector3(5054, -23, 0);
+    private Vector3 robberNearFrontDoor = new Vector3(5150, -60, 0);
+
     public Vector3[] robberPositionsToMoveTo;
     public Camera mainCamera;
 
@@ -345,16 +348,16 @@ public class StoryManager : MonoBehaviour
 
                     // move robbers into position
                     EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5150, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberNearFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5110, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberNearFrontDoor - new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5070, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberNearFrontDoor - 2 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5030, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberNearFrontDoor - 3 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
 
                     await Wait.ForSeconds(0.2f);
 
@@ -434,16 +437,16 @@ public class StoryManager : MonoBehaviour
 
                     // move robbers into position
                     EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5150, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberNearFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5110, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberNearFrontDoor - new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5070, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberNearFrontDoor - 2 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5030, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberNearFrontDoor - 3 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
 
                     await Wait.ForSeconds(1f);
 
@@ -557,16 +560,16 @@ public class StoryManager : MonoBehaviour
 
                     // move robbers into position
                     EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5150, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberNearFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5110, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberNearFrontDoor - new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5070, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberNearFrontDoor - 2 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5030, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberNearFrontDoor - 3 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
 
                     await Wait.ForSeconds(0.2f);
 
@@ -577,13 +580,13 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
 
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberFrontDoor, MoveCommand.MoveType.Location));
 
                     await Wait.ForSeconds(2f);
                     EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
@@ -622,16 +625,16 @@ public class StoryManager : MonoBehaviour
 
                     // move robbers into position
                     EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5150, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberNearFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5110, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberNearFrontDoor - new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5070, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberNearFrontDoor - 2 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
                     EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5030, -60, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberNearFrontDoor - 3 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
 
                     await Wait.ForSeconds(0.2f);
 
@@ -642,13 +645,13 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
                     await EventManager.WaitForEvent(EventType.EndDialogue);
 
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberFrontDoor, MoveCommand.MoveType.Location));
                     await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(5054, -23, 0), MoveCommand.MoveType.Location));
+                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberFrontDoor, MoveCommand.MoveType.Location));
 
                     await Wait.ForSeconds(2f);
                     EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
@@ -682,9 +685,9 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.DisableMovement, null);
 
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", new Vector3(5193, -22, 0), MoveCommand.MoveType.Location));
-            await EventManager.WaitForEvent(EventType.EndMove);
+            await Wait.ForSeconds(2f);
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", new Vector3(5193, 53, 0), MoveCommand.MoveType.Location));
-            await EventManager.WaitForEvent(EventType.EndMove);
+            await Wait.ForSeconds(1f);
 
             EventManager.TriggerEvent(EventType.EnableMovement, null);
         }
