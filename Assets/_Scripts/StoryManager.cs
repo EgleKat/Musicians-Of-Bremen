@@ -74,6 +74,8 @@ public class StoryManager : MonoBehaviour
     private bool treeComplete = false;
 
     public Vector3[] robberPositionsToMoveTo;
+    public Vector3[] animalPositionstoMove;
+
     public Camera mainCamera;
 
     void Awake()
@@ -749,7 +751,25 @@ public class StoryManager : MonoBehaviour
             //Start Music
             EventManager.TriggerEvent(EventType.ChangeMusic, "fight");
 
+            //Detach animals
+            if (haveCock)
+            {
+                EventManager.TriggerEvent(EventType.RemoveFollower, "Rooster");
+                EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rooster", animalPositionstoMove[0], MoveCommand.MoveType.Location));
 
+            }
+            if (haveDog)
+            {
+                EventManager.TriggerEvent(EventType.RemoveFollower, "Dog");
+                EventManager.TriggerEvent(EventType.Move, new MoveCommand("Dog", animalPositionstoMove[1], MoveCommand.MoveType.Location));
+
+            }
+            if (haveCat)
+            {
+                EventManager.TriggerEvent(EventType.RemoveFollower, "Cat");
+                EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", animalPositionstoMove[2], MoveCommand.MoveType.Location));
+
+            }
             //Enable movement
             EventManager.TriggerEvent(EventType.EnableMovement, null);
 
