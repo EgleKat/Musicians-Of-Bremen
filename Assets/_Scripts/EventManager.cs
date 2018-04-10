@@ -93,4 +93,15 @@ public class EventManager : MonoBehaviour
 
         return await taskCompletion.Task;
     }
+
+    public static async Task<T> WaitForEventUntil<T>(EventType eventName, T value) where T : class
+    {
+        T eventValue;
+        do
+        {
+            eventValue = await EventManager.WaitForEvent(eventName) as T;
+        } while (eventValue != value);
+
+        return eventValue;
+    }
 }

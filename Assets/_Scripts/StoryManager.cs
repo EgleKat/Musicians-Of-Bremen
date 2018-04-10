@@ -57,6 +57,9 @@ public class StoryManager : MonoBehaviour
     private Conversation robberTreeWCat = new Conversation("RobberTree", new Monologue[] { new Monologue("Cat", "I can fit through here."), new Monologue("Donkey", "See what you can find.") });
     private Conversation robberTree = new Conversation("RobberTree", new Monologue[] { new Monologue("Donkey", "What a small hole. It would need someone very small and flexible to fit through.") });
 
+    private static readonly string[] RobberNames = { "Rob", "Bab", "Bob", "Rab" };
+    private static readonly string[] RobberNamesOutdoor = { "RobOutdoor", "BabOutdoor", "BobOutdoor", "RabOutdoor" };
+
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
     public bool haveDog = false;
@@ -290,385 +293,138 @@ public class StoryManager : MonoBehaviour
             if (!robberHouseStarted)
             {
                 robberHouseStarted = true;
-                List<Monologue> dialogue = new List<Monologue>();
-                List<Monologue> dialogue2 = new List<Monologue>();
-                if (haveDog && haveCock && haveCat) //done
+
+                if (haveDog && haveCock && haveCat)
                 {
                     // listen at window
-                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
-                    dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"));
-                    dialogue.Add(new Monologue("Dog", "I'll try."));
-                    dialogue.Add(new Monologue("???", "That was a nice load we got from that caravan, hahaha."));
-                    dialogue.Add(new Monologue("Dog", "I think they are robbers."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"));
-                    dialogue.Add(new Monologue("Dog", "WAIT! There's more!"));
-                    dialogue.Add(new Monologue("Robber", "I found out where our animals are kept, we can finally take them back from those  thieves. Oh I remember my sweet donkey, I used to love him with all my heart..."));
-                    dialogue.Add(new Monologue("Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole a donkey from them!"));
-                    dialogue.Add(new Monologue("Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them."));
-                    dialogue.Add(new Monologue("Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help."));
-                    dialogue.Add(new Monologue("Donkey", "Let's wait until they come out."));
                     // go inside, talk to robbers nicely
-                    dialogue.Add(new Monologue("Cat", "Wait, I can sneak in through the window and unlock it on the inside."));
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-                    EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseUnlockWithCat");
-                    ToggleInteriorRobbers(true);
-                    string colliderName;
-                    do
-                    {
-                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
-                    } while (colliderName != "RobberHouseInside");
+                    await WaitForDialogue(YdogYcockYcat1);
 
+                    await WaitForCatUnlock();
+                    await EventManager.WaitForEvent(EventType.GoInside);
+                    ToggleInteriorRobbers(true);
+
+                    await WaitForDialogue(YdogYcockYcat2);
                 }
-                else if (haveDog && haveCock && !haveCat)//done
+                else if (haveDog && haveCock && !haveCat)
                 {
                     // listen at window
-                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
-                    dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"));
-                    dialogue.Add(new Monologue("Dog", "I'll try."));
-                    dialogue.Add(new Monologue("???", "That was a nice load we got from that caravan, hahaha."));
-                    dialogue.Add(new Monologue("Dog", "I think they are robbers."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"));
-                    dialogue.Add(new Monologue("Dog", "WAIT! There's more!"));
-                    dialogue.Add(new Monologue("Robber", "I found out where our animals are kept, we can finally take them back from those  thieves. Oh I remember my sweet donkey, I used to love him with all my heart..."));
-                    dialogue.Add(new Monologue("Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole a donkey from them!"));
-                    dialogue.Add(new Monologue("Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them."));
-                    dialogue.Add(new Monologue("Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help."));
-                    dialogue.Add(new Monologue("Donkey", "Let's wait until they come out."));
                     // wait outside, talk to robbers nicely
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-                    EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
+                    await WaitForDialogue(YdogYcockNcat1);
 
-                    // unlock door
-                    EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
-                    EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
-
-                    EventManager.TriggerEvent(EventType.PlaySound, "unlock");
+                    await FadeInOutBlackNoMovement(3f, 2f);
 
                     // move robbers into position
-                    EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberNearFrontDoor, MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberNearFrontDoor - new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberNearFrontDoor - 2 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberNearFrontDoor - 3 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
+                    ToggleExteriorRobbers(true);
+                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutdoor, 40);
 
-                    await Wait.ForSeconds(0.2f);
-
-                    dialogue2.Add(new Monologue("Rooster", "Don't shoot! We're here to talk!"));
-                    dialogue2.Add(new Monologue("Robber", "A talking chicken, I'm intrigued, continue..."));
-                    dialogue2.Add(new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together."));
-                    dialogue2.Add(new Monologue("Robber", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"));
-                    dialogue2.Add(new Monologue("Rooster", "Yes!"));
-                    dialogue2.Add(new Monologue("Robber", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all."));
-
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-
-                    EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Black", 6f));
+                    await WaitForDialogue(YdogYcockNcat2);
                 }
-                else if (haveDog && !haveCock && haveCat) //done
+                else if (haveDog && !haveCock && haveCat)
                 {
                     // listen at window
-                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"));
-                    dialogue.Add(new Monologue("Dog", "I'll try."));
-                    dialogue.Add(new Monologue("???", "That was a nice load we got from that caravan, hahaha."));
-                    dialogue.Add(new Monologue("Dog", "I think they are robbers."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"));
-                    dialogue.Add(new Monologue("Dog", "WAIT! There's more!"));
-                    dialogue.Add(new Monologue("Robber", "I found out where our animals are kept, we can finally take them back from those  thieves. Oh I remember my sweet donkey, I used to love him with all my heart..."));
-                    dialogue.Add(new Monologue("Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole a donkey from them!"));
-                    dialogue.Add(new Monologue("Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them."));
-                    dialogue.Add(new Monologue("Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help."));
-                    dialogue.Add(new Monologue("Donkey", "Let's wait until they come out."));
                     // go inside, try to talk to robbers, fight robbers
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-                    EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseUnlockWithCat");
+                    await WaitForDialogue(YdogNcockYcat1);
+
+                    await WaitForCatUnlock();
+
+                    await EventManager.WaitForEvent(EventType.GoInside);
                     ToggleInteriorRobbers(true);
 
-                    string colliderName;
-                    do
-                    {
-                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
-                    } while (colliderName != "RobberHouseInside");
-
-                    dialogue2.Add(new Monologue("Dog", "Hey, it's us, your long lost animals!"));
-                    dialogue2.Add(new Monologue("Robber", "What the heck are those animals doing in here!?"));
-                    dialogue2.Add(new Monologue("Cat", "Don't you remember me? The person who stole me was going to kill me because I'm too old now!"));
-                    dialogue2.Add(new Monologue("Robber", "Get out! Scram!"));
-                    dialogue2.Add(new Monologue("Donkey", "They can't understand us, we'll have to fight them..."));
-
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
+                    await WaitForDialogue(YdogNcockYcat2);
 
                     EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
                 }
-                else if (!haveDog && haveCock && haveCat)
+                else if (!haveDog && haveCock && !haveCat)
                 {
-                    // not reachable
-                }
-                else if (!haveDog && !haveCock && haveCat)
-                {
-                    // not reachable
-                }
-                else if (!haveDog && haveCock && !haveCat)//done
-                {
-                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
-                    dialogue.Add(new Monologue("Rooster", "Looks a bit shabby."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"));
-                    dialogue.Add(new Monologue("Rooster", "We'll have to wait outside until they come out. I can try and convince them to leave the house."));
                     // wait outside, fight robbers to steal house
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-                    EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
+                    await WaitForDialogue(NdogYcockNcat1);
 
-                    await Wait.ForSeconds(8f);
-                    // unlock door
-                    EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
-                    EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
+                    await FadeInOutBlackNoMovement(3f, 2f);
 
-                    EventManager.TriggerEvent(EventType.PlaySound, "unlock");
-
-                    // move robbers into position
-                    EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberNearFrontDoor, MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberNearFrontDoor - new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberNearFrontDoor - 2 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberNearFrontDoor - 3 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
-
-                    await Wait.ForSeconds(1f);
-
+                    //activate scare mode - TODO: make this scarier
                     EventManager.TriggerEvent(EventType.RemoveFollower, "Rooster");
-                    EventManager.TriggerEvent(EventType.DisableMovement, null);
                     Vector3 donkeyPosition = GameObject.Find("Ass").transform.position;
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rooster", donkeyPosition + new Vector3(16, 16, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(1f);
+                    GameObject.Find("Rooster").transform.position = donkeyPosition + new Vector3(16, 16, 0);
                     EventManager.TriggerEvent(EventType.AddCharacterToControl, "Rooster");
-                    EventManager.TriggerEvent(EventType.EnableMovement, null);
 
-                    dialogue2.Add(new Monologue("Donkey", "Boo!"));
-                    dialogue2.Add(new Monologue("Rooster", "Boo!!!"));
-                    dialogue2.Add(new Monologue("???", "Ahh!"));
-                    dialogue2.Add(new Monologue("???", "Eek!"));
-                    dialogue2.Add(new Monologue("???", "EEEE!!"));
-                    dialogue2.Add(new Monologue("???", "AAAAHHHH!!!!!!"));
+                    // robbers come outside
+                    UnlockRobberHouse();
+                    ToggleExteriorRobbers(true);
+                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutdoor, 40);
 
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
+                    await WaitForDialogue(NdogYcockNcat2);
 
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", new Vector3(0, 0, 0), MoveCommand.MoveType.Location));
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", new Vector3(0, 0, 0), MoveCommand.MoveType.Location));
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", new Vector3(0, 0, 0), MoveCommand.MoveType.Location));
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", new Vector3(0, 0, 0), MoveCommand.MoveType.Location));
-
-                    // move the robbers outside - hide them
+                    //robbers run away
+                    MoveMultipleSpritesNoWaiting(Vector3.zero, RobberNamesOutdoor, 0);
                     await Wait.ForSeconds(5f);
-                    EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.HideObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.HideObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.HideObject, "RabOutside");
-
-
-
-                    string colliderName;
-                    do
-                    {
-                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
-                        ToggleInteriorRobbers(false);
-                    } while (colliderName != "RobberHouseInside");
-
-                    ToggleInteriorRobbers(false);
-
-                    dialogue.Clear();
-                    dialogue.Add(new Monologue("Donkey", "Phew, we did it!"));
-                    dialogue.Add(new Monologue("Rooster", "Time for a nap"));
-
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-
-                    EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Black", 3f));
-                    EventManager.TriggerEvent(EventType.DisableMovement, null);
-                    await EventManager.WaitForEvent(EventType.EndFadeIn);
-                    await Wait.ForSeconds(2f);
-                    EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("Black", 3f));
-                    await EventManager.WaitForEvent(EventType.EndFadeOut);
-                    EventManager.TriggerEvent(EventType.EnableMovement, null);
-
-                    ToggleInteriorRobbers(true);
-
-                    GameObject.Find("Rob").transform.localPosition = robberNearFrontDoor;
-                    GameObject.Find("Bab").transform.localPosition = robberNearFrontDoor - new Vector3(40, 0, 0);
-                    GameObject.Find("Bob").transform.localPosition = robberNearFrontDoor - 2 * new Vector3(40, 0, 0);
-                    GameObject.Find("Rab").transform.localPosition = robberNearFrontDoor - 3 * new Vector3(40, 0, 0);
-
-                    dialogue.Clear();
-                    dialogue.Add(new Monologue("???", "!!!!!!"));
-                    dialogue.Add(new Monologue("???", "!!!!!!!!!!!!!!!"));
-                    dialogue.Add(new Monologue("Donkey", "I think they realised we aren't a real monster..."));
-                    dialogue.Add(new Monologue("Rooster", "Bring it on!"));
-
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
+                    ToggleExteriorRobbers(false);
 
                     EventManager.TriggerEvent(EventType.RemoveCharacterToControl, "Rooster");
                     EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Rooster" });
+
+                    await EventManager.WaitForEvent(EventType.GoInside);
+                    ToggleInteriorRobbers(false);
+
+                    // nap
+                    await WaitForDialogue(NdogYcockNcat3);
+                    await FadeInOutBlackNoMovement(3f, 2f);
+
+                    //robbers come in again
+                    ToggleInteriorRobbers(true);
+                    MoveMultipleSpritesInstantly(robberFrontDoor, RobberNames, 0);
+                    await MoveMultipleSprites(robberNearFrontDoor, RobberNames, 40);
+
+                    await WaitForDialogue(NdogYcockNcat4);
 
                     EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
                 }
                 else if (haveDog && !haveCock && !haveCat)
                 {
                     // listen at window
-                    dialogue.Add(new Monologue("Donkey", "Look, it's a house. There's a light in the window."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"));
-                    dialogue.Add(new Monologue("Dog", "I'll try."));
-                    dialogue.Add(new Monologue("???", "That was a nice load we got from that caravan, hahaha."));
-                    dialogue.Add(new Monologue("Dog", "I think they are robbers."));
-                    dialogue.Add(new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"));
-                    dialogue.Add(new Monologue("Dog", "WAIT! There's more!"));
-                    dialogue.Add(new Monologue("Robber", "I found out where our animals are kept, we can finally take them back from those  thieves. Oh I remember my sweet donkey, I used to love him with all my heart..."));
-                    dialogue.Add(new Monologue("Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole a donkey from them!"));
-                    dialogue.Add(new Monologue("Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them."));
-                    dialogue.Add(new Monologue("Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help."));
-                    dialogue.Add(new Monologue("Donkey", "Let's wait until they come out."));
                     // wait outside, try to talk to robbers but they don't understand, end up fighting
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-                    EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
+                    await WaitForDialogue(YdogNcockNcat1);
 
-                    // unlock door
-                    EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
-                    EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
+                    await FadeInOutBlackNoMovement(3f, 2f);
 
-                    EventManager.TriggerEvent(EventType.PlaySound, "unlock");
+                    // robbers come out
+                    UnlockRobberHouse();
+                    ToggleExteriorRobbers(true);
+                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutdoor, 40);
+                    await WaitForDialogue(YdogNcockNcat2);
+                    //go back in
+                    await MoveMultipleSprites(robberFrontDoor, RobberNamesOutdoor, 0);
+                    await Wait.ForSeconds(0.5f);
+                    ToggleExteriorRobbers(false);
 
-                    // move robbers into position
-                    EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberNearFrontDoor, MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberNearFrontDoor - new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberNearFrontDoor - 2 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberNearFrontDoor - 3 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
+                    await EventManager.WaitForEvent(EventType.GoInside);
+                    ToggleInteriorRobbers(true);
 
-                    await Wait.ForSeconds(0.2f);
-
-                    dialogue.Clear();
-                    dialogue.Add(new Monologue("Donkey", "Please, don't hurt us, we're your friends. You once looked after us!"));
-                    dialogue.Add(new Monologue("Robber", "What are these animals doing here?"));
-                    dialogue.Add(new Monologue("Robber", "Shoo! go away!"));
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberFrontDoor, MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberFrontDoor - new Vector3(5, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberFrontDoor + new Vector3(5, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberFrontDoor - new Vector3(10, 0, 0), MoveCommand.MoveType.Location));
-
-                    await Wait.ForSeconds(2f);
-                    EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.HideObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.HideObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.HideObject, "RabOutside");
-
-                    string colliderName;
-                    do
-                    {
-                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
-                    } while (colliderName != "RobberHouseInside");
-
-                    dialogue2.Add(new Monologue("Robber", "Why are you coming in here? Scram!"));
-                    dialogue2.Add(new Monologue("Donkey", "They can't understand us, we'll have to fight them..."));
-
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
+                    await WaitForDialogue(YdogNcockNcat3);
 
                     EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
                 }
                 else if (!haveDog && !haveCock && !haveCat)
                 {
-                    dialogue.Add(new Monologue("Donkey", "It's a house. There's a light in the window."));
-                    dialogue.Add(new Monologue("Donkey", "I'll have to wait outside until they come out. Maybe they can give me somewhere to stay."));
                     // wait outside, robbers fight because they don't understand
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-                    EventManager.TriggerEvent(EventType.StartInteraction, "RobberHouseWaitOutside");
+                    await WaitForDialogue(NdogNcockNcat1);
 
-                    // unlock door
-                    EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
-                    EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
+                    await FadeInOutBlackNoMovement(3f, 2f);
 
-                    EventManager.TriggerEvent(EventType.PlaySound, "unlock");
+                    // robbers come out
+                    UnlockRobberHouse();
+                    ToggleExteriorRobbers(true);
+                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutdoor, 40);
+                    await WaitForDialogue(NdogNcockNcat2);
+                    //go back in
+                    await MoveMultipleSprites(robberFrontDoor, RobberNamesOutdoor, 0);
+                    await Wait.ForSeconds(0.5f);
+                    ToggleExteriorRobbers(false);
 
-                    // move robbers into position
-                    EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberNearFrontDoor, MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberNearFrontDoor - new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberNearFrontDoor - 2 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberNearFrontDoor - 3 * new Vector3(40, 0, 0), MoveCommand.MoveType.Location));
+                    await EventManager.WaitForEvent(EventType.GoInside);
+                    ToggleInteriorRobbers(true);
 
-                    await Wait.ForSeconds(0.2f);
-
-                    dialogue.Clear();
-                    dialogue.Add(new Monologue("Donkey", "Hello, I was wondering if you had any place that I could stay, my owner kicked me out."));
-                    dialogue.Add(new Monologue("???", "????????"));
-                    dialogue.Add(new Monologue("???", "????????????"));
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
-
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RobOutside", robberFrontDoor, MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BabOutside", robberFrontDoor - new Vector3(5, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("BobOutside", robberFrontDoor + new Vector3(5, 0, 0), MoveCommand.MoveType.Location));
-                    await Wait.ForSeconds(0.2f);
-                    EventManager.TriggerEvent(EventType.Move, new MoveCommand("RabOutside", robberFrontDoor - new Vector3(10, 0, 0), MoveCommand.MoveType.Location));
-
-                    await Wait.ForSeconds(2f);
-                    EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
-                    EventManager.TriggerEvent(EventType.HideObject, "BabOutside");
-                    EventManager.TriggerEvent(EventType.HideObject, "BobOutside");
-                    EventManager.TriggerEvent(EventType.HideObject, "RabOutside");
-
-                    string colliderName;
-                    do
-                    {
-                        colliderName = (string)await EventManager.WaitForEvent(EventType.TriggerCollide);
-                    } while (colliderName != "RobberHouseInside");
-
-                    dialogue2.Add(new Monologue("???", "????!!!!?!"));
-                    dialogue2.Add(new Monologue("Donkey", "I don't think they understand me, I'll have to fight them..."));
-
-                    EventManager.TriggerEvent(EventType.DisplayDialogue, new Conversation("", dialogue2.ToArray()));
-                    await EventManager.WaitForEvent(EventType.EndDialogue);
+                    await WaitForDialogue(NdogNcockNcat3);
 
                     EventManager.TriggerEvent(EventType.StartInteraction, "BossBattle");
                 }
@@ -678,27 +434,6 @@ public class StoryManager : MonoBehaviour
         {
             EventManager.TriggerEvent(EventType.DisplayDialogue, robberHouseDoorNoEntry);
             await EventManager.WaitForEvent(EventType.EndDialogue);
-        }
-        else if (interactionName == "RobberHouseUnlockWithCat")
-        {
-            EventManager.TriggerEvent(EventType.DisableMovement, null);
-
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", new Vector3(5193, -22, 0), MoveCommand.MoveType.Location));
-            await Wait.ForSeconds(2f);
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", new Vector3(5193, 53, 0), MoveCommand.MoveType.Location));
-            await Wait.ForSeconds(1f);
-
-            EventManager.TriggerEvent(EventType.EnableMovement, null);
-        }
-        else if (interactionName == "RobberHouseWaitOutside")
-        {
-            EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Black", 3f));
-            EventManager.TriggerEvent(EventType.DisableMovement, null);
-            await EventManager.WaitForEvent(EventType.EndFadeIn);
-            await Wait.ForSeconds(2f);
-            EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("Black", 3f));
-            await EventManager.WaitForEvent(EventType.EndFadeOut);
-            EventManager.TriggerEvent(EventType.EnableMovement, null);
         }
         else if (interactionName == "RobberTree")
         {
@@ -744,11 +479,10 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rab", robberPositionsToMoveTo[3], MoveCommand.MoveType.Location));
 
             mainCamera.transform.SetParent(GameObject.Find("Bob").transform);
+            mainCamera.transform.localPosition = new Vector3(0, 0, -10);
 
-            await EventManager.WaitForEvent(EventType.EndMove);
-            await EventManager.WaitForEvent(EventType.EndMove);
-            await EventManager.WaitForEvent(EventType.EndMove);
-            await EventManager.WaitForEvent(EventType.EndMove);
+            await EventManager.WaitForEventUntil(EventType.EndMove, "Rob");
+            await Wait.ForSeconds(0.5f);
 
             mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
             mainCamera.transform.localPosition = new Vector3(0, 0, -10);
@@ -795,12 +529,11 @@ public class StoryManager : MonoBehaviour
             mainCamera.transform.SetParent(GameObject.Find("MurderRock").transform);
 
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5977, 464, 0), MoveCommand.MoveType.Location));
-            //await EventManager.WaitForEvent(EventType.EndMove);
+            await EventManager.WaitForEventUntil(EventType.EndMove, "MurderRock");
 
-            await Wait.ForSeconds(1f);
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5976, 46, 0), MoveCommand.MoveType.Location));
+            await EventManager.WaitForEventUntil(EventType.EndMove, "MurderRock");
 
-            await Wait.ForSeconds(3f);
             mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
             mainCamera.transform.localPosition = new Vector3(0, 0, -10);
 
@@ -808,6 +541,79 @@ public class StoryManager : MonoBehaviour
 
 
         EventManager.TriggerEvent(EventType.EndInteraction, interactionName);
+    }
+
+    private async Task MoveMultipleSprites(Vector3 location, string[] spriteNames, int xGap)
+    {
+        int gap = 0;
+        foreach (string spriteName in spriteNames)
+        {
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand(spriteName, location + new Vector3(gap, 0, 0), MoveCommand.MoveType.Location));
+            await EventManager.WaitForEventUntil(EventType.EndMove, spriteName);
+            gap += xGap;
+        }
+    }
+    private void MoveMultipleSpritesNoWaiting(Vector3 location, string[] spriteNames, int xGap, int yGap = 0)
+    {
+        int gap = 0;
+        int ygap = 0;
+        foreach (string spriteName in spriteNames)
+        {
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand(spriteName, location + new Vector3(gap, ygap, 0), MoveCommand.MoveType.Location));
+            gap += xGap;
+            ygap += yGap;
+        }
+    }
+    private void MoveMultipleSpritesInstantly(Vector3 location, string[] spriteNames, int xGap)
+    {
+        int gap = 0;
+        foreach (string spriteName in spriteNames)
+        {
+            GameObject.Find(spriteName).transform.position = location + new Vector3(gap, 0, 0);
+            gap += xGap;
+        }
+    }
+
+    private async Task FadeInOutBlackNoMovement(float inOutTime, float pauseTime)
+    {
+        EventManager.TriggerEvent(EventType.DisableMovement, null);
+        EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Black", inOutTime));
+        await EventManager.WaitForEvent(EventType.EndFadeIn);
+        await Wait.ForSeconds(pauseTime);
+        EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("Black", inOutTime));
+        await EventManager.WaitForEvent(EventType.EndFadeOut);
+        EventManager.TriggerEvent(EventType.EnableMovement, null);
+    }
+
+    private async Task WaitForCatUnlock()
+    {
+        EventManager.TriggerEvent(EventType.DisableMovement, null);
+
+        EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", new Vector3(5193, -22, 0), MoveCommand.MoveType.Location));
+        Debug.Log("Cat should've finished moving to first location");
+        await EventManager.WaitForEventUntil(EventType.EndMove, "Cat");
+
+        EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", new Vector3(5193, 53, 0), MoveCommand.MoveType.Location));
+        await EventManager.WaitForEventUntil(EventType.EndMove, "Cat");
+        Debug.Log("Cat should've finished moving to second location");
+
+        UnlockRobberHouse();
+
+        EventManager.TriggerEvent(EventType.EnableMovement, null);
+    }
+
+    private void UnlockRobberHouse()
+    {
+        EventManager.TriggerEvent(EventType.HideObject, "RobberHouseDoorNoEntry");
+        EventManager.TriggerEvent(EventType.ShowObject, "RobberHouseDoor");
+
+        EventManager.TriggerEvent(EventType.PlaySound, "unlock");
+    }
+
+    private async Task WaitForDialogue(Conversation conversation)
+    {
+        EventManager.TriggerEvent(EventType.DisplayDialogue, conversation);
+        await EventManager.WaitForEvent(EventType.EndDialogue);
     }
 
     private Conversation GetConversation(string triggerName)
@@ -922,11 +728,179 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.ShowObject, "Rob");
             EventManager.TriggerEvent(EventType.ShowObject, "Rab");
             EventManager.TriggerEvent(EventType.ShowObject, "Bab");
-
-
         }
-
     }
+    private void ToggleExteriorRobbers(bool toggle)
+    {
+        if (!toggle)
+        {
+            EventManager.TriggerEvent(EventType.HideObject, "BobOutdoor");
+            EventManager.TriggerEvent(EventType.HideObject, "RobOutdoor");
+            EventManager.TriggerEvent(EventType.HideObject, "BabOutdoor");
+            EventManager.TriggerEvent(EventType.HideObject, "RabOutdoor");
+        }
+        else
+        {
+            EventManager.TriggerEvent(EventType.ShowObject, "BobOutdoor");
+            EventManager.TriggerEvent(EventType.ShowObject, "RobOutdoor");
+            EventManager.TriggerEvent(EventType.ShowObject, "RabOutdoor");
+            EventManager.TriggerEvent(EventType.ShowObject, "BabOutdoor");
+        }
+    }
+    // dog, cock, cat
+    private Conversation YdogYcockYcat1 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "Look, it's a house. There's a light in the window."),
+new Monologue("Rooster", "Looks a bit shabby."),
+new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"),
+new Monologue("Dog", "I'll try."),
+new Monologue("???", "That was a nice load we got from that caravan, hahaha."),
+new Monologue("Dog", "I think they are robbers."),
+new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"),
+new Monologue("Dog", "WAIT! There's more!"),
+new Monologue("Robber", "I found out where our animals are kept, we can finally take them back from those  thieves. Oh I remember my sweet donkey, I used to love him with all my heart..."),
+new Monologue("Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole a donkey from them!"),
+new Monologue("Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them."),
+new Monologue("Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help."),
+new Monologue("Donkey", "Let's wait until they come out."),
+new Monologue("Cat", "Wait, I can sneak in through the window and unlock it on the inside."),
+});
+    // 2
+    private Conversation YdogYcockYcat2 = new Conversation(new Monologue[] {
+new Monologue("Rooster", "Don't shoot! We're here to talk!"),
+new Monologue("Robber", "A talking chicken, I'm intrigued, continue..."),
+new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together."),
+new Monologue("Robber", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"),
+new Monologue("Rooster", "Yes!"),
+new Monologue("Robber", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all."),
+});
+
+    // dog, cock,!cat
+    private Conversation YdogYcockNcat1 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "Look, it's a house. There's a light in the window."),
+new Monologue("Rooster", "Looks a bit shabby."),
+new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"),
+new Monologue("Dog", "I'll try."),
+new Monologue("???", "That was a nice load we got from that caravan, hahaha."),
+new Monologue("Dog", "I think they are robbers."),
+new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"),
+new Monologue("Dog", "WAIT! There's more!"),
+new Monologue("Robber", "I found out where our animals are kept, we can finally take them back from those  thieves. Oh I remember my sweet donkey, I used to love him with all my heart..."),
+new Monologue("Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole a donkey from them!"),
+new Monologue("Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them."),
+new Monologue("Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help."),
+new Monologue("Donkey", "Let's wait until they come out."),
+});
+    // 2
+    private Conversation YdogYcockNcat2 = new Conversation(new Monologue[] {
+new Monologue("Rooster", "Don't shoot! We're here to talk!"),
+new Monologue("Robber", "A talking chicken, I'm intrigued, continue..."),
+new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together."),
+new Monologue("Robber", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"),
+new Monologue("Rooster", "Yes!"),
+new Monologue("Robber", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all."),
+});
+
+    // dog,!cock, cat
+    private Conversation YdogNcockYcat1 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "Look, it's a house. There's a light in the window."),
+new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"),
+new Monologue("Dog", "I'll try."),
+new Monologue("???", "That was a nice load we got from that caravan, hahaha."),
+new Monologue("Dog", "I think they are robbers."),
+new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"),
+new Monologue("Dog", "WAIT! There's more!"),
+new Monologue("Robber", "I found out where our animals are kept, we can finally take them back from those  thieves. Oh I remember my sweet donkey, I used to love him with all my heart..."),
+new Monologue("Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole a donkey from them!"),
+new Monologue("Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them."),
+new Monologue("Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help."),
+new Monologue("Donkey", "Let's wait until they come out."),
+});
+    // 2
+    private Conversation YdogNcockYcat2 = new Conversation(new Monologue[] {
+new Monologue("Dog", "Hey, it's us, your long lost animals!"),
+new Monologue("Robber", "What the heck are those animals doing in here!?"),
+new Monologue("Cat", "Don't you remember me? The person who stole me was going to kill me because I'm too old now!"),
+new Monologue("Robber", "Get out! Scram!"),
+new Monologue("Donkey", "They can't understand us, we'll have to fight them..."),
+});
+
+    //!dog, cock, cat
+    //!dog,!cock, cat
+
+
+    //!dog, cock,!cat
+    private Conversation NdogYcockNcat1 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "Look, it's a house. There's a light in the window."),
+new Monologue("Rooster", "Looks a bit shabby."),
+new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"),
+new Monologue("Rooster", "We'll have to wait outside until they come out. I can try and convince them to leave the house."),
+});
+    // 2
+    private Conversation NdogYcockNcat2 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "Boo!"),
+new Monologue("Rooster", "Boo!!!"),
+new Monologue("???", "Ahh!"),
+new Monologue("???", "Eek!"),
+new Monologue("???", "EEEE!!"),
+new Monologue("???", "AAAAHHHH!!!!!!"),
+});
+    // 3
+    private Conversation NdogYcockNcat3 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "Phew, we did it!"),
+new Monologue("Rooster", "Time for a nap"),
+});
+    // 4
+    private Conversation NdogYcockNcat4 = new Conversation(new Monologue[] {
+new Monologue("???", "!!!!!!"),
+new Monologue("???", "!!!!!!!!!!!!!!!"),
+new Monologue("Donkey", "I think they realised we aren't a real monster..."),
+new Monologue("Rooster", "Bring it on!"),
+});
+
+    // dog,!cock,!cat
+    private Conversation YdogNcockNcat1 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "Look, it's a house. There's a light in the window."),
+new Monologue("Donkey", "Hmm, dog can you try to  hear anything useful?"),
+new Monologue("Dog", "I'll try."),
+new Monologue("???", "That was a nice load we got from that caravan, hahaha."),
+new Monologue("Dog", "I think they are robbers."),
+new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"),
+new Monologue("Dog", "WAIT! There's more!"),
+new Monologue("Robber", "I found out where our animals are kept, we can finally take them back from those  thieves. Oh I remember my sweet donkey, I used to love him with all my heart..."),
+new Monologue("Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole a donkey from them!"),
+new Monologue("Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them."),
+new Monologue("Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help."),
+new Monologue("Donkey", "Let's wait until they come out."),
+});
+    // 2
+    private Conversation YdogNcockNcat2 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "Please, don't hurt us, we're your friends. You once looked after us!"),
+new Monologue("Robber", "What are these animals doing here?"),
+new Monologue("Robber", "Shoo! go away!"),
+});
+    // 3
+    private Conversation YdogNcockNcat3 = new Conversation(new Monologue[] {
+new Monologue("Robber", "Why are you coming in here? Scram!"),
+new Monologue("Donkey", "They can't understand us, we'll have to fight them..."),
+});
+
+    //!dog,!cock,!cat
+    private Conversation NdogNcockNcat1 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "It's a house. There's a light in the window."),
+new Monologue("Donkey", "I'll have to wait outside until they come out. Maybe they can give me somewhere to stay."),
+});
+    // 2
+    private Conversation NdogNcockNcat2 = new Conversation(new Monologue[] {
+new Monologue("Donkey", "Hello, I was wondering if you had any place that I could stay, my owner kicked me out."),
+new Monologue("???", "????????"),
+new Monologue("???", "????????????"),
+});
+    // 3
+    private Conversation NdogNcockNcat3 = new Conversation(new Monologue[] {
+new Monologue("???", "????!!!!?!"),
+new Monologue("Donkey", "I don't think they understand me, I'll have to fight them..."),
+});
+
 
 }
 
@@ -938,6 +912,11 @@ public class Conversation
     public Conversation(String conversationTrigger, Monologue[] dialogue)
     {
         this.conversationTrigger = conversationTrigger;
+        this.dialogue = dialogue;
+    }
+    public Conversation(Monologue[] dialogue)
+    {
+        this.conversationTrigger = "";
         this.dialogue = dialogue;
     }
 
