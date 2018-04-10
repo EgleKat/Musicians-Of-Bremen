@@ -77,7 +77,7 @@ public class StoryManager : MonoBehaviour
     private bool treeComplete = false;
 
     private Vector3 robberFrontDoor = new Vector3(5054, -23, 0);
-    private Vector3 robberNearFrontDoor = new Vector3(5150, -60, 0);
+    private Vector3 robberNearFrontDoor = new Vector3(4976, -60, 0);
 
     public Vector3[] robberPositionsToMoveTo;
     public Vector3[] animalPositionstoMove;

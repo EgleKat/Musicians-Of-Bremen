@@ -92,7 +92,14 @@ public class CharacterAnimator : MonoBehaviour
         if (command.gameObjectToMove == gameObject.name)
         {
             animator.enabled = false;
-            spriteRendererComponent.sprite = directionIdleSprites[currentDirection];
+            if (currentDirection == Vector3.zero)
+            {
+                spriteRendererComponent.sprite = directionIdleSprites[Vector3.right];
+            }
+            else
+            {
+                spriteRendererComponent.sprite = directionIdleSprites[currentDirection];
+            }
         }
     }
     // #if UNITY_EDITOR
