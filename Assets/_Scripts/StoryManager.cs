@@ -58,7 +58,7 @@ public class StoryManager : MonoBehaviour
     private Conversation robberTree = new Conversation("RobberTree", new Monologue[] { new Monologue("Donkey", "What a small hole. It would need someone very small and flexible to fit through.") });
 
     private static readonly string[] RobberNames = { "Rob", "Bab", "Bob", "Rab" };
-    private static readonly string[] RobberNamesOutdoor = { "RobOutdoor", "BabOutdoor", "BobOutdoor", "RabOutdoor" };
+    private static readonly string[] RobberNamesOutside = { "RobOutside", "BabOutside", "BobOutside", "RabOutside" };
 
     private bool firstTimeOwnerHouse = true;
     private bool firstTimeWitch = true;
@@ -316,7 +316,7 @@ public class StoryManager : MonoBehaviour
 
                     // move robbers into position
                     ToggleExteriorRobbers(true);
-                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutdoor, 40);
+                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutside, 40);
 
                     await WaitForDialogue(YdogYcockNcat2);
                 }
@@ -351,12 +351,13 @@ public class StoryManager : MonoBehaviour
                     // robbers come outside
                     UnlockRobberHouse();
                     ToggleExteriorRobbers(true);
-                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutdoor, 40);
+                    MoveMultipleSpritesInstantly(robberFrontDoor, RobberNamesOutside, 0);
+                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutside, 40);
 
                     await WaitForDialogue(NdogYcockNcat2);
 
                     //robbers run away
-                    MoveMultipleSpritesNoWaiting(Vector3.zero, RobberNamesOutdoor, 0);
+                    MoveMultipleSpritesNoWaiting(Vector3.zero, RobberNamesOutside, 0);
                     await Wait.ForSeconds(5f);
                     ToggleExteriorRobbers(false);
 
@@ -390,10 +391,10 @@ public class StoryManager : MonoBehaviour
                     // robbers come out
                     UnlockRobberHouse();
                     ToggleExteriorRobbers(true);
-                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutdoor, 40);
+                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutside, 40);
                     await WaitForDialogue(YdogNcockNcat2);
                     //go back in
-                    await MoveMultipleSprites(robberFrontDoor, RobberNamesOutdoor, 0);
+                    await MoveMultipleSprites(robberFrontDoor, RobberNamesOutside, 0);
                     await Wait.ForSeconds(0.5f);
                     ToggleExteriorRobbers(false);
 
@@ -414,10 +415,10 @@ public class StoryManager : MonoBehaviour
                     // robbers come out
                     UnlockRobberHouse();
                     ToggleExteriorRobbers(true);
-                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutdoor, 40);
+                    await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutside, 40);
                     await WaitForDialogue(NdogNcockNcat2);
                     //go back in
-                    await MoveMultipleSprites(robberFrontDoor, RobberNamesOutdoor, 0);
+                    await MoveMultipleSprites(robberFrontDoor, RobberNamesOutside, 0);
                     await Wait.ForSeconds(0.5f);
                     ToggleExteriorRobbers(false);
 
@@ -471,6 +472,8 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.ShowHearts, null);
 
             EventManager.TriggerEvent(EventType.DisableMovement, null);
+
+            ToggleInteriorRobbers(true);
 
             //Move owners to the side
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rob", robberPositionsToMoveTo[0], MoveCommand.MoveType.Location));
@@ -734,17 +737,17 @@ public class StoryManager : MonoBehaviour
     {
         if (!toggle)
         {
-            EventManager.TriggerEvent(EventType.HideObject, "BobOutdoor");
-            EventManager.TriggerEvent(EventType.HideObject, "RobOutdoor");
-            EventManager.TriggerEvent(EventType.HideObject, "BabOutdoor");
-            EventManager.TriggerEvent(EventType.HideObject, "RabOutdoor");
+            EventManager.TriggerEvent(EventType.HideObject, "BobOutside");
+            EventManager.TriggerEvent(EventType.HideObject, "RobOutside");
+            EventManager.TriggerEvent(EventType.HideObject, "BabOutside");
+            EventManager.TriggerEvent(EventType.HideObject, "RabOutside");
         }
         else
         {
-            EventManager.TriggerEvent(EventType.ShowObject, "BobOutdoor");
-            EventManager.TriggerEvent(EventType.ShowObject, "RobOutdoor");
-            EventManager.TriggerEvent(EventType.ShowObject, "RabOutdoor");
-            EventManager.TriggerEvent(EventType.ShowObject, "BabOutdoor");
+            EventManager.TriggerEvent(EventType.ShowObject, "BobOutside");
+            EventManager.TriggerEvent(EventType.ShowObject, "RobOutside");
+            EventManager.TriggerEvent(EventType.ShowObject, "RabOutside");
+            EventManager.TriggerEvent(EventType.ShowObject, "BabOutside");
         }
     }
     // dog, cock, cat

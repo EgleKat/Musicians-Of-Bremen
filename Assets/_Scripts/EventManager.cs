@@ -99,8 +99,8 @@ public class EventManager : MonoBehaviour
         T eventValue;
         do
         {
-            eventValue = await EventManager.WaitForEvent(eventName) as T;
-        } while (eventValue != value);
+            eventValue = (T)await EventManager.WaitForEvent(eventName);
+        } while (!eventValue.Equals(value));
 
         return eventValue;
     }

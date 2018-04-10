@@ -23,7 +23,6 @@ public class HeartManager : MonoBehaviour
     private void OnAddHeart(object number)
     {
         noOfHearts += (int)number;
-        Debug.Log(noOfHearts);
     }
 
 

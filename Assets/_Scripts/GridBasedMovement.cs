@@ -104,7 +104,6 @@ public class GridBasedMovement : MonoBehaviour
 
     private void UpdateNextLocation()
     {
-        EventManager.TriggerEvent(EventType.EndMove, gameObject.name);
         previousLocation = transform.localPosition;
         subpixelDelta = Vector3.zero;
         nextLocation = null;
@@ -138,6 +137,7 @@ public class GridBasedMovement : MonoBehaviour
 
     public void StopAnimation()
     {
+        EventManager.TriggerEvent(EventType.EndMove, gameObject.name);
         EventManager.TriggerEvent(EventType.StopMoveAnimation, new MoveCommand(gameObject.name, null, MoveCommand.MoveType.Direction));
     }
 
