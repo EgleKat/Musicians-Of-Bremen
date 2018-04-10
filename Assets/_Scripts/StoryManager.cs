@@ -361,8 +361,6 @@ public class StoryManager : MonoBehaviour
 
                     //robbers run away
                     MoveMultipleSpritesNoWaiting(Vector3.zero, RobberNamesOutside, 0);
-                    await Wait.ForSeconds(5f);
-                    ToggleExteriorRobbers(false);
 
                     EventManager.TriggerEvent(EventType.RemoveCharacterToControl, "Rooster");
                     EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Rooster" });
