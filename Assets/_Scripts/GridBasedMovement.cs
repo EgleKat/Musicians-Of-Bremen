@@ -155,12 +155,12 @@ public class GridBasedMovement : MonoBehaviour
 
     private void OnMoveCommand(object moveCommand)
     {
-        if (isMovementDisabled)
+        MoveCommand command = (MoveCommand)moveCommand;
+
+        if (isMovementDisabled && command.vec.HasValue)
         {
             return;
         }
-
-        MoveCommand command = (MoveCommand)moveCommand;
 
         if (command.gameObjectToMove == gameObject.name)
         {
