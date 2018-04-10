@@ -366,7 +366,7 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Rooster" });
 
                     await EventManager.WaitForEvent(EventType.EndGoInside);
-                    ToggleInteriorRobbers(false);
+                   // ToggleInteriorRobbers(false);
 
                     // nap
                     await WaitForDialogue(NdogYcockNcat3);
@@ -533,10 +533,10 @@ public class StoryManager : MonoBehaviour
 
             mainCamera.transform.SetParent(GameObject.Find("MurderRock").transform);
 
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5977, 464, 0), MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5947, 462, 0), MoveCommand.MoveType.Location));
             await EventManager.WaitForEventUntil(EventType.EndMove, "MurderRock");
 
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5976, 46, 0), MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5947, 46, 0), MoveCommand.MoveType.Location));
             await EventManager.WaitForEventUntil(EventType.EndMove, "MurderRock");
 
             mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
@@ -727,10 +727,15 @@ public class StoryManager : MonoBehaviour
         }
         else
         {
+
             EventManager.TriggerEvent(EventType.ShowObject, "Bob");
+
             EventManager.TriggerEvent(EventType.ShowObject, "Rob");
+
             EventManager.TriggerEvent(EventType.ShowObject, "Rab");
+
             EventManager.TriggerEvent(EventType.ShowObject, "Bab");
+
         }
     }
     private void ToggleExteriorRobbers(bool toggle)
