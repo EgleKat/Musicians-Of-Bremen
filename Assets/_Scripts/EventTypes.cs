@@ -48,6 +48,7 @@ public enum EventType
     StartShooting,
     AddCharacterToControl,
     RemoveCharacterToControl,
+    EndGoInside,
 }
 
 [System.Serializable]

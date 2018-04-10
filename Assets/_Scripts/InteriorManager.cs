@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteriorManager : MonoBehaviour {
+public class InteriorManager : MonoBehaviour
+{
     void Awake()
     {
         EventManager.AddListener(EventType.GoOutside, OnWentOutside);
@@ -21,5 +22,6 @@ public class InteriorManager : MonoBehaviour {
     void OnWentInside(object _)
     {
         gameObject.SetActive(true);
+        EventManager.TriggerEvent(EventType.EndGoInside, null);
     }
 }

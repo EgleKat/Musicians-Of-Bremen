@@ -301,7 +301,7 @@ public class StoryManager : MonoBehaviour
                     await WaitForDialogue(YdogYcockYcat1);
 
                     await WaitForCatUnlock();
-                    await EventManager.WaitForEvent(EventType.GoInside);
+                    await EventManager.WaitForEvent(EventType.EndGoInside);
                     ToggleInteriorRobbers(true);
 
                     await WaitForDialogue(YdogYcockYcat2);
@@ -328,7 +328,7 @@ public class StoryManager : MonoBehaviour
 
                     await WaitForCatUnlock();
 
-                    await EventManager.WaitForEvent(EventType.GoInside);
+                    await EventManager.WaitForEvent(EventType.EndGoInside);
                     ToggleInteriorRobbers(true);
 
                     await WaitForDialogue(YdogNcockYcat2);
@@ -364,7 +364,7 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.RemoveCharacterToControl, "Rooster");
                     EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Rooster" });
 
-                    await EventManager.WaitForEvent(EventType.GoInside);
+                    await EventManager.WaitForEvent(EventType.EndGoInside);
                     ToggleInteriorRobbers(false);
 
                     // nap
@@ -398,7 +398,7 @@ public class StoryManager : MonoBehaviour
                     await Wait.ForSeconds(0.5f);
                     ToggleExteriorRobbers(false);
 
-                    await EventManager.WaitForEvent(EventType.GoInside);
+                    await EventManager.WaitForEvent(EventType.EndGoInside);
                     ToggleInteriorRobbers(true);
 
                     await WaitForDialogue(YdogNcockNcat3);
@@ -422,8 +422,9 @@ public class StoryManager : MonoBehaviour
                     await Wait.ForSeconds(0.5f);
                     ToggleExteriorRobbers(false);
 
-                    await EventManager.WaitForEvent(EventType.GoInside);
+                    await EventManager.WaitForEvent(EventType.EndGoInside);
                     ToggleInteriorRobbers(true);
+
 
                     await WaitForDialogue(NdogNcockNcat3);
 
@@ -593,12 +594,10 @@ public class StoryManager : MonoBehaviour
         EventManager.TriggerEvent(EventType.DisableMovement, null);
 
         EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", new Vector3(5193, -22, 0), MoveCommand.MoveType.Location));
-        Debug.Log("Cat should've finished moving to first location");
         await EventManager.WaitForEventUntil(EventType.EndMove, "Cat");
 
         EventManager.TriggerEvent(EventType.Move, new MoveCommand("Cat", new Vector3(5193, 53, 0), MoveCommand.MoveType.Location));
         await EventManager.WaitForEventUntil(EventType.EndMove, "Cat");
-        Debug.Log("Cat should've finished moving to second location");
 
         UnlockRobberHouse();
 
