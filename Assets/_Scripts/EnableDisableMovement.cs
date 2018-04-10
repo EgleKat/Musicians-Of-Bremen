@@ -5,10 +5,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(GridBasedMovement))]
 [RequireComponent(typeof(CharacterAnimator))]
-public class EnableDisableMovement : MonoBehaviour {
+public class EnableDisableMovement : MonoBehaviour
+{
 
     private GridBasedMovement gridBasedMovement;
-    private CharacterAnimator characterAnimator;
 
     private void Awake()
     {
@@ -16,18 +16,15 @@ public class EnableDisableMovement : MonoBehaviour {
         EventManager.AddListener(EventType.DisableMovement, OnDisableMovement);
 
         gridBasedMovement = GetComponent<GridBasedMovement>();
-        characterAnimator = GetComponent<CharacterAnimator>();
     }
 
     private void OnDisableMovement(object _)
     {
-        gridBasedMovement.enabled = false;
-        characterAnimator.enabled = false;
+        gridBasedMovement.isMovementDisabled = true;
     }
 
-    private void OnEnableMovement(object arg0)
+    private void OnEnableMovement(object _)
     {
-        gridBasedMovement.enabled = true;
-        characterAnimator.enabled = true;
+        gridBasedMovement.isMovementDisabled = false;
     }
 }

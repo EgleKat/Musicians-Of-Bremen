@@ -7,6 +7,7 @@ public class GridBasedMovement : MonoBehaviour
 {
     public int speed;
     public string gameObjectToLead;
+    public bool isMovementDisabled = false;
 
     private int gridSize = 32;
     private MoveCommand nextCommand = null;
@@ -154,6 +155,11 @@ public class GridBasedMovement : MonoBehaviour
 
     private void OnMoveCommand(object moveCommand)
     {
+        if (isMovementDisabled)
+        {
+            return;
+        }
+
         MoveCommand command = (MoveCommand)moveCommand;
 
         if (command.gameObjectToMove == gameObject.name)
