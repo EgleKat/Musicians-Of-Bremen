@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
 
-    private HashSet<string> gameObjectsToControl = new HashSet<string> {"Ass"};
+    private HashSet<string> gameObjectsToControl = new HashSet<string> { "Ass" };
 
     private static readonly Dictionary<KeyCode, Vector3> movementKeys = new Dictionary<KeyCode, Vector3> {
         {KeyCode.W, Vector3.up},
@@ -25,6 +25,16 @@ public class InputManager : MonoBehaviour
     {
         EventManager.AddListener(EventType.AddCharacterToControl, OnAddCharacterToControl);
         EventManager.AddListener(EventType.RemoveCharacterToControl, OnRemoveCharacterToControl);
+        EventManager.AddListener(EventType.DisplayDialogue, OnDisplayDialogue);
+    }
+
+    private void OnDisplayDialogue(object _)
+    {
+        foreach (string gameObjectToControl in gameObjectsToControl)
+        {
+            MoveCommand moveInDirectionCommand = new MoveCommand(gameObjectToControl, null, MoveCommand.MoveType.Direction);
+            EventManager.TriggerEvent(EventType.Move, moveInDirectionCommand);
+        }
     }
 
     private void OnRemoveCharacterToControl(object character)

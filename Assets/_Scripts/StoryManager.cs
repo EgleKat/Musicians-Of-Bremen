@@ -121,17 +121,16 @@ public class StoryManager : MonoBehaviour
                 } while (colliderName != "Donkey Owner");
                 EventManager.TriggerEvent(EventType.PlaySound, "hit");
                 EventManager.TriggerEvent(EventType.RemoveFollower, "Donkey Owner");
-                EventManager.TriggerEvent(EventType.HideObject, "Donkey Owner");
                 EventManager.TriggerEvent(EventType.StopMoving, "Ass");
                 EventManager.TriggerEvent(EventType.ChangeMusic, "stop");
                 //white screen
                 EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("White", 0.1f));
                 await EventManager.WaitForEvent(EventType.EndFadeIn);
-                EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(1190, 710, 0), MoveCommand.MoveType.Location));
+                EventManager.TriggerEvent(EventType.HideObject, "Donkey Owner");
+                EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(1200, 706, 0), MoveCommand.MoveType.Location));
                 await Wait.ForSeconds(1.5f);
 
                 //make beginner marker a collider (not a trigger)
-                // TODO: use events?
                 GameObject donkeyOuter = GameObject.Find("DonkeyHouseOuter");
                 donkeyOuter.GetComponent<BoxCollider2D>().isTrigger = false;
 
@@ -216,7 +215,11 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "MazeEnd" || interactionName == "MazeEndEarly")
         {
-            EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("Darkness", 1f));
+            if (!firstTimeMaze)
+            {
+                EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("Darkness", 1f));
+
+            }
         }
         else if (interactionName == "Dog")
         {
