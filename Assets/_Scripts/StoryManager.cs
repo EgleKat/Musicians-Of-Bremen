@@ -322,6 +322,7 @@ public class StoryManager : MonoBehaviour
                     // move robbers into position
                     ToggleExteriorRobbers(true);
                     await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutside, 40);
+                    await MoveMultipleSprites(robberNearFrontDoor + new Vector3(0, -1, 0), RobberNamesOutside, 40);
 
                     await WaitForDialogue(YdogYcockNcat2);
                 }
@@ -358,6 +359,7 @@ public class StoryManager : MonoBehaviour
                     ToggleExteriorRobbers(true);
                     MoveMultipleSpritesInstantly(robberFrontDoor, RobberNamesOutside, 0);
                     await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutside, 40);
+                    await MoveMultipleSprites(robberNearFrontDoor + new Vector3(0, -1, 0), RobberNamesOutside, 40);
 
                     await WaitForDialogue(NdogYcockNcat2);
 
@@ -378,6 +380,7 @@ public class StoryManager : MonoBehaviour
                     ToggleInteriorRobbers(true);
                     MoveMultipleSpritesInstantly(robberFrontDoor, RobberNames, 0);
                     await MoveMultipleSprites(robberNearFrontDoor, RobberNames, 40);
+                    await MoveMultipleSprites(robberNearFrontDoor + new Vector3(0, 1, 0), RobberNames, 40);
 
                     await WaitForDialogue(NdogYcockNcat4);
 
@@ -395,6 +398,7 @@ public class StoryManager : MonoBehaviour
                     UnlockRobberHouse();
                     ToggleExteriorRobbers(true);
                     await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutside, 40);
+                    await MoveMultipleSprites(robberNearFrontDoor + new Vector3(0, -1, 0), RobberNamesOutside, 40);
                     await WaitForDialogue(YdogNcockNcat2);
                     //go back in
                     await MoveMultipleSprites(robberFrontDoor, RobberNamesOutside, 0);
@@ -419,6 +423,7 @@ public class StoryManager : MonoBehaviour
                     UnlockRobberHouse();
                     ToggleExteriorRobbers(true);
                     await MoveMultipleSprites(robberNearFrontDoor, RobberNamesOutside, 40);
+                    await MoveMultipleSprites(robberNearFrontDoor + new Vector3(0, -1, 0), RobberNamesOutside, 40);
                     await WaitForDialogue(NdogNcockNcat2);
                     //go back in
                     await MoveMultipleSprites(robberFrontDoor, RobberNamesOutside, 0);
@@ -485,11 +490,16 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bob", robberPositionsToMoveTo[2], MoveCommand.MoveType.Location));
             EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rab", robberPositionsToMoveTo[3], MoveCommand.MoveType.Location));
 
+
             mainCamera.transform.SetParent(GameObject.Find("Bob").transform);
             mainCamera.transform.localPosition = new Vector3(0, 0, -10);
 
             await EventManager.WaitForEventUntil(EventType.EndMove, "Rob");
             await Wait.ForSeconds(0.5f);
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rob", robberPositionsToMoveTo[0] + new Vector3(-1, 0, 0), MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bab", robberPositionsToMoveTo[1] + new Vector3(-1, 0, 0), MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Bob", robberPositionsToMoveTo[2] + new Vector3(-1, 0, 0), MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("Rab", robberPositionsToMoveTo[3] + new Vector3(-1, 0, 0), MoveCommand.MoveType.Location));
 
             mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
             mainCamera.transform.localPosition = new Vector3(0, 0, -10);
