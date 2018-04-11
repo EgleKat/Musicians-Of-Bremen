@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class InfoTextManager : MonoBehaviour
 {
     private Text dialogueText;
-    private float waitForSeconds = 8;
+    private float waitForSeconds = 5.5f;
 
     private void Awake()
     {

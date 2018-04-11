@@ -15,7 +15,7 @@ public class StoryManager : MonoBehaviour
     //Witch
     private Conversation talkToWitchFirstConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Who.. Who are you?"), new Monologue("Witch", "???"), new Monologue("Donkey", "You saved me.. Thank you!"), new Monologue("Donkey", "I don't understand what you're saying. I can't understand human."), new Monologue("Witch", "???"), new Monologue("Donkey", "I guess I'll head off. I need to work out what I want to do with my life, now that I'm homeless.") });
     private Conversation talkToWitchConvo = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "???") });
-    private Conversation talkToWitchConvoWithDog = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "You have a strong spirit Donkey, don't waste it. I saved your life so you can save others'."), new Monologue("Witch", "Every life you save will aid you in the future."), new Monologue("Witch", "Oh, and I hid something for you around your owners' house. Look in the bushes.") });
+    private Conversation talkToWitchConvoWithDog = new Conversation("Witch", new Monologue[] { new Monologue("Donkey", "Thank you again for saving my life."), new Monologue("Witch", "You have a strong spirit Donkey, don't waste it. I saved your life so you can save others'."), new Monologue("Witch", "Every life you save will aid you in the future."), new Monologue("Witch", "Oh, and I hid something for you behind your owners' house. Look in the bushes.") });
 
     //Cat
     private Conversation firstCatConvo = new Conversation("Cat", new Monologue[] { new Monologue("Cat", "Hello, Ass, what happened to you?"), new Monologue("Donkey", "My owner went crazy, tried to kill me! You should watch out,  your masters might do the same."), new Monologue("Donkey", "Come with me if you want to  have a chance of life."), new Monologue("Cat", "Pftt my owners would never  do such a thing."), new Monologue("Cat", "Unlike you, I am a superior being and they worship me."), new Monologue("Donkey", "Hmm, If only I could make you believe.") });
@@ -269,7 +269,8 @@ public class StoryManager : MonoBehaviour
                 simonSaysStarted = true;
                 SimonSaysManager simonSaysManager = new SimonSaysManager();
                 SimonSaysManager.ReturnType returnType;
-                EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Repeat the colour code without any mistakes 4 times.");
+                EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Repeat the colour code without any mistakes.");
+                await Wait.ForSeconds(2.5f);
                 do
                 {
                     returnType = await simonSaysManager.Start(4);

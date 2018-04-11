@@ -24,10 +24,18 @@ public class GameOver : MonoBehaviour
 
     }
 
-    private void OnGameOver(object text)
+    private async void OnGameOver(object text)
+    {
+        await Wait.ForSeconds(1.5f);
+        String type = (String)text;
+        GameOverScreen(type);
+
+    }
+
+    private void GameOverScreen(String type)
     {
 
-        String type = (String)text;
+
         gameObject.SetActive(true);
         EventManager.TriggerEvent(EventType.StopShooting, null);
         EventManager.TriggerEvent(EventType.HideObject, "Shot(Clone)");
@@ -57,7 +65,5 @@ public class GameOver : MonoBehaviour
             EventManager.TriggerEvent(EventType.ChangeMusic, "happyEnd");
             variableText.text = killRobbersTogetherText;
         }
-
-
     }
 }
