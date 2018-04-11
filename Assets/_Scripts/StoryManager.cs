@@ -352,7 +352,7 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.RemoveFollower, "Rooster");
                     Vector3 donkeyPosition = GameObject.Find("Ass").transform.position;
                     GameObject.Find("Rooster").transform.position = donkeyPosition + new Vector3(16, 16, 0);
-                    EventManager.TriggerEvent(EventType.AddCharacterToControl, "Rooster");
+                    EventManager.TriggerEvent(EventType.StartRotating, "Rooster");
 
                     // robbers come outside
                     UnlockRobberHouse();
@@ -366,8 +366,8 @@ public class StoryManager : MonoBehaviour
                     //robbers run away
                     MoveMultipleSpritesNoWaiting(Vector3.zero, RobberNamesOutside, 0);
 
-                    EventManager.TriggerEvent(EventType.RemoveCharacterToControl, "Rooster");
                     EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Rooster" });
+                    EventManager.TriggerEvent(EventType.EndRotating, "Rooster");
 
                     await EventManager.WaitForEvent(EventType.EndGoInside);
                     // ToggleInteriorRobbers(false);
@@ -937,7 +937,6 @@ public class Conversation
 {
     public String conversationTrigger;
     public Monologue[] dialogue;
-    //TODO have a condition variable
     public Conversation(String conversationTrigger, Monologue[] dialogue)
     {
         this.conversationTrigger = conversationTrigger;

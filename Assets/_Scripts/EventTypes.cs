@@ -51,6 +51,8 @@ public enum EventType
     EndGoInside,
     GameOver,
     StopShooting,
+    StartRotating,
+    EndRotating,
 }
 
 [System.Serializable]
