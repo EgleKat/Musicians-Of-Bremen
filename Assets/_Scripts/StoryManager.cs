@@ -168,6 +168,9 @@ public class StoryManager : MonoBehaviour
 
             firstTimeWitch = false;
 
+            //Display info message
+            EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Explore the world.");
+
 
         }
         else if (interactionName == "Cat")
@@ -187,6 +190,10 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Cat can climb into small spaces.");
 
             }
+            if (firstTimeCat)
+            {
+                EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Cat doesn't believe you.");
+            }
 
             firstTimeCat = false;
         }
@@ -205,11 +212,13 @@ public class StoryManager : MonoBehaviour
         else if (interactionName == "MazeStart")
         {
             EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Darkness", 1f));
+
             if (firstTimeMaze)
             {
                 Conversation converse = GetConversation(interactionName);
                 EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
                 await EventManager.WaitForEvent(EventType.EndDialogue);
+                EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Finish the maze and save dog.");
                 firstTimeMaze = false;
             }
         }
@@ -260,6 +269,7 @@ public class StoryManager : MonoBehaviour
                 simonSaysStarted = true;
                 SimonSaysManager simonSaysManager = new SimonSaysManager();
                 SimonSaysManager.ReturnType returnType;
+                EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Repeat the colour code without any mistakes 4 times.");
                 do
                 {
                     returnType = await simonSaysManager.Start(4);
@@ -325,6 +335,8 @@ public class StoryManager : MonoBehaviour
                     await MoveMultipleSprites(robberNearFrontDoor + new Vector3(0, -1, 0), RobberNamesOutside, 40);
 
                     await WaitForDialogue(YdogYcockNcat2);
+                    EventManager.TriggerEvent(EventType.GameOver, "happyEnding");
+
                 }
                 else if (haveDog && !haveCock && haveCat)
                 {
@@ -503,6 +515,8 @@ public class StoryManager : MonoBehaviour
 
             mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
             mainCamera.transform.localPosition = new Vector3(0, 0, -10);
+            //Display info message
+            EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Avoid bullets and finish the maze.");
 
             //Start Music
             EventManager.TriggerEvent(EventType.ChangeMusic, "fight");
@@ -798,7 +812,7 @@ new Monologue("Cat", "Wait, I can sneak in through the window and unlock it on t
 new Monologue("Rooster", "Don't shoot! We're here to talk!"),
 new Monologue("Robber", "A talking chicken, I'm intrigued, continue..."),
 new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together."),
-new Monologue("Robber", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"),
+new Monologue("Robber", "I used to have a rooster like you...  Come to think of it, Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"),
 new Monologue("Rooster", "Yes!"),
 new Monologue("Robber", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all."),
 });
