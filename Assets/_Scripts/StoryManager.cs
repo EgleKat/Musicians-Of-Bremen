@@ -308,6 +308,8 @@ public class StoryManager : MonoBehaviour
                     ToggleInteriorRobbers(true);
 
                     await WaitForDialogue(YdogYcockYcat2);
+
+                    EventManager.TriggerEvent(EventType.GameOver, "happyEnding");
                 }
                 else if (haveDog && haveCock && !haveCat)
                 {
@@ -361,14 +363,12 @@ public class StoryManager : MonoBehaviour
 
                     //robbers run away
                     MoveMultipleSpritesNoWaiting(Vector3.zero, RobberNamesOutside, 0);
-                    await Wait.ForSeconds(5f);
-                    ToggleExteriorRobbers(false);
 
                     EventManager.TriggerEvent(EventType.RemoveCharacterToControl, "Rooster");
                     EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Rooster" });
 
                     await EventManager.WaitForEvent(EventType.EndGoInside);
-                    ToggleInteriorRobbers(false);
+                    // ToggleInteriorRobbers(false);
 
                     // nap
                     await WaitForDialogue(NdogYcockNcat3);
@@ -531,18 +531,27 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "MurderRock")
         {
-            //EventManager.TriggerEvent(EventType.DisableMovement, null);
+            EventManager.TriggerEvent(EventType.DisableMovement, null);
+            EventManager.TriggerEvent(EventType.HideObject, "MurderRockCollide");
 
             mainCamera.transform.SetParent(GameObject.Find("MurderRock").transform);
 
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5977, 464, 0), MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5947, 462, 0), MoveCommand.MoveType.Location));
             await EventManager.WaitForEventUntil(EventType.EndMove, "MurderRock");
 
-            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5976, 46, 0), MoveCommand.MoveType.Location));
+            EventManager.TriggerEvent(EventType.Move, new MoveCommand("MurderRock", new Vector3(5947, 46, 0), MoveCommand.MoveType.Location));
             await EventManager.WaitForEventUntil(EventType.EndMove, "MurderRock");
 
             mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
             mainCamera.transform.localPosition = new Vector3(0, 0, -10);
+
+
+            if (haveCock || haveDog || haveCat)
+            {
+                EventManager.TriggerEvent(EventType.GameOver, "killRobbersTogether");
+            }
+            else EventManager.TriggerEvent(EventType.GameOver, "killRobbersAlone");
+
 
         }
 
@@ -729,10 +738,15 @@ public class StoryManager : MonoBehaviour
         }
         else
         {
+
             EventManager.TriggerEvent(EventType.ShowObject, "Bob");
+
             EventManager.TriggerEvent(EventType.ShowObject, "Rob");
+
             EventManager.TriggerEvent(EventType.ShowObject, "Rab");
+
             EventManager.TriggerEvent(EventType.ShowObject, "Bab");
+
         }
     }
     private void ToggleExteriorRobbers(bool toggle)

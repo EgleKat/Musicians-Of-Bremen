@@ -14,7 +14,6 @@ public class HeartManager : MonoBehaviour
     private void Awake()
     {
         EventManager.AddListener(EventType.ShowHearts, OnShowHearts);
-        EventManager.AddListener(EventType.StartCountingHearts, StartCounting);
         EventManager.AddListener(EventType.RemoveHeartFromDisplay, OnRemoveHeartFromDisplay);
         EventManager.AddListener(EventType.AddHeart, OnAddHeart);
 
@@ -35,15 +34,14 @@ public class HeartManager : MonoBehaviour
             GameObject[] newShownHearts = new GameObject[numberOfShownHearts];
             Array.Copy(shownHearts, 0, newShownHearts, 0, numberOfShownHearts);
             shownHearts = newShownHearts;
-        }
-        else
-        {
-            EventManager.TriggerEvent(EventType.StartInteraction, "GameOver");
+
+            if (shownHearts.Length == 0) OutOfHearts();
         }
     }
-
-    private void StartCounting(object a)
+    private void OutOfHearts()
     {
+        Debug.Log("Out of hearts");
+        EventManager.TriggerEvent(EventType.GameOver, "outOfHearts");
     }
 
     private void OnShowHearts(object _)

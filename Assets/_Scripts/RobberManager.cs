@@ -14,13 +14,14 @@ public class RobberManager : MonoBehaviour
     private void Awake()
     {
         EventManager.AddListener(EventType.StartShooting, StartShooting);
+        EventManager.AddListener(EventType.StopShooting, StopShooting);
     }
 
     private void StartShooting(object _)
     {
         shooting = true;
     }
-    private void StopShooting()
+    private void StopShooting(object _)
     {
         shooting = false;
     }
@@ -61,6 +62,6 @@ public class RobberManager : MonoBehaviour
     {
 
         gameObject.GetComponent<SpriteRenderer>().sprite = deathSprite;
-        StopShooting();
+        StopShooting(null);
     }
 }
