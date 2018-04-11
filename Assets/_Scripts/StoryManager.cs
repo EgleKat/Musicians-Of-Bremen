@@ -531,7 +531,8 @@ public class StoryManager : MonoBehaviour
         }
         else if (interactionName == "MurderRock")
         {
-            //EventManager.TriggerEvent(EventType.DisableMovement, null);
+            EventManager.TriggerEvent(EventType.DisableMovement, null);
+            EventManager.TriggerEvent(EventType.HideObject, "MurderRockCollide");
 
             mainCamera.transform.SetParent(GameObject.Find("MurderRock").transform);
 

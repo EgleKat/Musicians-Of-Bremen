@@ -16,7 +16,7 @@ public class GameOver : MonoBehaviour
     String happyEndText = "They lived happily ever after. What happened to the actual thieves? That's a tale for another day...";
     string killRobbersAloneText = "The robbers were no more... The donkey stayed in the house and made it his home. He heard tales of other animals disappearing in the village, but he was safe here - all alone. ";
     string killRobbersTogetherText = "The robbers were no more... the friends stayed in the house and made it their home. They even started talking about making a band. But that's a tale for another day... ";
-    
+
 
     private void Awake()
     {
@@ -26,6 +26,7 @@ public class GameOver : MonoBehaviour
 
     private void OnGameOver(object text)
     {
+
         String type = (String)text;
         gameObject.SetActive(true);
         EventManager.TriggerEvent(EventType.StopShooting, null);
