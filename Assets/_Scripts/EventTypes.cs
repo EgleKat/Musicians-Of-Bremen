@@ -49,6 +49,8 @@ public enum EventType
     AddCharacterToControl,
     RemoveCharacterToControl,
     EndGoInside,
+    GameOver,
+    StopShooting,
 }
 
 [System.Serializable]

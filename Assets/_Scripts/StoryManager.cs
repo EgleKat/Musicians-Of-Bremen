@@ -308,6 +308,8 @@ public class StoryManager : MonoBehaviour
                     ToggleInteriorRobbers(true);
 
                     await WaitForDialogue(YdogYcockYcat2);
+
+                    EventManager.TriggerEvent(EventType.GameOver, "happyEnding");
                 }
                 else if (haveDog && haveCock && !haveCat)
                 {
@@ -366,7 +368,7 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Rooster" });
 
                     await EventManager.WaitForEvent(EventType.EndGoInside);
-                   // ToggleInteriorRobbers(false);
+                    // ToggleInteriorRobbers(false);
 
                     // nap
                     await WaitForDialogue(NdogYcockNcat3);
@@ -541,6 +543,14 @@ public class StoryManager : MonoBehaviour
 
             mainCamera.transform.SetParent(GameObject.Find("Ass").transform);
             mainCamera.transform.localPosition = new Vector3(0, 0, -10);
+
+
+            if (haveCock || haveDog || haveCat)
+            {
+                EventManager.TriggerEvent(EventType.GameOver, "killRobbersTogether");
+            }
+            else EventManager.TriggerEvent(EventType.GameOver, "killRobbersAlone");
+
 
         }
 

@@ -19,7 +19,7 @@ public class MusicManager : MonoBehaviour
     public AudioClip incorrectSimon;
     public AudioClip unlock;
     public AudioClip fight;
-
+    public AudioClip happyEnd;
 
     private void Awake()
     {
@@ -51,6 +51,11 @@ public class MusicManager : MonoBehaviour
         else if (audioName == "fight")
         {
             audioSourceBackground.clip = fight;
+
+        }
+        else if (audioName == "happyEnd")
+        {
+            audioSourceBackground.clip = happyEnd;
 
         }
         if (audioName != "stop")
