@@ -863,6 +863,7 @@ new Monologue("Dog", "Wait What!??! The robbers have been  ROBBED. Someone stole
 new Monologue("Donkey", "Wait a second! Our owners are the thieves! We have to go in and talk to them."),
 new Monologue("Dog", "The door is locked, so we can't go in and it's made of wool so knocking won't help."),
 new Monologue("Donkey", "Let's wait until they come out."),
+new Monologue("Cat", "Wait, I can sneak in through the window and unlock it on the inside."),
 });
     // 2
     private Conversation YdogNcockYcat2 = new Conversation(new Monologue[] {
@@ -882,7 +883,8 @@ new Monologue("Donkey", "They can't understand us, we'll have to fight them...")
 new Monologue("Donkey", "Look, it's a house. There's a light in the window."),
 new Monologue("Rooster", "Looks a bit shabby."),
 new Monologue("Donkey", "Hmm, I have an idea, what if we take their house when they leave?"),
-new Monologue("Rooster", "We'll have to wait outside until they come out. I can try and convince them to leave the house."),
+new Monologue("Rooster", "We'll have to wait outside until they come out. I'll get on your back, we'll scare them!"),
+new Monologue("Donkey", "What a brilliant plan! I'm ready."),
 });
     // 2
     private Conversation NdogYcockNcat2 = new Conversation(new Monologue[] {
