@@ -366,7 +366,7 @@ public class StoryManager : MonoBehaviour
 
                     await FadeInOutBlackNoMovement(3f, 2f);
 
-                    //activate scare mode - TODO: make this scarier
+                    //activate scare mode
                     EventManager.TriggerEvent(EventType.RemoveFollower, "Rooster");
                     Vector3 donkeyPosition = GameObject.Find("Ass").transform.position;
                     GameObject.Find("Rooster").transform.position = donkeyPosition + new Vector3(16, 16, 0);
