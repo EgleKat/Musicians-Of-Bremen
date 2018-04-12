@@ -20,6 +20,7 @@ public class MusicManager : MonoBehaviour
     public AudioClip unlock;
     public AudioClip fight;
     public AudioClip happyEnd;
+    public AudioClip heart;
 
     private void Awake()
     {
@@ -102,6 +103,9 @@ public class MusicManager : MonoBehaviour
         else if (audioName == "unlock")
         {
             audioSourceEffect.clip = unlock;
+        }else if (audioName == "heart")
+        {
+            audioSourceEffect.clip = heart;
         }
 
         audioSourceEffect.Play();

@@ -186,7 +186,8 @@ public class StoryManager : MonoBehaviour
                 endOfFollowerQueue = "Cat";
                 GameObject.Find("Cat").GetComponent<CircleCollider2D>().enabled = false;
                 haveCat = true;
-                EventManager.TriggerEvent(EventType.AddHeart, 1);
+                EventManager.TriggerEvent(EventType.AddHeart, 1); EventManager.TriggerEvent(EventType.PlaySound, "heart");
+
                 EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Cat can climb into small spaces.");
 
             }
@@ -203,6 +204,7 @@ public class StoryManager : MonoBehaviour
             {
                 EventManager.TriggerEvent(EventType.AddHeart, 1);
                 EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Received a heart.");
+                EventManager.TriggerEvent(EventType.PlaySound, "heart");
 
                 EventManager.TriggerEvent(EventType.DisplayDialogue, donkeySaysUseful);
                 await EventManager.WaitForEvent(EventType.EndDialogue);
@@ -240,7 +242,8 @@ public class StoryManager : MonoBehaviour
             endOfFollowerQueue = "Dog";
             GameObject.Find("Dog").GetComponent<CircleCollider2D>().enabled = false;
             haveDog = true;
-            EventManager.TriggerEvent(EventType.AddHeart, 1);
+            EventManager.TriggerEvent(EventType.AddHeart, 1); EventManager.TriggerEvent(EventType.PlaySound, "heart");
+
             EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Dog can understand human language.");
 
 
@@ -289,7 +292,8 @@ public class StoryManager : MonoBehaviour
             if (cockSaved)
             {
                 haveCock = true;
-                EventManager.TriggerEvent(EventType.AddHeart, 1);
+                EventManager.TriggerEvent(EventType.AddHeart, 1); EventManager.TriggerEvent(EventType.PlaySound, "heart");
+
 
                 EventManager.TriggerEvent(EventType.AddFollower, new String[] { endOfFollowerQueue, "Rooster" });
                 endOfFollowerQueue = "Rooster";
@@ -470,6 +474,7 @@ public class StoryManager : MonoBehaviour
                     await EventManager.WaitForEvent(EventType.EndDialogue);
 
                     EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Received a heart.");
+                    EventManager.TriggerEvent(EventType.PlaySound, "heart");
 
                     EventManager.TriggerEvent(EventType.DisplayDialogue, donkeySaysUseful);
                     treeComplete = true;
