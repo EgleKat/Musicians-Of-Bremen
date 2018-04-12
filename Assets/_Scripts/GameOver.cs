@@ -12,7 +12,7 @@ public class GameOver : MonoBehaviour
     String gameOver = "Game Over";
     String fin = "Fin";
 
-    String outOfHeartsText = "You died.The robbers had a nice feast.";
+    String outOfHeartsText = "You died. The robbers had a nice feast.";
     String happyEndText = "They lived happily ever after. What happened to the actual thieves? That's a tale for another day...";
     string killRobbersAloneText = "The robbers were no more... The donkey stayed in the house and made it his home. He heard tales of other animals disappearing in the village, but he was safe here - all alone. ";
     string killRobbersTogetherText = "The robbers were no more... the friends stayed in the house and made it their home. They even started talking about making a band. But that's a tale for another day... ";
@@ -26,10 +26,12 @@ public class GameOver : MonoBehaviour
 
     private async void OnGameOver(object text)
     {
-        await Wait.ForSeconds(1.5f);
+        await Wait.ForSeconds(0.5f);
+        EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("GameOver", 2f));
         String type = (String)text;
         GameOverScreen(type);
-
+        await EventManager.WaitForEvent(EventType.EndFadeIn);
+        EventManager.TriggerEvent(EventType.ShowObject, "RestartButton");
     }
 
     private void GameOverScreen(String type)

@@ -22,16 +22,16 @@ public class InfoTextManager : MonoBehaviour
         dialogueText.text = textToDisplay;
 
         //Fade in
-        // EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("InfoBox", 0.5f));
-        //await EventManager.WaitForEvent(EventType.EndFadeIn);
-        gameObject.SetActive(true);
+        EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("InfoBox", 0.5f));
+        await EventManager.WaitForEvent(EventType.EndFadeIn);
+        //gameObject.SetActive(true);
 
         //Wait for seconds
         await Wait.ForSeconds(waitForSeconds);
 
         //Fade out
-        //EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("InfoBox", 0.5f));
-        gameObject.SetActive(false);
+        EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("InfoBox", 0.5f));
+        //gameObject.SetActive(false);
 
     }
 

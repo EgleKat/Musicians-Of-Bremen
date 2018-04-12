@@ -9,16 +9,15 @@ public class InteractKeyHint : MonoBehaviour
     {
         EventManager.AddListener(EventType.ShowInteractHint, OnShowInteractHint);
         EventManager.AddListener(EventType.HideInteractHint, OnHideInteractHint);
-        gameObject.SetActive(false);
     }
 
     private void OnHideInteractHint(object triggerName)
     {
-        gameObject.SetActive(false);
+        EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("E Hint", 0.2f));
     }
 
     private void OnShowInteractHint(object triggerName)
     {
-        gameObject.SetActive(true);
+        EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("E Hint", 0.2f));
     }
 }

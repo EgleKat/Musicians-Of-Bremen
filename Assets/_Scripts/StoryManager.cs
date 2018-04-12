@@ -819,7 +819,7 @@ new Monologue("Cat", "Wait, I can sneak in through the window and unlock it on t
     private Conversation YdogYcockYcat2 = new Conversation(new Monologue[] {
 new Monologue("Rooster", "Don't shoot! We're here to talk!"),
 new Monologue("Robber", "A talking chicken, I'm intrigued, continue..."),
-new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together."),
+new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are traveling together."),
 new Monologue("Robber", "I used to have a rooster like you...  Come to think of it, Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"),
 new Monologue("Rooster", "Yes!"),
 new Monologue("Robber", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all."),
@@ -845,7 +845,7 @@ new Monologue("Donkey", "Let's wait until they come out."),
     private Conversation YdogYcockNcat2 = new Conversation(new Monologue[] {
 new Monologue("Rooster", "Don't shoot! We're here to talk!"),
 new Monologue("Robber", "A talking chicken, I'm intrigued, continue..."),
-new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are travelling together."),
+new Monologue("Rooster", "I'm a rooster! We were rejected by our owners and now we are traveling together."),
 new Monologue("Robber", "I used to have a rooster like you...  Come to think of  , Bob used to have a donkey and Rob used to have a dog and Bab used to have a cat. Wait a second... Are you...?"),
 new Monologue("Rooster", "Yes!"),
 new Monologue("Robber", "Oh my god! We were gonna go get you but we didn't know who took you. It's so nice to see you all."),

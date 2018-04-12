@@ -17,15 +17,13 @@ public class DialogueManager : MonoBehaviour
         dialogueText = GetComponentInChildren<Text>();
 
         EventManager.AddListener(EventType.DisplayDialogue, OnDisplayDialogue);
-
-        gameObject.SetActive(false);
     }
 
     private void OnDisplayDialogue(object conversation)
     {
         currentConversation = (Conversation)conversation;
         EventManager.TriggerEvent(EventType.DisableMovement, null);
-        gameObject.SetActive(true);
+        EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("Dialogue Box", 0.2f));
         dialoguePosition = 0;
         EventManager.AddListener(EventType.PressedInteractKey, AdvanceDialogue);
         AdvanceDialogue(null);
@@ -41,7 +39,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
+            EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("Dialogue Box", 0.2f));
             EventManager.RemoveListener(EventType.PressedInteractKey, AdvanceDialogue);
             currentConversation = null;
             EventManager.TriggerEvent(EventType.EnableMovement, null);

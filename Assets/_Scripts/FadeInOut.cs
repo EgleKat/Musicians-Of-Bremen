@@ -3,18 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FadeInOut : MonoBehaviour
 {
-    SpriteRenderer spriteRenderer;
-    TaskCompletionSource<bool> isFading = new TaskCompletionSource<bool>();
+    public float alpha = 0;
+
+    List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
+    List<Image> images = new List<Image>();
+    List<Text> texts = new List<Text>();
+
     bool fadingOut = false;
     bool fadingIn = false;
 
     private void Awake()
     {
-        isFading.SetResult(true);
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderers.AddRange(GetComponents<SpriteRenderer>());
+        spriteRenderers.AddRange(GetComponentsInChildren<SpriteRenderer>());
+
+        images.AddRange(GetComponents<Image>());
+        images.AddRange(GetComponentsInChildren<Image>());
+
+        texts.AddRange(GetComponents<Text>());
+        texts.AddRange(GetComponentsInChildren<Text>());
+
         EventManager.AddListener(EventType.FadeIn, OnFadeIn);
         EventManager.AddListener(EventType.FadeOut, OnFadeOut);
     }
@@ -51,11 +63,9 @@ public class FadeInOut : MonoBehaviour
 
     private async void FadeIn(float timeToFade)
     {
-        while (spriteRenderer.color.a < 1 && fadingIn)
+        while (alpha < 1 && fadingIn)
         {
-            Color color = spriteRenderer.color;
-            color.a += 0.01f / timeToFade;
-            spriteRenderer.color = color;
+            SetAlpha(alpha + 0.01f / timeToFade);
             await Wait.ForSeconds(0.01f);
         }
         fadingIn = false;
@@ -64,16 +74,37 @@ public class FadeInOut : MonoBehaviour
 
     private async void FadeOut(float timeToFade)
     {
-        while (spriteRenderer.color.a > 0 && fadingOut)
+        while (alpha > 0 && fadingOut)
         {
-            Color color = spriteRenderer.color;
-            color.a -= 0.01f / timeToFade;
-            spriteRenderer.color = color;
+            SetAlpha(alpha - 0.01f / timeToFade);
             await Wait.ForSeconds(0.01f);
         }
         gameObject.SetActive(false);
         fadingOut = false;
         EventManager.TriggerEvent(EventType.EndFadeOut, null);
+    }
+
+    private void SetAlpha(float alpha)
+    {
+        this.alpha = alpha;
+        foreach (SpriteRenderer sr in spriteRenderers)
+        {
+            Color c = sr.color;
+            c.a = alpha;
+            sr.color = c;
+        }
+        foreach (Image sr in images)
+        {
+            Color c = sr.color;
+            c.a = alpha;
+            sr.color = c;
+        }
+        foreach (Text sr in texts)
+        {
+            Color c = sr.color;
+            c.a = alpha;
+            sr.color = c;
+        }
     }
 }
 
