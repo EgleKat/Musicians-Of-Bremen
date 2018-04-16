@@ -166,11 +166,12 @@ public class StoryManager : MonoBehaviour
             EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
             await EventManager.WaitForEvent(EventType.EndDialogue);
 
-            firstTimeWitch = false;
 
             //Display info message
+            if (firstTimeWitch)
             EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Explore the world.");
 
+            firstTimeWitch = false;
 
         }
         else if (interactionName == "Cat")
