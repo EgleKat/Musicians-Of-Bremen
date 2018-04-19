@@ -110,6 +110,9 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.DisplayDialogue, converse);
                 await EventManager.WaitForEvent(EventType.EndDialogue);
 
+                //Disable trigger
+                EventManager.TriggerEvent(EventType.HideObject, "DonkeyHouseOuter");
+
                 firstTimeOwnerHouse = false;
 
                 EventManager.TriggerEvent(EventType.AddFollower, new string[] { "Ass", "Donkey Owner" });
@@ -130,6 +133,9 @@ public class StoryManager : MonoBehaviour
                 EventManager.TriggerEvent(EventType.Teleport, new MoveCommand("Ass", new Vector3(1200, 706, 0), MoveCommand.MoveType.Location));
                 await Wait.ForSeconds(1.5f);
 
+
+                //Show trigger
+                EventManager.TriggerEvent(EventType.ShowObject, "DonkeyHouseOuter");
                 //make beginner marker a collider (not a trigger)
                 GameObject donkeyOuter = GameObject.Find("DonkeyHouseOuter");
                 donkeyOuter.GetComponent<BoxCollider2D>().isTrigger = false;
@@ -140,6 +146,8 @@ public class StoryManager : MonoBehaviour
                 await EventManager.WaitForEvent(EventType.EndFadeOut);
                 EventManager.TriggerEvent(EventType.ChangeMusic, "background");
                 await EventManager.WaitForEvent(EventType.EndDialogue);
+
+
 
             }
 
@@ -169,7 +177,7 @@ public class StoryManager : MonoBehaviour
 
             //Display info message
             if (firstTimeWitch)
-            EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Explore the world.");
+                EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Explore the world.");
 
             firstTimeWitch = false;
 
