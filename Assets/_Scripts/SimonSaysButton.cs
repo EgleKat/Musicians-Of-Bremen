@@ -8,12 +8,10 @@ public class SimonSaysButton : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     Color originalColor;
     Color alertColor;
-
+    bool initialisedColour = false;
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        originalColor = spriteRenderer.color;
-        alertColor = originalColor + new Color(0.2f, 0.2f, 0.2f, 0);
 
         EventManager.AddListener(EventType.StartSimonSaysRound, OnStartSimonSaysRound);
         EventManager.AddListener(EventType.EndSimonSays, OnEndSimonSays);
@@ -46,6 +44,12 @@ public class SimonSaysButton : MonoBehaviour
 
     private void OnStartSimonSaysRound(object _)
     {
+        if (!initialisedColour)
+        {
+            originalColor = spriteRenderer.color;
+            alertColor = originalColor + new Color(0.2f, 0.2f, 0.2f, 0);
+            initialisedColour = true;
+        }
         triggerable = false;
     }
 

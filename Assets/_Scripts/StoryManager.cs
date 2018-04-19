@@ -36,7 +36,7 @@ public class StoryManager : MonoBehaviour
 
 
     //Rooster
-    private Conversation cockCageConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Rooster", "It's you!"), new Monologue("Donkey", "Why are you locked up?"), new Monologue("Rooster", "My owners wanted to eat me but I managed to fly away."), new Monologue("Rooster", "I couldn't fly any further and decided to rest here, but when I woke up, the door closed on me."), new Monologue("Rooster", " Can you find out the combination for the door? Match the patterns of the buttons.") });
+    private Conversation cockCageConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Rooster", "It's you!"), new Monologue("Donkey", "Why are you locked up?"), new Monologue("Rooster", "My owners wanted to eat me but I managed to fly away."), new Monologue("Rooster", "I couldn't fly any further and decided to rest here, but when I woke up, the door closed on me."), new Monologue("Rooster", " Can you find out the combination for the door from these magic buttons behind you?") });
     private Conversation freedCockConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Donkey", "Well, that was a pickle."), new Monologue("Rooster", "Oh thank you! I thought I was gonna die here. Can I join you?"), new Monologue("Donkey", "Yes, of course!"), new Monologue("Rooster", "My speaking skills might come in handy. I can speak in the human language."), new Monologue("Rooster", "Although I don't really understand it, I've learnt to imitate it.") });
     private Conversation cockCageWithDogConvo = new Conversation("Rooster", new Monologue[] { new Monologue("Rooster", "It's you!"), new Monologue("Dog", "Oh, a hen!"), new Monologue("Rooster", "I'm a cock, not a hen! I'm just a bit chubby. "), new Monologue("Donkey", "Why are you locked up?"), new Monologue("Rooster", "My owners wanted to eat me but I managed to fly away."), new Monologue("Rooster", "I couldn't fly any further and decided to rest here, but when I woke up, the door closed on me."), new Monologue("Rooster", " Can you find out the combination for the door?") });
 
@@ -279,6 +279,14 @@ public class StoryManager : MonoBehaviour
             if (!simonSaysStarted)
             {
                 simonSaysStarted = true;
+
+                //Fade in the buttons
+                EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("BR_1", 1f));
+                EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("BR_2", 1f));
+                EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("BR_3", 1f));
+
+
+
                 SimonSaysManager simonSaysManager = new SimonSaysManager();
                 SimonSaysManager.ReturnType returnType;
                 EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Repeat the colour code without any mistakes.");
@@ -290,6 +298,12 @@ public class StoryManager : MonoBehaviour
 
                 EventManager.TriggerEvent(EventType.StartInteraction, "SimonSaysEnd");
                 cockSaved = true;
+
+
+                //Fade out the buttons
+                EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("BR_1", 2f));
+                EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("BR_2", 2f));
+                EventManager.TriggerEvent(EventType.FadeOut, new FadeCommand("BR_3", 2f));
             }
         }
         else if (interactionName == "Rooster")
