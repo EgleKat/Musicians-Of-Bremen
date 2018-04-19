@@ -26,6 +26,7 @@ public class GameOver : MonoBehaviour
 
     private async void OnGameOver(object text)
     {
+        EventManager.TriggerEvent(EventType.DisableMovement, "Ass");
         await Wait.ForSeconds(0.5f);
         EventManager.TriggerEvent(EventType.FadeIn, new FadeCommand("GameOver", 2f));
         String type = (String)text;
