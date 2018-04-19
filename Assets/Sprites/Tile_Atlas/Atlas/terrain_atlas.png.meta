@@ -8932,8 +8932,8 @@ TextureImporter:
       physicsShape:
       - - {x: 9, y: 16}
         - {x: 4, y: 14}
-        - {x: -11, y: -4}
-        - {x: -11, y: -16}
+        - {x: -15.590637, y: 15.127563}
+        - {x: -15.208008, y: -16}
         - {x: 16, y: -16}
         - {x: 16, y: 16}
       tessellationDetail: 0
@@ -8972,9 +8972,9 @@ TextureImporter:
         - {x: -13, y: 16}
         - {x: -16, y: 16}
         - {x: -16, y: -16}
-        - {x: 9, y: -16}
-        - {x: 9, y: -7}
-        - {x: 4, y: 3}
+        - {x: 14.738281, y: -16}
+        - {x: 14.738281, y: -1.2617188}
+        - {x: 15.093994, y: 13.711426}
       tessellationDetail: 0
     - serializedVersion: 2
       name: terrain_atlas_407
@@ -8989,9 +8989,9 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: 11, y: 1}
-        - {x: 4, y: -2}
-        - {x: -4, y: -12}
+      - - {x: 14.060425, y: 13.241638}
+        - {x: -14.744995, y: 12.919495}
+        - {x: -13.946289, y: -14.677856}
         - {x: -4, y: -16}
         - {x: 16, y: -16}
         - {x: 16, y: 1}
@@ -9009,12 +9009,12 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -12, y: 2}
+      - - {x: -14.677856, y: 13.4765625}
         - {x: -16, y: 0}
         - {x: -16, y: -16}
         - {x: 16, y: -16}
         - {x: 16, y: 0}
-        - {x: 13, y: 2}
+        - {x: 14.530212, y: 13.4765625}
       tessellationDetail: 0
     - serializedVersion: 2
       name: terrain_atlas_409
@@ -9029,13 +9029,13 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -13, y: 0}
+      - - {x: -15.295288, y: 13.771851}
         - {x: -16, y: 0}
         - {x: -16, y: -16}
         - {x: 5, y: -16}
-        - {x: 4, y: -13}
-        - {x: 1, y: -11}
-        - {x: -8, y: -2}
+        - {x: 13.563782, y: -14.91272}
+        - {x: 13.241638, y: -2.5838623}
+        - {x: 13.040344, y: 13.302063}
       tessellationDetail: 0
     - serializedVersion: 2
       name: terrain_atlas_410
@@ -9558,7 +9558,7 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -12, y: 16}
+      - - {x: -15.442993, y: 16}
         - {x: -16, y: 9}
         - {x: -16, y: -16}
         - {x: 16, y: -16}
@@ -10181,9 +10181,9 @@ TextureImporter:
       physicsShape:
       - - {x: -16, y: 16}
         - {x: -16, y: 12}
-        - {x: -13, y: 2}
-        - {x: 0, y: -1}
-        - {x: 16, y: -1}
+        - {x: -15.677856, y: -15.214783}
+        - {x: -0.7650757, y: -15.154419}
+        - {x: 15.617432, y: -14.771851}
         - {x: 16, y: 16}
       tessellationDetail: 0
     - serializedVersion: 2
@@ -10201,10 +10201,10 @@ TextureImporter:
       physicsShape:
       - - {x: 16, y: 16}
         - {x: -16, y: 16}
-        - {x: -16, y: -1}
-        - {x: -9, y: -2}
-        - {x: 11, y: -2}
-        - {x: 12, y: -1}
+        - {x: -16, y: -15.536926}
+        - {x: -8.234924, y: -15.389282}
+        - {x: 4.1140747, y: -15.389282}
+        - {x: 13.530212, y: -15.154419}
         - {x: 16, y: 2}
       tessellationDetail: 0
     - serializedVersion: 2
@@ -10220,9 +10220,9 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -16, y: 1}
-        - {x: 5, y: 1}
-        - {x: 10, y: 16}
+      - - {x: -16, y: -13.536926}
+        - {x: 12.268433, y: -13.536926}
+        - {x: 13.060425, y: 15.617432}
         - {x: -16, y: 16}
       tessellationDetail: 0
     - serializedVersion: 2
