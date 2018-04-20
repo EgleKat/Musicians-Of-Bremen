@@ -47,7 +47,7 @@ public class GameOver : MonoBehaviour
         if (type == "outOfHearts")
         {
             titleText.text = gameOver;
-            EventManager.TriggerEvent(EventType.ChangeMusic, "stop");
+            EventManager.TriggerEvent(EventType.ChangeMusic, "funeral");
             variableText.text = outOfHeartsText;
         }
         else if (type == "happyEnding")

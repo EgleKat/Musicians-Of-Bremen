@@ -21,6 +21,7 @@ public class MusicManager : MonoBehaviour
     public AudioClip fight;
     public AudioClip happyEnd;
     public AudioClip heart;
+    public AudioClip funeral;
 
     private void Awake()
     {
@@ -45,6 +46,11 @@ public class MusicManager : MonoBehaviour
         {
             audioSourceBackground.clip = danger;
         }
+        else if (audioName == "funeral")
+        {
+            audioSourceBackground.clip = funeral;
+
+        }
         else if (audioName == "background")
         {
             audioSourceBackground.clip = background;
@@ -65,6 +71,7 @@ public class MusicManager : MonoBehaviour
     private void OnPlaySound(object nameAudio)
     {
         String audioName = (String)nameAudio;
+        audioSourceEffect.volume = 1;
 
         if (audioName == "hit")
         {
@@ -102,8 +109,10 @@ public class MusicManager : MonoBehaviour
         }
         else if (audioName == "unlock")
         {
+            audioSourceEffect.volume = 2;
             audioSourceEffect.clip = unlock;
-        }else if (audioName == "heart")
+        }
+        else if (audioName == "heart")
         {
             audioSourceEffect.clip = heart;
         }

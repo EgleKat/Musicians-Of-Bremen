@@ -496,6 +496,7 @@ public class StoryManager : MonoBehaviour
                     EventManager.TriggerEvent(EventType.DisplayDialogue, robberTreeWCat);
                     EventManager.TriggerEvent(EventType.AddHeart, 1);
                     await EventManager.WaitForEvent(EventType.EndDialogue);
+                    await EventManager.WaitForEvent(EventType.EndFadeOut);
 
                     EventManager.TriggerEvent(EventType.DisplayInfoMessage, "Received a heart.");
                     EventManager.TriggerEvent(EventType.PlaySound, "heart");
